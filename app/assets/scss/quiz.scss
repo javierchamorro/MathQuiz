@@ -39,6 +39,16 @@ div.question div.question_choice input[type="checkbox"][disabled]{
   cursor: default;
 }
 
+div.question div.question_choice input[type="radio"] {
+  width: 23px;
+  height: 23px;
+  cursor: pointer;
+}
+
+div.question div.question_choice input[type="radio"][disabled]{
+  cursor: default;
+}
+
 div.question div.question_choice p {
   display: inline-block;
   font-size: 20px;

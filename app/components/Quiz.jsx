@@ -1,94 +1,161 @@
 import React from 'react';
 import './../assets/scss/quiz.scss';
 
+import {GLOBAL_CONFIG} from '../config/config.js';
 import * as Utils from '../vendors/Utils.js';
-import {addObjectives, resetObjectives, finishApp} from './../reducers/actions';
+import {addObjectives, objectiveAccomplished, objectiveAccomplishedThunk,resetObjectives} from './../reducers/actions';
 
+import SumaResta from './SumaResta.jsx';
+import MultiplicacionDivision from './MultiplicacionDivision.jsx';
+import RaicesElevados from './RaicesElevados.jsx';
+import Logaritmos from './Logaritmos.jsx';
 import QuizHeader from './QuizHeader.jsx';
-import MCQuestion from './MCQuestion.jsx';
+
+import * as SAMPLES from '../config/samples.js';
 
 export default class Quiz extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    let quiz = this.props.quiz;
-    let questions = quiz.questions;
-
-    // Adaptive behaviour
-    // Sort questions based on difficulty
-    let adaptive_sorted = false;
-    if((this.props.config.adaptive === true) && (typeof props.user_profile === "object") && (typeof props.user_profile.learner_preference === "object") && (typeof props.user_profile.learner_preference.difficulty === "number")){
-      let difficulty = props.user_profile.learner_preference.difficulty;
-      if((difficulty >= 0) && (difficulty <= 10)){
-        for(let i = 0; i < questions.length; i++){
-          if((typeof questions[i].difficulty !== "number") || (questions[i].difficulty < 0) || (questions[i].difficulty > 10)){
-            questions[i].difficulty = 5;
-          }
-          questions[i].suitability = (10 - Math.abs((questions[i].difficulty - difficulty))) / 10;
-        }
-        questions.sort(function(a, b){ return b.suitability - a.suitability; });
-        adaptive_sorted = true;
+    var difficulty;
+    var progresivo=false;
+      if (this.props.user_profile.learner_preference.difficulty === 9) {
+        difficulty = Math.floor(Math.random() * 9);
+      } else {
+        difficulty = this.props.user_profile.learner_preference.difficulty;
       }
+    if (this.props.user_profile.learner_preference.difficulty > 9 || this.props.user_profile.learner_preference.difficulty < 0 || typeof this.props.user_profile.learner_preference.difficulty !== "number") {
+        progresivo = true
+        difficulty = Math.floor(Math.random() * 7);
     }
-
-    if(adaptive_sorted === false){
-      questions = Utils.shuffleArray(questions);
-    }
-
-    if((typeof this.props.config.n === "number") && (this.props.config.n >= 1)){
-      // Limit number of questions
-      questions = questions.slice(0, Math.min(this.props.config.n, questions.length));
-    }
-
-    quiz.questions = questions;
 
     this.state = {
-      quiz:quiz,
-      current_question_index:1,
+      difficulty: difficulty,
+      progresivo: progresivo,
+      contador: 0
     };
   }
-  componentDidMount(){
-    // Create objectives (One per question included in the quiz)
-    let objectives = [];
-    let nQuestions = this.state.quiz.questions.length;
-    for(let i = 0; i < nQuestions; i++){
-      objectives.push(new Utils.Objective({id:("Question" + (i + 1)), progress_measure:(1 / nQuestions), score:(1 / nQuestions)}));
-    }
-    this.props.dispatch(addObjectives(objectives));
-  }
-  onNextQuestion(){
-    let isLastQuestion = (this.state.current_question_index === this.state.quiz.questions.length);
-    if(isLastQuestion === false){
-      this.setState({current_question_index:(this.state.current_question_index + 1)});
+
+  onReset(correct) {
+    if (this.state.progresivo) {
+      console.log("progresivo");
+      var contador=this.state.contador;
+      if (correct) {
+        contador ++;
+      } else {
+        contador=0;
+      }
+      this.setState({contador: contador});
+
+      if (contador === GLOBAL_CONFIG.progresivo) {
+        var difficulty = this.state.difficulty + 1;
+        this.setState({difficulty: difficulty});
+        this.setState({contador: 0});
+      }
     } else {
-      this.props.dispatch(finishApp(true));
+      if (this.props.user_profile.learner_preference.difficulty === 9) {
+        this.setState({
+          difficulty: Math.floor(Math.random() * 9)
+        });
+      } else {
+        this.setState({difficulty: this.props.user_profile.learner_preference.difficulty});
+      }
     }
   }
+
   onResetQuiz(){
-    this.setState({current_question_index:1});
+    SAMPLES.pregunta = 1;
     this.props.dispatch(resetObjectives());
+
   }
-  render(){
-    let currentQuestion = this.state.quiz.questions[this.state.current_question_index - 1];
-    let isLastQuestion = (this.state.current_question_index === this.state.quiz.questions.length);
 
-    let objective = this.props.tracking.objectives["Question" + (this.state.current_question_index)];
-    let onNextQuestion = this.onNextQuestion.bind(this);
-    let onResetQuiz = this.onResetQuiz.bind(this);
-    let currentQuestionRender = "";
+  render() {
 
-    switch (currentQuestion.type){
-    case "multiple_choice":
-      currentQuestionRender = (<MCQuestion question={currentQuestion} dispatch={this.props.dispatch} I18n={this.props.I18n} objective={objective} onNextQuestion={onNextQuestion} onResetQuiz={onResetQuiz} isLastQuestion={isLastQuestion} quizCompleted={this.props.tracking.finished}/>);
-      break;
-    default:
-      currentQuestionRender = "Question type not supported";
+    if (this.props.user_profile) {
+      if (typeof this.props.user_profile.learner_preference === "undefined" || typeof this.props.user_profile.learner_preference.difficulty === "undefined") {
+        return (<h1>Esperando a que cargue el nivel</h1>)
+      }
     }
+    var pregunta;
+    var difficulty=this.state.difficulty;
 
-    return (
-      <div className="quiz">
-        <QuizHeader I18n={this.props.I18n} quiz={this.state.quiz} currentQuestionIndex={this.state.current_question_index}/>
-        {currentQuestionRender}
-      </div>
-    );
+    // if (this.state.difficulty === "") {
+    //   if (this.props.user_profile.learner_preference.difficulty === 9) {
+    //     difficulty = Math.floor(Math.random() * 9);
+    //     this.setState({difficulty: difficulty});
+    //   } else {
+    //     difficulty = this.props.user_profile.learner_preference.difficulty;
+    //     this.setState({difficulty: difficulty});
+    //   }
+    // } else {
+    //   difficulty = this.state.difficulty;
+    // }
+    // if (this.props.user_profile.learner_preference.difficulty > 9 || this.props.user_profile.learner_preference.difficulty < 0 || typeof this.props.user_profile.learner_preference.difficulty !== "number") {
+    //   if (!this.state.progresivo) {
+    //     this.setState({progresivo: true});
+    //     difficulty = Math.floor(Math.random() * 7);
+    //     this.setState({difficulty: difficulty});
+    //   }
+    // }
+    console.log("difficulty: " + difficulty);
+    switch (difficulty) {
+      case 0:
+        pregunta = 1;
+        break;
+      case 1:
+        pregunta = 1;
+        break;
+      case 2:
+        pregunta = 1;
+        break;
+      case 3:
+        pregunta = 2;
+        break;
+      case 4:
+        pregunta = 2;
+        break;
+      case 5:
+        pregunta = 3;
+        break;
+      case 6:
+        pregunta = 3;
+        break;
+      case 7:
+        pregunta = 4;
+        break;
+      case 8:
+        pregunta = 4;
+        break;
+      default:
+        console.log("error");
+    }
+    switch (pregunta) {
+      case 1:
+        return (<div className="quiz">
+          <QuizHeader I18n={this.props.I18n}/>
+          <SumaResta className="pregunta" quiz={SAMPLES.preguntas1} difficulty={difficulty} datos={SAMPLES.SumaResta} dispatch={this.props.dispatch} tracking={this.props.tracking} onReset={this.onReset.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} I18n={this.props.I18n}/>
+        </div>);
+        break;
+      case 2:
+        return (<div className="quiz">
+          <QuizHeader I18n={this.props.I18n}/>
+          <MultiplicacionDivision className="pregunta" quiz={SAMPLES.preguntas1} difficulty={difficulty} datos={SAMPLES.MultiplicacionDivision} dispatch={this.props.dispatch} tracking={this.props.tracking} onReset={this.onReset.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} I18n={this.props.I18n}/>
+        </div>);
+        break;
+      case 3:
+        return (<div className="quiz">
+          <QuizHeader I18n={this.props.I18n}/>
+          <RaicesElevados className="pregunta" quiz={SAMPLES.preguntas2} difficulty={difficulty} datos={SAMPLES.RaicesElevados} dispatch={this.props.dispatch} tracking={this.props.tracking} onReset={this.onReset.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} I18n={this.props.I18n}/>
+        </div>);
+        break;
+      case 4:
+        return (<div className="quiz">
+          <QuizHeader I18n={this.props.I18n}/>
+          <Logaritmos className="pregunta" quiz={SAMPLES.preguntas2} difficulty={difficulty} datos={SAMPLES.Logaritmos} dispatch={this.props.dispatch} tracking={this.props.tracking} onReset={this.onReset.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} I18n={this.props.I18n}/>
+        </div>);
+        break;
+      default:
+        console.log("error");
+
+    }
   }
 }
