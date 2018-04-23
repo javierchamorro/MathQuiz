@@ -11,8 +11,12 @@ export let GLOBAL_CONFIG = {
       completion_threshold:0.5,
       score_threshold:0.6,
     },
+    //numero de preguntas del test
     n:3,
+    //en modo progresivo se el numero de preguntas necesarias para subir de nivel
     progresivo:1,
+    //probabilidad de que me toque una pregunta de nivel superior
+    prob_dif:0.1,
   },
   production:{
     debug:false,

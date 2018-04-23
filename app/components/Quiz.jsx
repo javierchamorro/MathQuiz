@@ -3,7 +3,7 @@ import './../assets/scss/quiz.scss';
 
 import {GLOBAL_CONFIG} from '../config/config.js';
 import * as Utils from '../vendors/Utils.js';
-import {addObjectives, objectiveAccomplished, objectiveAccomplishedThunk,resetObjectives} from './../reducers/actions';
+import {addObjectives, objectiveAccomplished, objectiveAccomplishedThunk, resetObjectives} from './../reducers/actions';
 
 import SumaResta from './SumaResta.jsx';
 import MultiplicacionDivision from './MultiplicacionDivision.jsx';
@@ -17,15 +17,17 @@ export default class Quiz extends React.Component {
   constructor(props) {
     super(props);
     var difficulty;
-    var progresivo=false;
-      if (this.props.user_profile.learner_preference.difficulty === 9) {
-        difficulty = Math.floor(Math.random() * 9);
-      } else {
-        difficulty = this.props.user_profile.learner_preference.difficulty;
-      }
+    var progresivo = false;
+    //El nivel 9 es un modo aleatorio
+    if (this.props.user_profile.learner_preference.difficulty === 9) {
+      difficulty = Math.floor(Math.random() * 9);
+    } else {
+      difficulty = this.props.user_profile.learner_preference.difficulty;
+    }
+    //Si no se pasa ningun valor se pondra automaticamente el modo progresivo
     if (this.props.user_profile.learner_preference.difficulty > 9 || this.props.user_profile.learner_preference.difficulty < 0 || typeof this.props.user_profile.learner_preference.difficulty !== "number") {
-        progresivo = true
-        difficulty = Math.floor(Math.random() * 7);
+      progresivo = true
+      difficulty = Math.floor(Math.random() * 9);
     }
 
     this.state = {
@@ -38,14 +40,16 @@ export default class Quiz extends React.Component {
   onReset(correct) {
     if (this.state.progresivo) {
       console.log("progresivo");
-      var contador=this.state.contador;
+      var contador = this.state.contador;
       if (correct) {
-        contador ++;
+        contador++;
       } else {
-        contador=0;
+        contador = 0;
+      }
+      if (this.state.difficulty === 9) {
+        return;
       }
       this.setState({contador: contador});
-
       if (contador === GLOBAL_CONFIG.progresivo) {
         var difficulty = this.state.difficulty + 1;
         this.setState({difficulty: difficulty});
@@ -62,7 +66,7 @@ export default class Quiz extends React.Component {
     }
   }
 
-  onResetQuiz(){
+  onResetQuiz() {
     SAMPLES.pregunta = 1;
     this.props.dispatch(resetObjectives());
 
@@ -76,48 +80,65 @@ export default class Quiz extends React.Component {
       }
     }
     var pregunta;
-    var difficulty=this.state.difficulty;
+    var difficulty = this.state.difficulty;
 
-    // if (this.state.difficulty === "") {
-    //   if (this.props.user_profile.learner_preference.difficulty === 9) {
-    //     difficulty = Math.floor(Math.random() * 9);
-    //     this.setState({difficulty: difficulty});
-    //   } else {
-    //     difficulty = this.props.user_profile.learner_preference.difficulty;
-    //     this.setState({difficulty: difficulty});
-    //   }
-    // } else {
-    //   difficulty = this.state.difficulty;
-    // }
-    // if (this.props.user_profile.learner_preference.difficulty > 9 || this.props.user_profile.learner_preference.difficulty < 0 || typeof this.props.user_profile.learner_preference.difficulty !== "number") {
-    //   if (!this.state.progresivo) {
-    //     this.setState({progresivo: true});
-    //     difficulty = Math.floor(Math.random() * 7);
-    //     this.setState({difficulty: difficulty});
-    //   }
-    // }
     console.log("difficulty: " + difficulty);
     switch (difficulty) {
       case 0:
-        pregunta = 1;
+        if (Math.random() > GLOBAL_CONFIG.prob_dif) {
+          pregunta = 1;
+        } else {
+          pregunta = 2
+          difficulty = 3
+        }
         break;
       case 1:
-        pregunta = 1;
+        if (Math.random() > GLOBAL_CONFIG.prob_dif) {
+          pregunta = 1;
+        } else {
+          pregunta = 2;
+          difficulty = 3;
+        }
         break;
       case 2:
-        pregunta = 1;
+        if (Math.random() > GLOBAL_CONFIG.prob_dif) {
+          pregunta = 1;
+        } else {
+          pregunta = 2;
+          difficulty = 4;
+        }
         break;
       case 3:
-        pregunta = 2;
+        if (Math.random() > GLOBAL_CONFIG.prob_dif) {
+          pregunta = 2;
+        } else {
+          pregunta = 3;
+          difficulty = 5;
+        }
         break;
       case 4:
-        pregunta = 2;
+        if (Math.random() > GLOBAL_CONFIG.prob_dif) {
+          pregunta = 2;
+        } else {
+          pregunta = 3;
+          difficulty = 6;
+        }
         break;
       case 5:
-        pregunta = 3;
+        if (Math.random() > GLOBAL_CONFIG.prob_dif) {
+          pregunta = 3;
+        } else {
+          pregunta = 4;
+          difficulty = 7;
+        }
         break;
       case 6:
-        pregunta = 3;
+        if (Math.random() > GLOBAL_CONFIG.prob_dif) {
+          pregunta = 3;
+        } else {
+          pregunta = 4;
+          difficulty = 8;
+        }
         break;
       case 7:
         pregunta = 4;
