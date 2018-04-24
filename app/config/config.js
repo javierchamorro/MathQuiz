@@ -17,6 +17,8 @@ export let GLOBAL_CONFIG = {
     progresivo:1,
     //probabilidad de que me toque una pregunta de nivel superior
     prob_dif:0.1,
+    //Preguntas con temporizador y barra de progresivo
+    progressBar:true,
   },
   production:{
     debug:false,

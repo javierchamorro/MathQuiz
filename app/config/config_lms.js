@@ -18,7 +18,7 @@ let LMS_CONFIG = {
 let processConfig = (function(){
   if((LMS_CONFIG.scorm2004) && (LMS_CONFIG.scorm2004.learner_preference)){
     if(LMS_CONFIG.scorm2004.learner_preference.difficulty === "random"){
-      LMS_CONFIG.scorm2004.learner_preference.difficulty = "";
+      LMS_CONFIG.scorm2004.learner_preference.difficulty = 0;
     }
   }
   if((LMS_CONFIG.scorm12) && (LMS_CONFIG.scorm12.student_preference)){

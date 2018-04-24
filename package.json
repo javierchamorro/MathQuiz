@@ -39,9 +39,12 @@
     "eslint-plugin-jsx-a11y": "^5.1.0",
     "fs-extra": "^5.0.0",
     "react": "16.0.0",
+    "react-bootstrap": "^0.32.1",
     "react-dom": "^16.0.0",
+    "react-progressbar": "^15.4.1",
     "react-redux": "^5.0.6",
     "react-router-dom": "4.2.0",
+    "react.timer": "^2.1.0",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
     "zip-folder": "^1.0.0"
