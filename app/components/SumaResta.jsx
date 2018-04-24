@@ -1,6 +1,4 @@
 import React from 'react';
-import Timer from 'react.timer'
-import ProgressBar from 'react-progressbar'
 import './../assets/scss/quiz.scss';
 
 import * as SAMPLES from '../config/samples.js';
@@ -11,6 +9,7 @@ import {addObjectives, objectiveAccomplished, objectiveAccomplishedThunk,finishA
 import Tipo1 from './Tipo1.jsx';
 import Tipo2 from './Tipo2.jsx';
 import QuestionButtons from './QuestionButtons.jsx';
+import Temporizador from './Temporizador.jsx';
 
 export default class SumaResta extends React.Component {
   constructor(props) {
@@ -32,7 +31,7 @@ export default class SumaResta extends React.Component {
   elegirTipo() {
     let objective = new Utils.Objective({id: "MyQuiz"+SAMPLES.pregunta, progress_measure: 1/GLOBAL_CONFIG.n, score: 1/GLOBAL_CONFIG.n});
     this.props.dispatch(addObjectives([objective]));
-    var tipo = Math.floor(Math.random() * 3);
+    var tipo = 0;//Math.floor(Math.random() * 3);
     this.setState({tipo: tipo})
     switch (tipo) {
       case 0:
@@ -397,10 +396,6 @@ export default class SumaResta extends React.Component {
       return (<h1>Esperando a que cargue el nivel</h1>);
     }
     let isLastQuestion=(SAMPLES.pregunta===GLOBAL_CONFIG.n);
-    let progressBar = [];
-    if(GLOBAL_CONFIG.progressBar && Timer===10){
-      console.log("acabo");
-    }
     switch (this.state.tipo) {
       case 0:
         let choices1 = [];
@@ -409,9 +404,8 @@ export default class SumaResta extends React.Component {
         }
         return (<div className="question">
           <h1>{this.props.quiz.tipo1.value}</h1>
-          <ProgressBar completed={100}/>
-          <Timer countDown startTime={10} />
           {choices1}
+          <Temporizador secondsRemaining={10} onAnswerQuiz={this.onAnswerQuiz.bind(this)}/>
           <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuiz.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} onNextQuestion={this.onNextQuiz.bind(this)} answered={this.state.answered} quizCompleted={this.props.tracking.finished} allow_finish={isLastQuestion}/>
         </div>);
         break;
@@ -422,7 +416,6 @@ export default class SumaResta extends React.Component {
         }
         return (<div className="question">
           <h1>{this.props.quiz.tipo2.value}</h1>
-            <Timer countDown startTime={10} />
           {choices2}
           <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuiz.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} onNextQuestion={this.onNextQuiz.bind(this)} answered={this.state.answered} quizCompleted={this.props.tracking.finished} allow_finish={isLastQuestion}/>
         </div>);
