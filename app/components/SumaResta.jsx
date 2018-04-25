@@ -20,7 +20,7 @@ export default class SumaResta extends React.Component {
       input_answer: "",
       answered: false,
       tipo: "",
-      correct: false
+      correct: false,
     };
   }
   componentDidMount() {
@@ -31,7 +31,7 @@ export default class SumaResta extends React.Component {
   elegirTipo() {
     let objective = new Utils.Objective({id: "MyQuiz"+SAMPLES.pregunta, progress_measure: 1/GLOBAL_CONFIG.n, score: 1/GLOBAL_CONFIG.n});
     this.props.dispatch(addObjectives([objective]));
-    var tipo = 0;//Math.floor(Math.random() * 3);
+    var tipo = Math.floor(Math.random() * 3);
     this.setState({tipo: tipo})
     switch (tipo) {
       case 0:
@@ -396,6 +396,10 @@ export default class SumaResta extends React.Component {
       return (<h1>Esperando a que cargue el nivel</h1>);
     }
     let isLastQuestion=(SAMPLES.pregunta===GLOBAL_CONFIG.n);
+    let temporizador= [];
+    if (GLOBAL_CONFIG.progressBar){
+      temporizador.push(<Temporizador key={SAMPLES.pregunta} secondsRemaining={10} onAnswerQuiz={this.onAnswerQuiz.bind(this)}/>);
+    }
     switch (this.state.tipo) {
       case 0:
         let choices1 = [];
@@ -405,7 +409,7 @@ export default class SumaResta extends React.Component {
         return (<div className="question">
           <h1>{this.props.quiz.tipo1.value}</h1>
           {choices1}
-          <Temporizador secondsRemaining={10} onAnswerQuiz={this.onAnswerQuiz.bind(this)}/>
+          {temporizador}
           <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuiz.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} onNextQuestion={this.onNextQuiz.bind(this)} answered={this.state.answered} quizCompleted={this.props.tracking.finished} allow_finish={isLastQuestion}/>
         </div>);
         break;
@@ -417,6 +421,7 @@ export default class SumaResta extends React.Component {
         return (<div className="question">
           <h1>{this.props.quiz.tipo2.value}</h1>
           {choices2}
+          {temporizador}
           <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuiz.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} onNextQuestion={this.onNextQuiz.bind(this)} answered={this.state.answered} quizCompleted={this.props.tracking.finished} allow_finish={isLastQuestion}/>
         </div>);
         break;
@@ -435,6 +440,7 @@ export default class SumaResta extends React.Component {
           <div className={quizClassName}>
             <input type="number" name="respuesta" onChange={this.handleInputChange.bind(this)}></input>
           </div>
+          {temporizador}
           <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuiz.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} onNextQuestion={this.onNextQuiz.bind(this)} answered={this.state.answered} quizCompleted={this.props.tracking.finished} allow_finish={isLastQuestion}/>
         </div>);
         break;

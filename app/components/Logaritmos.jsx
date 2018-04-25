@@ -9,6 +9,7 @@ import {addObjectives, objectiveAccomplished, objectiveAccomplishedThunk,finishA
 import Tipo1 from './Tipo1.jsx';
 import Tipo2 from './Tipo2.jsx';
 import QuestionButtons from './QuestionButtons.jsx';
+import Temporizador from './Temporizador.jsx';
 
 
 export default class MultiplicacionDivision extends React.Component {
@@ -242,6 +243,10 @@ export default class MultiplicacionDivision extends React.Component {
       return (<h1>Esperando a que cargue el nivel</h1>);
     }
     let isLastQuestion=(SAMPLES.pregunta===GLOBAL_CONFIG.n);
+    let temporizador= [];
+    if (GLOBAL_CONFIG.progressBar){
+      temporizador.push(<Temporizador key={SAMPLES.pregunta} secondsRemaining={10} onAnswerQuiz={this.onAnswerQuiz.bind(this)}/>);
+    }
     switch (this.state.tipo) {
       case 0:
         let choices1 = [];
@@ -251,6 +256,7 @@ export default class MultiplicacionDivision extends React.Component {
         return (<div className="question">
           <h1>{this.props.quiz.tipo1.value}</h1>
           {choices1}
+          {temporizador}
           <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuiz.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} onNextQuestion={this.onNextQuiz.bind(this)} answered={this.state.answered} quizCompleted={this.props.tracking.finished} allow_finish={isLastQuestion}/>
         </div>);
         break;
@@ -262,6 +268,7 @@ export default class MultiplicacionDivision extends React.Component {
         return (<div className="question">
           <p>Cuanto es Log<sub>{this.props.quiz.tipo2.value.primero}</sub>({this.props.quiz.tipo2.value.segundo})</p>
           {choices2}
+          {temporizador}
           <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuiz.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} onNextQuestion={this.onNextQuiz.bind(this)} answered={this.state.answered} quizCompleted={this.props.tracking.finished} allow_finish={isLastQuestion}/>
         </div>);
         break;
@@ -280,6 +287,7 @@ export default class MultiplicacionDivision extends React.Component {
           <div className={quizClassName}>
             <input type="number" name="respuesta" onChange={this.handleInputChange.bind(this)}></input>
           </div>
+          {temporizador}
           <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuiz.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} onNextQuestion={this.onNextQuiz.bind(this)} answered={this.state.answered} quizCompleted={this.props.tracking.finished} allow_finish={isLastQuestion}/>
         </div>);
         break;
