@@ -201,19 +201,14 @@ export default class MultiplicacionDivision extends React.Component {
   }
 
   generarNumerosYOperadores() {
-    switch (this.props.difficulty) {
-      case 7:
+    if(this.props.difficulty < 4){
         this.props.datos.base = 2;
         this.props.datos.resultado = Math.floor((Math.random() * 13) + 1);
         this.props.datos.numero = Math.pow(this.props.datos.base, this.props.datos.resultado);
-        break;
-      case 8:
+      }else{
         this.props.datos.base = 10;
         this.props.datos.resultado = Math.floor((Math.random() * 11) + 1);
         this.props.datos.numero = Math.pow(this.props.datos.base, this.props.datos.resultado);
-        break;
-      default:
-        console.log("error");
     }
   }
   resultadoV() {
@@ -251,7 +246,7 @@ export default class MultiplicacionDivision extends React.Component {
       case 0:
         let choices1 = [];
         for (let i = 0; i < this.props.quiz.tipo1.choices.length; i++) {
-          choices1.push(<Tipo1 key={"MyQuiz_" + "quiz_choice_" + i} choice={this.props.quiz.tipo1.choices[i]} checked={this.state.selected_choices_ids.indexOf(this.props.quiz.tipo1.choices[i].id) !== -1} handleChange={this.handleMultiChoiceChange.bind(this)} quizAnswered={this.state.answered} difficulty={this.props.difficulty}/>);
+          choices1.push(<Tipo1 key={"MyQuiz_" + "quiz_choice_" + i} choice={this.props.quiz.tipo1.choices[i]} checked={this.state.selected_choices_ids.indexOf(this.props.quiz.tipo1.choices[i].id) !== -1} handleChange={this.handleMultiChoiceChange.bind(this)} quizAnswered={this.state.answered} tipo={3}/>);
         }
         return (<div className="question">
           <h1>{this.props.quiz.tipo1.value}</h1>

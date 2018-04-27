@@ -12,11 +12,66 @@ export let GLOBAL_CONFIG = {
       score_threshold:0.6,
     },
     //numero de preguntas del test
-    n:3,
+    n:5,
     //en modo progresivo se el numero de preguntas necesarias para subir de nivel
     progresivo:1,
-    //probabilidad de que me toque una pregunta de nivel superior
-    prob_dif:0.1,
+    //probabilidad de niveles
+    prob_dif:{
+      nivel0:{
+        SumaResta:0.8,
+        MultiplicacionDivision:0.16,
+        RaicesElevados:0.02,
+        Logaritmos:0.02,
+      },
+      nivel1:{
+        SumaResta:0.6,
+        MultiplicacionDivision:0.22,
+        RaicesElevados:0.09,
+        Logaritmos:0.09,
+      },
+      nivel2:{
+        SumaResta:0.5,
+        MultiplicacionDivision:0.3,
+        RaicesElevados:0.1,
+        Logaritmos:0.1,
+      },
+      nivel3:{
+        SumaResta:0.35,
+        MultiplicacionDivision:0.35,
+        RaicesElevados:0.15,
+        Logaritmos:0.15,
+      },
+      nivel4:{
+        SumaResta:0.25,
+        MultiplicacionDivision:0.25,
+        RaicesElevados:0.25,
+        Logaritmos:0.25,
+      },
+      nivel5:{
+        SumaResta:0.25,
+        MultiplicacionDivision:0.25,
+        RaicesElevados:0.25,
+        Logaritmos:0.25,
+      },
+      nivel6:{
+        SumaResta:0.2,
+        MultiplicacionDivision:0.3,
+        RaicesElevados:0.25,
+        Logaritmos:0.25,
+      },
+      nivel7:{
+        SumaResta:0.15,
+        MultiplicacionDivision:0.25,
+        RaicesElevados:0.3,
+        Logaritmos:0.3,
+      },
+      nivel8:{
+        SumaResta:0.2,
+        MultiplicacionDivision:0.2,
+        RaicesElevados:0.3,
+        Logaritmos:0.3,
+      },
+    },
     //Preguntas con temporizador y barra de progresivo
     progressBar:true,
   },

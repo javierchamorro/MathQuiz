@@ -18,7 +18,7 @@ export default class Tipo1 extends React.Component {
         quizClassName += " question_choice_correct";
       }
     }
-    if (this.props.difficulty === 5) {
+    if (this.props.tipo === 1) {
       return (<div className={quizClassName}>
         <div className="questionC1">
           <input type="checkbox" checked={this.props.checked} onChange={() => this.props.handleChange(this.props.choice)} disabled={showCorrection}/>
@@ -30,7 +30,7 @@ export default class Tipo1 extends React.Component {
           <p>{this.props.choice.value.tercero}</p>
         </div>
       </div>);
-    } else if (this.props.difficulty === 6) {
+    } else if (this.props.tipo === 2) {
       return (<div className={quizClassName}>
         <div className="questionC1">
           <input type="checkbox" checked={this.props.checked} onChange={() => this.props.handleChange(this.props.choice)} disabled={showCorrection}/>
@@ -41,7 +41,7 @@ export default class Tipo1 extends React.Component {
           <p>{this.props.choice.value.tercero}</p>
         </div>
       </div>);
-    } else if (this.props.difficulty === 7 || this.props.difficulty === 8) {
+    } else if (this.props.tipo === 3) {
       return (<div className={quizClassName}>
         <div className="questionC1">
           <input type="checkbox" checked={this.props.checked} onChange={() => this.props.handleChange(this.props.choice)} disabled={showCorrection}/>

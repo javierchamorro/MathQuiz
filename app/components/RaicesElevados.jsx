@@ -150,7 +150,7 @@ export default class RaicesElevados extends React.Component {
   }
 
   crearPregunta1() {
-    if (this.props.difficulty === 5) {
+    if (this.props.difficulty < 4) {
       var verdaderas = 0;
       for (let i = 0; i < this.props.quiz.tipo1.choices.length; i++) {
         var vf = Math.floor((Math.random() * 2) + 1);
@@ -208,7 +208,7 @@ export default class RaicesElevados extends React.Component {
 
   }
   crearPregunta2() {
-    if (this.props.difficulty === 5) {
+    if (this.props.difficulty < 4) {
       this.generarNumerosYOperadores();
       for (let i = 0; i < this.props.quiz.tipo2.choices.length; i++) {
         this.props.quiz.tipo2.choices[i].answer = false;
@@ -239,7 +239,7 @@ export default class RaicesElevados extends React.Component {
   crearPregunta3() {
     this.generarNumerosYOperadores();
     this.resultadoV();
-    if (this.props.difficulty === 5) {
+    if (this.props.difficulty < 4) {
       this.props.quiz.tipo3.value.primero = this.props.datos.primerNum;
       this.props.quiz.tipo3.value.segundo = this.props.datos.segundNum;
       this.props.quiz.tipo3.answer = this.props.datos.resultado;
@@ -265,16 +265,12 @@ export default class RaicesElevados extends React.Component {
     }
   }
   generarNumerosYOperadores() {
-    switch (this.props.difficulty) {
-      case 5:
+    if(this.props.difficulty < 4){
         this.genAux();
-      case 6:
+      }else {
         do {
           this.genAux();
         } while (this.props.datos.segundNum < 1);
-        break;
-      default:
-        console.log("error");
     }
   }
 
@@ -285,27 +281,21 @@ export default class RaicesElevados extends React.Component {
   resultadoF() {
     var resultadoV;
     var resultadoF;
-    switch (this.props.difficulty) {
-      case 5:
+    if(this.props.difficulty < 4){
         resultadoV = Math.pow(this.props.datos.primerNum, this.props.datos.segundNum);
         resultadoF = Math.floor(resultadoV - 10 + (Math.random() * 10) + 1);
         while (resultadoF === resultadoV) {
           resultadoF = Math.floor(resultadoV - 10 + (Math.random() * 10) + 1);
         }
         this.props.datos.resultado = resultadoF;
-        break;
-      case 6:
+      }else{
         resultadoV = Math.pow(this.props.datos.primerNum, this.props.datos.segundNum);
         this.props.datos.primerNumF = Math.floor(this.props.datos.primerNum - 10 + (Math.random() * 10) + 1);
         while (this.props.datos.primerNumF === this.props.datos.primerNum || this.props.datos.primerNumF < 1) {
           this.props.datos.primerNumF = Math.floor(this.props.datos.primerNum - 10 + (Math.random() * 10) + 1);
         }
         this.props.datos.resultado = resultadoV;
-        break;
-      default:
-        console.log("error");
     }
-
   }
 
   render() {
@@ -317,11 +307,17 @@ export default class RaicesElevados extends React.Component {
     if (GLOBAL_CONFIG.progressBar){
       temporizador.push(<Temporizador key={SAMPLES.pregunta} secondsRemaining={10} onAnswerQuiz={this.onAnswerQuiz.bind(this)}/>);
     }
+    var tipo;
+    if(this.props.difficulty < 4){
+      tipo=1;
+    }else{
+      tipo=2;
+    }
     switch (this.state.tipo) {
       case 0:
         let choices1 = [];
         for (let i = 0; i < this.props.quiz.tipo1.choices.length; i++) {
-          choices1.push(<Tipo1 key={"MyQuiz_" + "quiz_choice_" + i} choice={this.props.quiz.tipo1.choices[i]} checked={this.state.selected_choices_ids.indexOf(this.props.quiz.tipo1.choices[i].id) !== -1} handleChange={this.handleMultiChoiceChange.bind(this)} quizAnswered={this.state.answered} difficulty={this.props.difficulty}/>);
+          choices1.push(<Tipo1 key={"MyQuiz_" + "quiz_choice_" + i} choice={this.props.quiz.tipo1.choices[i]} checked={this.state.selected_choices_ids.indexOf(this.props.quiz.tipo1.choices[i].id) !== -1} handleChange={this.handleMultiChoiceChange.bind(this)} quizAnswered={this.state.answered} tipo={tipo}/>);
         }
         return (<div className="question">
           <h1>{this.props.quiz.tipo1.value}</h1>
@@ -333,7 +329,7 @@ export default class RaicesElevados extends React.Component {
       case 1:
         let choices2 = [];
         for (let i = 0; i < this.props.quiz.tipo2.choices.length; i++) {
-          choices2.push(<Tipo2 key={"MyQuiz_" + "quiz_choice_" + i} choice={this.props.quiz.tipo2.choices[i]} checked={i === this.state.option} handleChange={this.handleOneChoiceChange.bind(this)} quizAnswered={this.state.answered} difficulty={this.props.difficulty}/>);
+          choices2.push(<Tipo2 key={"MyQuiz_" + "quiz_choice_" + i} choice={this.props.quiz.tipo2.choices[i]} checked={i === this.state.option} handleChange={this.handleOneChoiceChange.bind(this)} quizAnswered={this.state.answered} tipo={tipo}/>);
         }
         if (this.props.difficulty === 5) {
           return (<div className="question">
@@ -363,7 +359,7 @@ export default class RaicesElevados extends React.Component {
 
           }
         }
-        if (this.props.difficulty === 5) {
+        if (this.props.difficulty < 4) {
           return (<div className="question">
             <p>¿Cuanto es {this.props.quiz.tipo3.value.primero}<sup>{this.props.quiz.tipo3.value.segundo}</sup>?</p>
             <div className={quizClassName}>

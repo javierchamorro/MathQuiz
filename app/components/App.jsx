@@ -1,6 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import './../assets/scss/main.scss';
+import './../assets/scss/bootstrap.min.scss';
+
 
 import {GLOBAL_CONFIG} from '../config/config.js';
 import * as I18n from '../vendors/I18n.js';

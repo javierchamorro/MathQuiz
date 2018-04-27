@@ -199,21 +199,16 @@ export default class MultiplicacionDivision extends React.Component {
     var resultado;
     var p1;
 
-    switch (this.props.difficulty) {
-      case 3:
+    if(this.props.difficulty <  4){
         operador = Math.floor((Math.random() * 2) + 1);
         simbolo1 = Math.floor((Math.random() * 2) + 1);
         simbolo2 = Math.floor((Math.random() * 2) + 1);
         p1 = 10;
-        break;
-      case 4:
+      }else {
         operador = Math.floor((Math.random() * 2) + 1);
         simbolo1 = Math.floor((Math.random() * 2) + 1);
         simbolo2 = Math.floor((Math.random() * 2) + 1);
         p1 = 100;
-        break;
-      default:
-        console.log("error");
     }
     if (operador === 1) {
       this.props.datos.operador = "×";

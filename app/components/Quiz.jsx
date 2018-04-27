@@ -18,6 +18,7 @@ export default class Quiz extends React.Component {
     super(props);
     var difficulty;
     var progresivo = false;
+    var aleatorio = Math.random();
     //El nivel 9 es un modo aleatorio
     if (this.props.user_profile.learner_preference.difficulty === 9) {
       difficulty = Math.floor(Math.random() * 9);
@@ -33,7 +34,8 @@ export default class Quiz extends React.Component {
     this.state = {
       difficulty: difficulty,
       progresivo: progresivo,
-      contador: 0
+      contador: 0,
+      aleatorio: aleatorio
     };
   }
 
@@ -60,8 +62,10 @@ export default class Quiz extends React.Component {
         this.setState({
           difficulty: Math.floor(Math.random() * 9)
         });
+        this.setState({aleatorio: Math.random()});
       } else {
         this.setState({difficulty: this.props.user_profile.learner_preference.difficulty});
+        this.setState({aleatorio: Math.random()});
       }
     }
   }
@@ -69,7 +73,7 @@ export default class Quiz extends React.Component {
   onResetQuiz() {
     SAMPLES.pregunta = 1;
     this.props.dispatch(resetObjectives());
-
+    this.setState({aleatorio: Math.random()});
   }
 
   render() {
@@ -81,70 +85,107 @@ export default class Quiz extends React.Component {
     }
     var pregunta;
     var difficulty = this.state.difficulty;
-
     console.log("difficulty: " + difficulty);
+    console.log("aleatorio: " + this.state.aleatorio);
     switch (difficulty) {
       case 0:
-        if (Math.random() > GLOBAL_CONFIG.prob_dif) {
+        if (this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel0.SumaResta) {
           pregunta = 1;
+        } else if (this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel0.SumaResta + GLOBAL_CONFIG.prob_dif.nivel0.MultiplicacionDivision) {
+          pregunta = 2;
+        } else if (this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel0.SumaResta + GLOBAL_CONFIG.prob_dif.nivel0.MultiplicacionDivision + GLOBAL_CONFIG.prob_dif.nivel0.RaicesElevados) {
+          pregunta = 3;
         } else {
-          pregunta = 2
-          difficulty = 3
+          pregunta = 4;
         }
         break;
       case 1:
-        if (Math.random() > GLOBAL_CONFIG.prob_dif) {
+        if (this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel1.SumaResta) {
           pregunta = 1;
-        } else {
+        } else if (this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel1.SumaResta + GLOBAL_CONFIG.prob_dif.nivel1.MultiplicacionDivision) {
           pregunta = 2;
-          difficulty = 3;
+        } else if (this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel1.SumaResta + GLOBAL_CONFIG.prob_dif.nivel1.MultiplicacionDivision + GLOBAL_CONFIG.prob_dif.nivel1.RaicesElevados) {
+          pregunta = 3;
+        } else {
+          pregunta = 4;
         }
         break;
       case 2:
-        if (Math.random() > GLOBAL_CONFIG.prob_dif) {
+        if (this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel2.SumaResta) {
           pregunta = 1;
-        } else {
+        } else if (this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel2.SumaResta + GLOBAL_CONFIG.prob_dif.nivel2.MultiplicacionDivision) {
           pregunta = 2;
-          difficulty = 4;
+        } else if (this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel2.SumaResta + GLOBAL_CONFIG.prob_dif.nivel2.MultiplicacionDivision + GLOBAL_CONFIG.prob_dif.nivel2.RaicesElevados) {
+          pregunta = 3;
+        } else {
+          pregunta = 4;
         }
         break;
       case 3:
-        if (Math.random() > GLOBAL_CONFIG.prob_dif) {
+        if (this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel3.SumaResta) {
+          pregunta = 1;
+        } else if (this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel3.SumaResta + GLOBAL_CONFIG.prob_dif.nivel3.MultiplicacionDivision) {
           pregunta = 2;
-        } else {
+        } else if (this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel3.SumaResta + GLOBAL_CONFIG.prob_dif.nivel3.MultiplicacionDivision + GLOBAL_CONFIG.prob_dif.nivel3.RaicesElevados) {
           pregunta = 3;
-          difficulty = 5;
+        } else {
+          pregunta = 4;
         }
         break;
       case 4:
-        if (Math.random() > GLOBAL_CONFIG.prob_dif) {
+        if (this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel4.SumaResta) {
+          pregunta = 1;
+        } else if (this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel4.SumaResta + GLOBAL_CONFIG.prob_dif.nivel4.MultiplicacionDivision) {
           pregunta = 2;
-        } else {
+        } else if (this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel4.SumaResta + GLOBAL_CONFIG.prob_dif.nivel4.MultiplicacionDivision + GLOBAL_CONFIG.prob_dif.nivel4.RaicesElevados) {
           pregunta = 3;
-          difficulty = 6;
+        } else {
+          pregunta = 4;
         }
         break;
       case 5:
-        if (Math.random() > GLOBAL_CONFIG.prob_dif) {
+        if (this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel5.SumaResta) {
+          pregunta = 1;
+        } else if (this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel5.SumaResta + GLOBAL_CONFIG.prob_dif.nivel5.MultiplicacionDivision) {
+          pregunta = 2;
+        } else if (this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel5.SumaResta + GLOBAL_CONFIG.prob_dif.nivel5.MultiplicacionDivision + GLOBAL_CONFIG.prob_dif.nivel5.RaicesElevados) {
           pregunta = 3;
         } else {
           pregunta = 4;
-          difficulty = 7;
         }
         break;
       case 6:
-        if (Math.random() > GLOBAL_CONFIG.prob_dif) {
+        if (this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel6.SumaResta) {
+          pregunta = 1;
+        } else if (this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel6.SumaResta + GLOBAL_CONFIG.prob_dif.nivel6.MultiplicacionDivision) {
+          pregunta = 2;
+        } else if (this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel6.SumaResta + GLOBAL_CONFIG.prob_dif.nivel6.MultiplicacionDivision + GLOBAL_CONFIG.prob_dif.nivel6.RaicesElevados) {
           pregunta = 3;
         } else {
           pregunta = 4;
-          difficulty = 8;
         }
         break;
       case 7:
-        pregunta = 4;
+        if (this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel7.SumaResta) {
+          pregunta = 1;
+        } else if (this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel7.SumaResta + GLOBAL_CONFIG.prob_dif.nivel7.MultiplicacionDivision) {
+          pregunta = 2;
+        } else if (this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel7.SumaResta + GLOBAL_CONFIG.prob_dif.nivel7.MultiplicacionDivision + GLOBAL_CONFIG.prob_dif.nivel7.RaicesElevados) {
+          pregunta = 3;
+        } else {
+          pregunta = 4;
+        }
         break;
       case 8:
-        pregunta = 4;
+        if (this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel8.SumaResta) {
+          pregunta = 1;
+        } else if (this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel8.SumaResta + GLOBAL_CONFIG.prob_dif.nivel8.MultiplicacionDivision) {
+          pregunta = 2;
+        } else if (this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel8.SumaResta + GLOBAL_CONFIG.prob_dif.nivel8.MultiplicacionDivision + GLOBAL_CONFIG.prob_dif.nivel8.RaicesElevados) {
+          pregunta = 3;
+        } else {
+          pregunta = 4;
+        }
         break;
       default:
         console.log("error");
