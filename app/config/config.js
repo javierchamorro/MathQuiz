@@ -13,8 +13,8 @@ export let GLOBAL_CONFIG = {
     },
     //numero de preguntas del test
     n:5,
-    //en modo progresivo se el numero de preguntas necesarias para subir de nivel
-    progresivo:1,
+    //en modo progresivo se el numero de preguntas necesarias para subir o bajar de nivel
+    progresivo:2,
     //probabilidad de niveles
     prob_dif:{
       nivel0:{
@@ -73,7 +73,7 @@ export let GLOBAL_CONFIG = {
       },
     },
     //Preguntas con temporizador y barra de progresivo
-    progressBar:true,
+    progressBar:false,
   },
   production:{
     debug:false,

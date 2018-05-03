@@ -34,7 +34,8 @@ export default class Quiz extends React.Component {
     this.state = {
       difficulty: difficulty,
       progresivo: progresivo,
-      contador: 0,
+      contadorCorrectas: 0,
+      contadorFalladas: 0,
       aleatorio: aleatorio
     };
   }
@@ -42,20 +43,29 @@ export default class Quiz extends React.Component {
   onReset(correct) {
     if (this.state.progresivo) {
       console.log("progresivo");
-      var contador = this.state.contador;
+      var contadorCorrectas = this.state.contadorCorrectas;
+      var contadorFalladas = this.state.contadorFalladas;
       if (correct) {
-        contador++;
+        contadorCorrectas++;
+        contadorFalladas = 0;
       } else {
-        contador = 0;
+        contadorFalladas++;
+        contadorCorrectas = 0;
       }
       if (this.state.difficulty === 9) {
         return;
       }
-      this.setState({contador: contador});
-      if (contador === GLOBAL_CONFIG.progresivo) {
+      this.setState({contadorCorrectas: contadorCorrectas});
+      this.setState({contadorFalladas: contadorFalladas});
+      if (contadorCorrectas === GLOBAL_CONFIG.progresivo) {
         var difficulty = this.state.difficulty + 1;
         this.setState({difficulty: difficulty});
-        this.setState({contador: 0});
+        this.setState({contadorCorrectas: 0});
+      }
+      if (contadorFalladas === GLOBAL_CONFIG.progresivo) {
+        var difficulty = this.state.difficulty - 1;
+        this.setState({difficulty: difficulty});
+        this.setState({contadorFalladas: 0});
       }
     } else {
       if (this.props.user_profile.learner_preference.difficulty === 9) {
