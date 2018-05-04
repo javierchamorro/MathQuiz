@@ -73,7 +73,7 @@ export let GLOBAL_CONFIG = {
       },
     },
     //Preguntas con temporizador y barra de progresivo
-    progressBar:false,
+    progressBar:true,
   },
   production:{
     debug:false,

@@ -14,7 +14,7 @@ export default class Temporizador extends React.Component {
 
   tick() {
     this.setState({
-      secondsRemaining: this.state.secondsRemaining - 0.1
+      secondsRemaining: this.state.secondsRemaining - 0.5
     });
     if (this.state.secondsRemaining + 0.5 <= 0) {
       clearInterval(this.interval);
@@ -26,20 +26,21 @@ export default class Temporizador extends React.Component {
     this.setState({secondsRemaining: this.props.secondsRemaining});
     this.setState({seconds: this.props.secondsRemaining});
 
-    this.interval = setInterval(this.tick, 100);
+    this.interval = setInterval(this.tick, 500);
   }
 
-  // componentWillUnmount() {
-  //   clearInterval(this.interval)
-  // };
+  componentWillUnmount() {
+    clearInterval(this.interval)
+  };
 
   tiempoAgotado() {
     this.props.onAnswerQuiz();
   };
 
   render() {
+    var segundos = Math.floor(this.state.secondsRemaining);
     return (<div>
-      <ProgressBar striped="striped" bsStyle="success" now={(this.state.secondsRemaining / this.state.seconds) * 100}/>
+      <ProgressBar now={(this.state.secondsRemaining / this.state.seconds) * 100} label={`${segundos}s`}/>
     </div>);
   }
 }

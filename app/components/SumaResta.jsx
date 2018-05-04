@@ -127,9 +127,11 @@ export default class SumaResta extends React.Component {
     }
     // Mark quiz as answered
     this.setState({answered: true});
+    this.refs.contador.componentWillUnmount();
   }
   onResetQuestion() {
     this.setState({selected_choices_ids: [], answered: false});
+    this.refs.contador.componentDidMount();
   }
   onNextQuiz() {
     if (SAMPLES.pregunta === GLOBAL_CONFIG.n) {
@@ -141,7 +143,6 @@ export default class SumaResta extends React.Component {
     this.props.quiz.answered = true;
     this.props.onReset(this.state.correct);
     this.elegirTipo();
-
   }
   onResetQuiz() {
     this.setState({selected_choices_ids: [], answered: false});
@@ -388,7 +389,7 @@ export default class SumaResta extends React.Component {
     let isLastQuestion = (SAMPLES.pregunta === GLOBAL_CONFIG.n);
     let temporizador = [];
     if (GLOBAL_CONFIG.progressBar) {
-      temporizador.push(<Temporizador key={SAMPLES.pregunta} secondsRemaining={10} onAnswerQuiz={this.onAnswerQuiz.bind(this)}/>);
+      temporizador.push(<Temporizador ref="contador" key={SAMPLES.pregunta} secondsRemaining={10} onAnswerQuiz={this.onAnswerQuiz.bind(this)}/>);
     }
     switch (this.state.tipo) {
       case 0:

@@ -123,10 +123,13 @@ export default class RaicesElevados extends React.Component {
     }
     // Mark quiz as answered
     this.setState({answered: true});
+    this.refs.contador.componentWillUnmount()
+
   }
 
   onResetQuestion(){
     this.setState({selected_choices_ids:[], answered:false});
+    this.refs.contador.componentDidMount();
   }
 
   onNextQuiz() {
@@ -305,7 +308,7 @@ export default class RaicesElevados extends React.Component {
     let isLastQuestion=(SAMPLES.pregunta===GLOBAL_CONFIG.n);
     let temporizador= [];
     if (GLOBAL_CONFIG.progressBar){
-      temporizador.push(<Temporizador key={SAMPLES.pregunta} secondsRemaining={10} onAnswerQuiz={this.onAnswerQuiz.bind(this)}/>);
+      temporizador.push(<Temporizador ref="contador" key={SAMPLES.pregunta} secondsRemaining={10} onAnswerQuiz={this.onAnswerQuiz.bind(this)}/>);
     }
     var tipo;
     if(this.props.difficulty < 4){
