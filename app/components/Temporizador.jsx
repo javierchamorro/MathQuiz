@@ -1,4 +1,6 @@
 import React from 'react';
+import './../assets/scss/bootstrap.min.scss';
+
 import {ProgressBar} from 'react-bootstrap';
 import Barra from 'react-progressbar';
 
@@ -14,7 +16,7 @@ export default class Temporizador extends React.Component {
 
   tick() {
     this.setState({
-      secondsRemaining: this.state.secondsRemaining - 0.5
+      secondsRemaining: this.state.secondsRemaining - 0.1
     });
     if (this.state.secondsRemaining + 0.5 <= 0) {
       clearInterval(this.interval);
@@ -26,11 +28,11 @@ export default class Temporizador extends React.Component {
     this.setState({secondsRemaining: this.props.secondsRemaining});
     this.setState({seconds: this.props.secondsRemaining});
 
-    this.interval = setInterval(this.tick, 500);
+    this.interval = setInterval(this.tick, 100);
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval)
+    clearInterval(this.interval);
   };
 
   tiempoAgotado() {
@@ -38,9 +40,10 @@ export default class Temporizador extends React.Component {
   };
 
   render() {
-    var segundos = Math.floor(this.state.secondsRemaining);
-    return (<div>
-      <ProgressBar now={(this.state.secondsRemaining / this.state.seconds) * 100} label={`${segundos}s`}/>
+    var segundos = Math.ceil(this.state.secondsRemaining);
+
+    return (<div className="progressBar">
+      <ProgressBar bsStyle="info" now={(this.state.secondsRemaining / this.state.seconds) * 100} label={`${segundos}s`}/>
     </div>);
   }
 }

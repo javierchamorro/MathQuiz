@@ -1,31 +1,209 @@
-body {
-  background-color: white;
+body,
+html {
+  background-color: #e8e9ea;
+  margin: 0;
+  padding: 0;
+  font-family: Helvetica,Arial,sans-serif;
 }
 
-div.header_wrapper img {
-  width: 71px;
+div.header_wrapper {
+  width: 100%;
+  height: 88px;
+  background-color: #0B1B23;
+  float: left;
+  color: white;
+}
+
+.logo {
+  float: left;
+  margin: 16px;
+}
+
+.logo p {
+  float: left;
+  font-size: 28px;
+  font-weight: 600;
+  margin: 12px;
+}
+
+.logo img {
+  float: left;
+}
+
+.usuario {
+  float: right;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.usuario p {
+  margin: 35px 6px 35px 35px;
+}
+
+.header2 {
+  height: 50px;
+  margin-top: 24px;
+  margin-right: 16%;
+  margin-left: 16%;
+  width: 68%;
+  background-color: #ffffff;
+  float: left;
+}
+
+.tracking {
+  // margin-top: 16px;
+  // margin-bottom: 16px;
+}
+
+.elemento0 {
+  width: 33%;
   height: 50px;
   float: left;
-  margin-top: 8px;
+  border-right: 1px solid #dce1e3;
 }
 
-#heading {
-  font-size: 30px;
-  margin: 8px;
+.elemento1 {
+  width: 32%;
+  height: 50px;
+  float: left;
 }
 
-#tracking{
-  font-size: 18px;
-  color: black;
-  margin: 8px;
+.elemento2 {
+  width: 33%;
+  height: 50px;
+  float: right;
+  border-left: 1px solid #dce1e3;
 }
 
-#tracking span {
-  margin-right: 40px;
+.puntuacion0 {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  width: 100%;
 }
 
-#logged_user {
-  font-size: 18px;
-  color: gray;
-  margin: 8px;
+.puntuacion1 {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  width: 100%;
 }
+
+.puntuacion2 {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  width: 100%;
+}
+.texto0{
+  float: left;
+  margin-left: 14%;
+}
+
+.azul0 {
+  float: right;
+  margin-right:14%;
+  color: #36b3ed;
+}
+
+.texto1{
+  float: left;
+  margin-left: 36%;
+}
+
+.azul1 {
+  float: right;
+  margin-right:32%;
+  color: #36b3ed;
+}
+
+.texto2{
+  float: left;
+  margin-left: 34%;
+}
+
+.azul2 {
+  float: right;
+  margin-right:34%;
+  color: #36b3ed;
+}
+
+.quiz {
+  height: 520px;
+  margin-top: 24px;
+  margin-right: 16%;
+  margin-left: 16%;
+  width: 68%;
+  background-color: #e8e9ea;
+  float: left;
+  position: relative;
+}
+
+.quizHeader {
+  margin-top: 0;
+  height: 64px;
+  font-size: 24px;
+  color: #36b3ed;
+  background-color: #ffffff;
+  float: left;
+  width: 100%;
+  border-bottom: 1px solid #dce1e3;
+}
+
+.info {
+  text-align: center;
+  margin-top: 18px;
+  margin-bottom: 18px;
+}
+
+.pregunta {
+  margin-top: 0;
+  height: 400px;
+  background-color: #ffffff;
+  float: left;
+  width: 100%;
+}
+
+.textopregunta {
+  margin-top: 30px;
+  margin-left: 70px;
+  font-size: 24px;
+}
+
+.respuestas {
+  margin-top: 10px;
+  margin-left: 70px;
+  margin-right: 100px;
+}
+
+.progressBar {
+  margin-right: 10%;
+  margin-left: 10%;
+  width: 80%;
+  position: absolute;
+  bottom: 70px;
+}
+
+.botones {
+  height: 50px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+// #heading {
+//   font-size: 30px;
+//
+// }
+//
+// #tracking{
+//   font-size: 18px;
+//   color: black;
+//
+// }
+//
+// #tracking span {
+//   margin-right: 40px;
+// }
+//
+// #logged_user {
+//   font-size: 18px;
+//   color: gray;
+//
+// }

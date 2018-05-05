@@ -1,5 +1,4 @@
 import React from 'react';
-import './../assets/scss/quiz.scss';
 
 import {GLOBAL_CONFIG} from '../config/config.js';
 import * as Utils from '../vendors/Utils.js';
@@ -203,25 +202,33 @@ export default class Quiz extends React.Component {
     switch (pregunta) {
       case 1:
         return (<div className="quiz">
-          <QuizHeader I18n={this.props.I18n}/>
+          <div className="numeroPregunta">
+            <QuizHeader I18n={this.props.I18n}/>
+          </div>
           <SumaResta className="pregunta" quiz={SAMPLES.preguntas1} difficulty={difficulty} datos={SAMPLES.SumaResta} dispatch={this.props.dispatch} tracking={this.props.tracking} onReset={this.onReset.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} I18n={this.props.I18n}/>
         </div>);
         break;
       case 2:
         return (<div className="quiz">
-          <QuizHeader I18n={this.props.I18n}/>
+          <div className="numeroPregunta">
+            <QuizHeader I18n={this.props.I18n}/>
+          </div>
           <MultiplicacionDivision className="pregunta" quiz={SAMPLES.preguntas1} difficulty={difficulty} datos={SAMPLES.MultiplicacionDivision} dispatch={this.props.dispatch} tracking={this.props.tracking} onReset={this.onReset.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} I18n={this.props.I18n}/>
         </div>);
         break;
       case 3:
         return (<div className="quiz">
-          <QuizHeader I18n={this.props.I18n}/>
+          <div className="numeroPregunta">
+            <QuizHeader I18n={this.props.I18n}/>
+          </div>
           <RaicesElevados className="pregunta" quiz={SAMPLES.preguntas2} difficulty={difficulty} datos={SAMPLES.RaicesElevados} dispatch={this.props.dispatch} tracking={this.props.tracking} onReset={this.onReset.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} I18n={this.props.I18n}/>
         </div>);
         break;
       case 4:
         return (<div className="quiz">
-          <QuizHeader I18n={this.props.I18n}/>
+          <div className="numeroPregunta">
+            <QuizHeader I18n={this.props.I18n}/>
+          </div>
           <Logaritmos className="pregunta" quiz={SAMPLES.preguntas2} difficulty={difficulty} datos={SAMPLES.Logaritmos} dispatch={this.props.dispatch} tracking={this.props.tracking} onReset={this.onReset.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} I18n={this.props.I18n}/>
         </div>);
         break;

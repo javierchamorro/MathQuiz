@@ -1,32 +1,51 @@
-div.quizHeader p {
-  font-size: 20px;
-  margin-top: 25px;
-  margin-bottom: 20px;
-}
-
-div.question h1 {
-  font-size: 20px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
+// div.quizHeader p {
+//   font-size: 20px;
+//   margin-top: 25px;
+//   margin-bottom: 20px;
+// }
+//
+// div.question h1 {
+//   font-size: 20px;
+//   margin-top: 20px;
+//   margin-bottom: 20px;
+// }
+//
 
 div.question div.question_choice {
   background: white;
-  margin: 10px;
+  margin: 5px;
+  height: 45px;
   padding: 2px;
 }
 
-div.question div.question_choice div.questionC1{
+div.question div.question_choice div.questionC1 {
   float: left;
+  display: inline-block;
   width: 35px;
-  margin-top: 9px;
-  margin-left: 10px;
+  margin-top: 8px;
 }
+//
 
-div.question div.question_choice div.questionC2{
+div.question div.question_choice div.questionC2 {
   display: inline-block;
   width: auto;
-  margin: 12px 8px 12px 8px;
+  margin-top: 4px;
+}
+
+div.questionC2T {
+  display: inline-block;
+  width: auto;
+  margin-top: 4px;
+  color: green;
+  font-weight: bold;
+}
+
+div.question div.question_choice div.questionC2F {
+  display: inline-block;
+  width: auto;
+  margin-top: 4px;
+  color: red;
+  font-weight: bold;
 }
 
 div.question div.question_choice input[type="checkbox"] {
@@ -35,7 +54,7 @@ div.question div.question_choice input[type="checkbox"] {
   cursor: pointer;
 }
 
-div.question div.question_choice input[type="checkbox"][disabled]{
+div.question div.question_choice input[type="checkbox"][disabled] {
   cursor: default;
 }
 
@@ -45,46 +64,77 @@ div.question div.question_choice input[type="radio"] {
   cursor: pointer;
 }
 
-div.question div.question_choice input[type="radio"][disabled]{
+div.question div.question_choice input[type="radio"][disabled] {
   cursor: default;
 }
 
-div.question div.question_choice p {
-  display: inline-block;
+div.question div.question_choice input[type="number"] {
+  width: 200px;
+  height: 100%;
   font-size: 20px;
-  margin: 0px 0px 0px 0px;
+  text-align: center;
+}
+
+.input_answerT {
+  border: 2px solid lightgreen;
+}
+
+.input_answerF {
+  border: 2px solid tomato;
+}
+
+div.question div.question_choice p {
+  font-size: 16px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 div.question div.question_choice_correct {
-  background: #bdffbd;
+  background: lightgreen;
 }
 
 div.question div.question_choice_incorrect {
-  background: #ffc8c8;
+  background: tomato;
 }
 
-div.question div.question_choice_correct, div.question div.question_choice_incorrect {
+div.question div.question_choice_correct,
+div.question div.question_choice_incorrect {
   color: black;
-  border-radius: 25px;
+  border-radius: 30px;
 }
 
 div.question div.questionButtonsWrapper {
   padding: 10px;
 }
 
-div.question div.questionButtonsWrapper button.answerQuestion, div.question div.questionButtonsWrapper button.resetQuestion, div.question div.questionButtonsWrapper button.resetQuiz, div.question div.questionButtonsWrapper button.nextQuestion {
-  padding: 10px;
+button.answerQuestion,
+button.resetQuestion,
+button.resetQuiz {
+  padding: 5px;
   margin-left: 10px;
-  color: black;
-  background: white;
-  border: 2px solid black;
+  color: white;
+  background: #45b0e5;
+  border: 2px solid #45b0e5;
   font-size: 15px;
-  font-weight: bold;
   cursor: pointer;
+  margin-top: 9px;
 }
 
-div.question div.questionButtonsWrapper button[disabled]{
-  color: gray;
-  border: 2px solid gray;
+button.nextQuestion {
+  padding: 5px;
+  margin-right: 10px;
+  float: right;
+  color: white;
+  background: #45b0e5;
+  border: 2px solid #45b0e5;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 9px;
+}
+
+button[disabled] {
+  color: #45b0e5;
+  background: #e8e9ea;
+  border: 2px solid #45b0e5;
   cursor: default;
 }

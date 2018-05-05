@@ -1,5 +1,4 @@
 import React from 'react';
-import './../assets/scss/quiz.scss';
 
 import * as SAMPLES from '../config/samples.js';
 import {GLOBAL_CONFIG} from '../config/config.js';
@@ -10,7 +9,6 @@ import Tipo1 from './Tipo1.jsx';
 import Tipo2 from './Tipo2.jsx';
 import QuestionButtons from './QuestionButtons.jsx';
 import Temporizador from './Temporizador.jsx';
-
 
 export default class RaicesElevados extends React.Component {
   constructor(props) {
@@ -30,23 +28,33 @@ export default class RaicesElevados extends React.Component {
   }
 
   elegirTipo() {
-    let objective = new Utils.Objective({id: "MyQuiz"+SAMPLES.pregunta, progress_measure: 1/GLOBAL_CONFIG.n, score: 1/GLOBAL_CONFIG.n});
-    this.props.dispatch(addObjectives([objective]));
-    var tipo = Math.floor(Math.random() * 3);
-    this.setState({tipo: tipo})
-    switch (tipo) {
-      case 0:
-        this.crearPregunta1();
-        break;
-      case 1:
-        this.crearPregunta2();
-        break;
-      case 2:
-        this.crearPregunta3();
-        break;
-      default:
-        console.log("error");
-    }
+    let objective = new Utils.Objective({
+      id: "MyQuiz" + SAMPLES.pregunta,
+      progress_measure: 1 / GLOBAL_CONFIG.n,
+      score: 1 / GLOBAL_CONFIG.n
+    });
+    var decision;
+    do {
+      this.props.dispatch(addObjectives([objective]));
+      var tipo = Math.floor(Math.random() * 3);
+      this.setState({tipo: tipo})
+      switch (tipo) {
+        case 0:
+          decision = 1;
+          this.crearPregunta1();
+          break;
+        case 1:
+          decision = 2;
+          this.crearPregunta2();
+          break;
+        case 2:
+          decision = 3;
+          this.crearPregunta3();
+          break;
+        default:
+          console.log("error");
+      }
+    } while ((decision === 1 && !GLOBAL_CONFIG.tipo.tipo1) || (decision === 2 && !GLOBAL_CONFIG.tipo.tipo2) || (decision === 3 && !GLOBAL_CONFIG.tipo.tipo3))
   }
 
   handleMultiChoiceChange(choice) {
@@ -113,7 +121,7 @@ export default class RaicesElevados extends React.Component {
     }
 
     // Send data via SCORM
-    let objective = this.props.tracking.objectives["MyQuiz"+SAMPLES.pregunta];
+    let objective = this.props.tracking.objectives["MyQuiz" + SAMPLES.pregunta];
     this.props.dispatch(objectiveAccomplished(objective.id, objective.score * scorePercentage));
     // this.props.dispatch(objectiveAccomplishedThunk(objective.id, objective.score * scorePercentage));
     if (scorePercentage === 1) {
@@ -127,13 +135,13 @@ export default class RaicesElevados extends React.Component {
 
   }
 
-  onResetQuestion(){
-    this.setState({selected_choices_ids:[], answered:false});
+  onResetQuestion() {
+    this.setState({selected_choices_ids: [], answered: false});
     this.refs.contador.componentDidMount();
   }
 
   onNextQuiz() {
-    if(SAMPLES.pregunta===GLOBAL_CONFIG.n){
+    if (SAMPLES.pregunta === GLOBAL_CONFIG.n) {
       this.props.dispatch(finishApp(true));
     }
     SAMPLES.pregunta++;
@@ -143,7 +151,7 @@ export default class RaicesElevados extends React.Component {
     this.props.onReset(this.state.correct);
     this.elegirTipo();
   }
-  onResetQuiz(){
+  onResetQuiz() {
     this.setState({selected_choices_ids: [], answered: false});
     this.setState({option: ""});
     this.props.quiz.answered = true;
@@ -268,12 +276,12 @@ export default class RaicesElevados extends React.Component {
     }
   }
   generarNumerosYOperadores() {
-    if(this.props.difficulty < 4){
+    if (this.props.difficulty < 4) {
+      this.genAux();
+    } else {
+      do {
         this.genAux();
-      }else {
-        do {
-          this.genAux();
-        } while (this.props.datos.segundNum < 1);
+      } while (this.props.datos.segundNum < 1);
     }
   }
 
@@ -284,20 +292,20 @@ export default class RaicesElevados extends React.Component {
   resultadoF() {
     var resultadoV;
     var resultadoF;
-    if(this.props.difficulty < 4){
-        resultadoV = Math.pow(this.props.datos.primerNum, this.props.datos.segundNum);
+    if (this.props.difficulty < 4) {
+      resultadoV = Math.pow(this.props.datos.primerNum, this.props.datos.segundNum);
+      resultadoF = Math.floor(resultadoV - 10 + (Math.random() * 10) + 1);
+      while (resultadoF === resultadoV) {
         resultadoF = Math.floor(resultadoV - 10 + (Math.random() * 10) + 1);
-        while (resultadoF === resultadoV) {
-          resultadoF = Math.floor(resultadoV - 10 + (Math.random() * 10) + 1);
-        }
-        this.props.datos.resultado = resultadoF;
-      }else{
-        resultadoV = Math.pow(this.props.datos.primerNum, this.props.datos.segundNum);
+      }
+      this.props.datos.resultado = resultadoF;
+    } else {
+      resultadoV = Math.pow(this.props.datos.primerNum, this.props.datos.segundNum);
+      this.props.datos.primerNumF = Math.floor(this.props.datos.primerNum - 10 + (Math.random() * 10) + 1);
+      while (this.props.datos.primerNumF === this.props.datos.primerNum || this.props.datos.primerNumF < 1) {
         this.props.datos.primerNumF = Math.floor(this.props.datos.primerNum - 10 + (Math.random() * 10) + 1);
-        while (this.props.datos.primerNumF === this.props.datos.primerNum || this.props.datos.primerNumF < 1) {
-          this.props.datos.primerNumF = Math.floor(this.props.datos.primerNum - 10 + (Math.random() * 10) + 1);
-        }
-        this.props.datos.resultado = resultadoV;
+      }
+      this.props.datos.resultado = resultadoV;
     }
   }
 
@@ -305,16 +313,16 @@ export default class RaicesElevados extends React.Component {
     if (this.state.tipo === "") {
       return (<h1>Esperando a que cargue el nivel</h1>);
     }
-    let isLastQuestion=(SAMPLES.pregunta===GLOBAL_CONFIG.n);
-    let temporizador= [];
-    if (GLOBAL_CONFIG.progressBar){
+    let isLastQuestion = (SAMPLES.pregunta === GLOBAL_CONFIG.n);
+    let temporizador = [];
+    if (GLOBAL_CONFIG.progressBar) {
       temporizador.push(<Temporizador ref="contador" key={SAMPLES.pregunta} secondsRemaining={10} onAnswerQuiz={this.onAnswerQuiz.bind(this)}/>);
     }
     var tipo;
-    if(this.props.difficulty < 4){
-      tipo=1;
-    }else{
-      tipo=2;
+    if (this.props.difficulty < 4) {
+      tipo = 1;
+    } else {
+      tipo = 2;
     }
     switch (this.state.tipo) {
       case 0:
@@ -323,9 +331,13 @@ export default class RaicesElevados extends React.Component {
           choices1.push(<Tipo1 key={"MyQuiz_" + "quiz_choice_" + i} choice={this.props.quiz.tipo1.choices[i]} checked={this.state.selected_choices_ids.indexOf(this.props.quiz.tipo1.choices[i].id) !== -1} handleChange={this.handleMultiChoiceChange.bind(this)} quizAnswered={this.state.answered} tipo={tipo}/>);
         }
         return (<div className="question">
-          <h1>{this.props.quiz.tipo1.value}</h1>
-          {choices1}
-          {temporizador}
+          <div className="pregunta">
+            <div className="textopregunta">{this.props.quiz.tipo1.value}</div>
+            <div className="respuestas">
+              {choices1}
+            </div>
+            {temporizador}
+          </div>
           <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuiz.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} onNextQuestion={this.onNextQuiz.bind(this)} answered={this.state.answered} quizCompleted={this.props.tracking.finished} allow_finish={isLastQuestion}/>
         </div>);
         break;
@@ -336,50 +348,65 @@ export default class RaicesElevados extends React.Component {
         }
         if (this.props.difficulty === 5) {
           return (<div className="question">
-            <p>¿Cuanto es {this.props.quiz.tipo2.value.primero}<sup>{this.props.quiz.tipo2.value.segundo}</sup>?</p>
-            {choices2}
-            {temporizador}
+            <div className="pregunta">
+              <div className="textopregunta">¿Cuanto es {this.props.quiz.tipo2.value.primero}<sup>{this.props.quiz.tipo2.value.segundo}</sup>?</div>
+              <div className="respuestas">
+                {choices2}
+              </div>
+              {temporizador}
+            </div>
             <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuiz.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} onNextQuestion={this.onNextQuiz.bind(this)} answered={this.state.answered} quizCompleted={this.props.tracking.finished} allow_finish={isLastQuestion}/>
           </div>);
         } else {
           return (<div className="question">
-            <p>¿Cuanto es
-              <sup>{this.props.quiz.tipo2.value.primero}</sup>√{this.props.quiz.tipo2.value.segundo}
-              ?</p>
-            {choices2}
-            {temporizador}
+            <div className="pregunta">
+              <div className="textopregunta">¿Cuanto es
+                <sup>{this.props.quiz.tipo2.value.primero}</sup>√{this.props.quiz.tipo2.value.segundo}
+                ?</div>
+              <div className="respuestas">
+                {choices2}
+              </div>
+              {temporizador}
+            </div>
             <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuiz.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} onNextQuestion={this.onNextQuiz.bind(this)} answered={this.state.answered} quizCompleted={this.props.tracking.finished} allow_finish={isLastQuestion}/>
           </div>);
         }
         break;
       case 2:
-        let quizClassName = "question_choice";
+        let input;
         if (this.state.answered) {
           if (this.state.input_answer === this.props.quiz.tipo3.answer) {
-            quizClassName += " question_choice_correct";
+            input += " input_answerT";
           } else {
-            quizClassName += " question_choice_incorrect";
-
+            input += " input_answerF";
           }
         }
         if (this.props.difficulty < 4) {
           return (<div className="question">
-            <p>¿Cuanto es {this.props.quiz.tipo3.value.primero}<sup>{this.props.quiz.tipo3.value.segundo}</sup>?</p>
-            <div className={quizClassName}>
-              <input type="number" name="respuesta" onChange={this.handleInputChange.bind(this)}></input>
+            <div className="pregunta">
+              <div className="textopregunta">¿Cuanto es {this.props.quiz.tipo3.value.primero}<sup>{this.props.quiz.tipo3.value.segundo}</sup>?</div>
+              <div className="respuestas">
+                <div className="question_choice">
+                  <input className={input} type="number" name="respuesta" onChange={this.handleInputChange.bind(this)}></input>
+                </div>
+              </div>
+              {temporizador}
             </div>
-            {temporizador}
             <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuiz.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} onNextQuestion={this.onNextQuiz.bind(this)} answered={this.state.answered} quizCompleted={this.props.tracking.finished} allow_finish={isLastQuestion}/>
           </div>);
         } else {
           return (<div className="question">
-            <p>¿Cuanto es
-              <sup>{this.props.quiz.tipo3.value.primero}</sup>√{this.props.quiz.tipo3.value.segundo}
-              ?</p>
-            <div className={quizClassName}>
-              <input type="number" name="respuesta" onChange={this.handleInputChange.bind(this)}></input>
+            <div className="pregunta">
+              <div className="textopregunta">¿Cuanto es
+                <sup>{this.props.quiz.tipo3.value.primero}</sup>√{this.props.quiz.tipo3.value.segundo}
+                ?</div>
+              <div className="respuestas">
+                <div className="question_choice">
+                  <input className={input} type="number" name="respuesta" onChange={this.handleInputChange.bind(this)}></input>
+                </div>
+              </div>
+              {temporizador}
             </div>
-            {temporizador}
             <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuiz.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} onNextQuestion={this.onNextQuiz.bind(this)} answered={this.state.answered} quizCompleted={this.props.tracking.finished} allow_finish={isLastQuestion}/>
           </div>);
         }

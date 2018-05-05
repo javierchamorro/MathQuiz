@@ -1,16 +1,14 @@
 import React from 'react';
-import './../assets/scss/quiz.scss';
 
 import * as SAMPLES from '../config/samples.js';
 import {GLOBAL_CONFIG} from '../config/config.js';
 import * as Utils from '../vendors/Utils.js';
-import {addObjectives, objectiveAccomplished, objectiveAccomplishedThunk,finishApp} from './../reducers/actions';
+import {addObjectives, objectiveAccomplished, objectiveAccomplishedThunk, finishApp} from './../reducers/actions';
 
 import Tipo1 from './Tipo1.jsx';
 import Tipo2 from './Tipo2.jsx';
 import QuestionButtons from './QuestionButtons.jsx';
 import Temporizador from './Temporizador.jsx';
-
 
 export default class MultiplicacionDivision extends React.Component {
   constructor(props) {
@@ -30,23 +28,33 @@ export default class MultiplicacionDivision extends React.Component {
   }
 
   elegirTipo() {
-    let objective = new Utils.Objective({id: "MyQuiz"+SAMPLES.pregunta, progress_measure: 1/GLOBAL_CONFIG.n, score: 1/GLOBAL_CONFIG.n});
-    this.props.dispatch(addObjectives([objective]));
-    var tipo = Math.floor(Math.random() * 3);
-    this.setState({tipo: tipo})
-    switch (tipo) {
-      case 0:
-        this.crearPregunta1();
-        break;
-      case 1:
-        this.crearPregunta2();
-        break;
-      case 2:
-        this.crearPregunta3();
-        break;
-      default:
-        console.log("error");
-    }
+    let objective = new Utils.Objective({
+      id: "MyQuiz" + SAMPLES.pregunta,
+      progress_measure: 1 / GLOBAL_CONFIG.n,
+      score: 1 / GLOBAL_CONFIG.n
+    });
+    var decision;
+    do {
+      this.props.dispatch(addObjectives([objective]));
+      var tipo = Math.floor(Math.random() * 3);
+      this.setState({tipo: tipo})
+      switch (tipo) {
+        case 0:
+          decision = 1;
+          this.crearPregunta1();
+          break;
+        case 1:
+          decision = 2;
+          this.crearPregunta2();
+          break;
+        case 2:
+          decision = 3;
+          this.crearPregunta3();
+          break;
+        default:
+          console.log("error");
+      }
+    } while ((decision === 1 && !GLOBAL_CONFIG.tipo.tipo1) || (decision === 2 && !GLOBAL_CONFIG.tipo.tipo2) || (decision === 3 && !GLOBAL_CONFIG.tipo.tipo3))
   }
 
   handleMultiChoiceChange(choice) {
@@ -113,7 +121,7 @@ export default class MultiplicacionDivision extends React.Component {
     }
 
     // Send data via SCORM
-    let objective = this.props.tracking.objectives["MyQuiz"+SAMPLES.pregunta];
+    let objective = this.props.tracking.objectives["MyQuiz" + SAMPLES.pregunta];
     this.props.dispatch(objectiveAccomplished(objective.id, objective.score * scorePercentage));
     // this.props.dispatch(objectiveAccomplishedThunk(objective.id, objective.score * scorePercentage));
     if (scorePercentage === 1) {
@@ -126,13 +134,13 @@ export default class MultiplicacionDivision extends React.Component {
     this.refs.contador.componentWillUnmount()
   }
 
-  onResetQuestion(){
-    this.setState({selected_choices_ids:[], answered:false});
+  onResetQuestion() {
+    this.setState({selected_choices_ids: [], answered: false});
     this.refs.contador.componentDidMount();
   }
 
   onNextQuiz() {
-    if(SAMPLES.pregunta===GLOBAL_CONFIG.n){
+    if (SAMPLES.pregunta === GLOBAL_CONFIG.n) {
       this.props.dispatch(finishApp(true));
     }
     SAMPLES.pregunta++;
@@ -143,7 +151,7 @@ export default class MultiplicacionDivision extends React.Component {
     this.elegirTipo();
   }
 
-  onResetQuiz(){
+  onResetQuiz() {
     this.setState({selected_choices_ids: [], answered: false});
     this.setState({option: ""});
     this.props.quiz.answered = true;
@@ -203,14 +211,14 @@ export default class MultiplicacionDivision extends React.Component {
   }
 
   generarNumerosYOperadores() {
-    if(this.props.difficulty < 4){
-        this.props.datos.base = 2;
-        this.props.datos.resultado = Math.floor((Math.random() * 13) + 1);
-        this.props.datos.numero = Math.pow(this.props.datos.base, this.props.datos.resultado);
-      }else{
-        this.props.datos.base = 10;
-        this.props.datos.resultado = Math.floor((Math.random() * 11) + 1);
-        this.props.datos.numero = Math.pow(this.props.datos.base, this.props.datos.resultado);
+    if (this.props.difficulty < 4) {
+      this.props.datos.base = 2;
+      this.props.datos.resultado = Math.floor((Math.random() * 13) + 1);
+      this.props.datos.numero = Math.pow(this.props.datos.base, this.props.datos.resultado);
+    } else {
+      this.props.datos.base = 10;
+      this.props.datos.resultado = Math.floor((Math.random() * 11) + 1);
+      this.props.datos.numero = Math.pow(this.props.datos.base, this.props.datos.resultado);
     }
   }
   resultadoV() {
@@ -239,9 +247,9 @@ export default class MultiplicacionDivision extends React.Component {
     if (this.state.tipo === "") {
       return (<h1>Esperando a que cargue el nivel</h1>);
     }
-    let isLastQuestion=(SAMPLES.pregunta===GLOBAL_CONFIG.n);
-    let temporizador= [];
-    if (GLOBAL_CONFIG.progressBar){
+    let isLastQuestion = (SAMPLES.pregunta === GLOBAL_CONFIG.n);
+    let temporizador = [];
+    if (GLOBAL_CONFIG.progressBar) {
       temporizador.push(<Temporizador ref="contador" key={SAMPLES.pregunta} secondsRemaining={10} onAnswerQuiz={this.onAnswerQuiz.bind(this)}/>);
     }
     switch (this.state.tipo) {
@@ -251,9 +259,14 @@ export default class MultiplicacionDivision extends React.Component {
           choices1.push(<Tipo1 key={"MyQuiz_" + "quiz_choice_" + i} choice={this.props.quiz.tipo1.choices[i]} checked={this.state.selected_choices_ids.indexOf(this.props.quiz.tipo1.choices[i].id) !== -1} handleChange={this.handleMultiChoiceChange.bind(this)} quizAnswered={this.state.answered} tipo={3}/>);
         }
         return (<div className="question">
-          <h1>{this.props.quiz.tipo1.value}</h1>
-          {choices1}
-          {temporizador}
+          <div className="pregunta">
+            <div className="textopregunta">{this.props.quiz.tipo1.value}</div>
+            <div className="respuestas">
+              {choices1}
+            </div>
+            {temporizador}
+
+          </div>
           <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuiz.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} onNextQuestion={this.onNextQuiz.bind(this)} answered={this.state.answered} quizCompleted={this.props.tracking.finished} allow_finish={isLastQuestion}/>
         </div>);
         break;
@@ -263,28 +276,35 @@ export default class MultiplicacionDivision extends React.Component {
           choices2.push(<Tipo2 key={"MyQuiz_" + "quiz_choice_" + i} choice={this.props.quiz.tipo2.choices[i]} checked={i === this.state.option} handleChange={this.handleOneChoiceChange.bind(this)} quizAnswered={this.state.answered} difficulty={this.props.difficulty}/>);
         }
         return (<div className="question">
-          <p>Cuanto es Log<sub>{this.props.quiz.tipo2.value.primero}</sub>({this.props.quiz.tipo2.value.segundo})</p>
-          {choices2}
-          {temporizador}
+          <div className="pregunta">
+            <div className="textopregunta">¿Cuanto es Log<sub>{this.props.quiz.tipo2.value.primero}</sub>({this.props.quiz.tipo2.value.segundo})?</div>
+            <div className="respuestas">
+              {choices2}
+            </div>
+            {temporizador}
+          </div>
           <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuiz.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} onNextQuestion={this.onNextQuiz.bind(this)} answered={this.state.answered} quizCompleted={this.props.tracking.finished} allow_finish={isLastQuestion}/>
         </div>);
         break;
       case 2:
-        let quizClassName = "question_choice";
+        let input;
         if (this.state.answered) {
           if (this.state.input_answer === this.props.quiz.tipo3.answer) {
-            quizClassName += " question_choice_correct";
+            input += " input_answerT";
           } else {
-            quizClassName += " question_choice_incorrect";
-
+            input += " input_answerF";
           }
         }
         return (<div className="question">
-          <p>Cuanto es Log<sub>{this.props.quiz.tipo3.value.primero}</sub>({this.props.quiz.tipo3.value.segundo})</p>
-          <div className={quizClassName}>
-            <input type="number" name="respuesta" onChange={this.handleInputChange.bind(this)}></input>
+          <div className="pregunta">
+            <div className="textopregunta">¿Cuanto es Log<sub>{this.props.quiz.tipo3.value.primero}</sub>({this.props.quiz.tipo3.value.segundo})?</div>
+            <div className="respuestas">
+              <div className="question_choice">
+                <input className={input} type="number" name="respuesta" onChange={this.handleInputChange.bind(this)}></input>
+              </div>
+            </div>
+            {temporizador}
           </div>
-          {temporizador}
           <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuiz.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} onNextQuestion={this.onNextQuiz.bind(this)} answered={this.state.answered} quizCompleted={this.props.tracking.finished} allow_finish={isLastQuestion}/>
         </div>);
         break;

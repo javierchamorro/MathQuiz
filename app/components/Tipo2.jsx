@@ -5,24 +5,24 @@ export default class Tipo2 extends React.Component {
     super(props);
   }
   render() {
-    let quizClassName = "question_choice";
+    let quizClassName = "questionC2";
     let showCorrection = (this.props.quizAnswered);
     if (showCorrection) {
       if (this.props.checked) {
         if (this.props.choice.answer === true) {
-          quizClassName += " question_choice_correct";
+          quizClassName += " questionC2T";
         } else {
-          quizClassName += " question_choice_incorrect";
+          quizClassName += " questionC2F";
         }
       } else if (this.props.choice.answer === true) {
-        quizClassName += " question_choice_correct";
+        quizClassName += " questionC2T";
       }
     }
-    return (<div className={quizClassName}>
+    return (<div className="question_choice">
       <div className="questionC1">
         <input type="radio" checked={this.props.checked} onChange={() => this.props.handleChange(this.props.choice)} disabled={showCorrection}/>
       </div>
-      <div className="questionC2">
+      <div className={quizClassName}>
         <p>{this.props.choice.value}</p>
       </div>
     </div>);

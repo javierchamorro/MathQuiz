@@ -12,7 +12,7 @@ export let GLOBAL_CONFIG = {
       score_threshold:0.6,
     },
     //numero de preguntas del test
-    n:5,
+    n:3,
     //en modo progresivo se el numero de preguntas necesarias para subir o bajar de nivel
     progresivo:2,
     //probabilidad de niveles
@@ -74,6 +74,15 @@ export let GLOBAL_CONFIG = {
     },
     //Preguntas con temporizador y barra de progresivo
     progressBar:true,
+    //tipos de pregunta(multiplechoice,onechoice,input).
+    tipo:{
+      //multiplechoice
+      tipo1:true,
+      //onechoice
+      tipo2:true,
+      //input
+      tipo3:true,
+    },
   },
   production:{
     debug:false,

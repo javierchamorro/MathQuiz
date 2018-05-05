@@ -1,5 +1,4 @@
 import React from 'react';
-import './../assets/scss/quiz.scss';
 
 import * as SAMPLES from '../config/samples.js';
 import {GLOBAL_CONFIG} from '../config/config.js';
@@ -34,22 +33,28 @@ export default class SumaResta extends React.Component {
       progress_measure: 1 / GLOBAL_CONFIG.n,
       score: 1 / GLOBAL_CONFIG.n
     });
-    this.props.dispatch(addObjectives([objective]));
-    var tipo = Math.floor(Math.random() * 3);
-    this.setState({tipo: tipo})
-    switch (tipo) {
-      case 0:
-        this.crearPregunta1();
-        break;
-      case 1:
-        this.crearPregunta2();
-        break;
-      case 2:
-        this.crearPregunta3();
-        break;
-      default:
-        console.log("error");
-    }
+    var decision;
+    do {
+      this.props.dispatch(addObjectives([objective]));
+      var tipo = Math.floor(Math.random() * 3);
+      this.setState({tipo: tipo})
+      switch (tipo) {
+        case 0:
+          decision = 1;
+          this.crearPregunta1();
+          break;
+        case 1:
+          decision = 2;
+          this.crearPregunta2();
+          break;
+        case 2:
+          decision = 3;
+          this.crearPregunta3();
+          break;
+        default:
+          console.log("error");
+      }
+    } while ((decision === 1 && !GLOBAL_CONFIG.tipo.tipo1) || (decision === 2 && !GLOBAL_CONFIG.tipo.tipo2) || (decision === 3 && !GLOBAL_CONFIG.tipo.tipo3))
   }
 
   handleMultiChoiceChange(choice) {
@@ -143,6 +148,7 @@ export default class SumaResta extends React.Component {
     this.props.quiz.answered = true;
     this.props.onReset(this.state.correct);
     this.elegirTipo();
+    this.refs.contador.componentWillUnmount();
   }
   onResetQuiz() {
     this.setState({selected_choices_ids: [], answered: false});
@@ -151,6 +157,7 @@ export default class SumaResta extends React.Component {
     this.props.onReset(this.state.correct);
     this.elegirTipo();
     this.props.onResetQuiz();
+    this.refs.contador.componentWillUnmount();
   }
 
   crearPregunta1() {
@@ -398,9 +405,13 @@ export default class SumaResta extends React.Component {
           choices1.push(<Tipo1 key={"MyQuiz_" + "quiz_choice_" + i} choice={this.props.quiz.tipo1.choices[i]} checked={this.state.selected_choices_ids.indexOf(this.props.quiz.tipo1.choices[i].id) !== -1} handleChange={this.handleMultiChoiceChange.bind(this)} quizAnswered={this.state.answered} difficulty={this.props.difficulty}/>);
         }
         return (<div className="question">
-          <h1>{this.props.quiz.tipo1.value}</h1>
-          {choices1}
-          {temporizador}
+          <div className="pregunta">
+            <div className="textopregunta">{this.props.quiz.tipo1.value}</div>
+            <div className="respuestas">
+              {choices1}
+            </div>
+            {temporizador}
+          </div>
           <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuiz.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} onNextQuestion={this.onNextQuiz.bind(this)} answered={this.state.answered} quizCompleted={this.props.tracking.finished} allow_finish={isLastQuestion}/>
         </div>);
         break;
@@ -410,28 +421,35 @@ export default class SumaResta extends React.Component {
           choices2.push(<Tipo2 key={"MyQuiz_" + "quiz_choice_" + i} choice={this.props.quiz.tipo2.choices[i]} checked={i === this.state.option} handleChange={this.handleOneChoiceChange.bind(this)} quizAnswered={this.state.answered} difficulty={this.props.difficulty}/>);
         }
         return (<div className="question">
-          <h1>{this.props.quiz.tipo2.value}</h1>
-          {choices2}
-          {temporizador}
+          <div className="pregunta">
+            <div className="textopregunta">{this.props.quiz.tipo2.value}</div>
+            <div className="respuestas">
+              {choices2}
+            </div>
+            {temporizador}
+          </div>
           <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuiz.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} onNextQuestion={this.onNextQuiz.bind(this)} answered={this.state.answered} quizCompleted={this.props.tracking.finished} allow_finish={isLastQuestion}/>
         </div>);
         break;
       case 2:
-        let quizClassName = "question_choice";
+        let input;
         if (this.state.answered) {
           if (this.state.input_answer === this.props.quiz.tipo3.answer) {
-            quizClassName += " question_choice_correct";
+            input = "input_answerT";
           } else {
-            quizClassName += " question_choice_incorrect";
-
+            input = "input_answerF";
           }
         }
         return (<div className="question">
-          <h1>{this.props.quiz.tipo3.value}</h1>
-          <div className={quizClassName}>
-            <input type="number" name="respuesta" onChange={this.handleInputChange.bind(this)}></input>
+          <div className="pregunta">
+            <div className="textopregunta">{this.props.quiz.tipo3.value}</div>
+            <div className="respuestas">
+              <div className="question_choice">
+                <input className={input} type="number" name="respuesta" onChange={this.handleInputChange.bind(this)}></input>
+              </div>
+            </div>
+            {temporizador}
           </div>
-          {temporizador}
           <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuiz.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} onNextQuestion={this.onNextQuiz.bind(this)} answered={this.state.answered} quizCompleted={this.props.tracking.finished} allow_finish={isLastQuestion}/>
         </div>);
         break;

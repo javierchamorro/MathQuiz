@@ -1,5 +1,4 @@
 import React from 'react';
-import './../assets/scss/finish_screen.scss';
 
 export default class FinishScreen extends React.Component {
   constructor(props){
