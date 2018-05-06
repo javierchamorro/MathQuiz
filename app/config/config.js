@@ -12,7 +12,7 @@ export let GLOBAL_CONFIG = {
       score_threshold:0.6,
     },
     //activar boton de resetQuestion
-    resetQuestion:false,
+    resetQuestion:true,
     //numero de preguntas del test
     n:5,
     //en modo progresivo se el numero de preguntas necesarias para subir o bajar de nivel
@@ -83,9 +83,9 @@ export let GLOBAL_CONFIG = {
       //multiplechoice
       tipo1:true,
       //onechoice
-      tipo2:false,
+      tipo2:true,
       //input
-      tipo3:false,
+      tipo3:true,
     },
   },
   production:{
