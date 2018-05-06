@@ -284,7 +284,7 @@ export default class MultiplicacionDivision extends React.Component {
     let isLastQuestion = (SAMPLES.pregunta === GLOBAL_CONFIG.n);
     let temporizador = [];
     if (GLOBAL_CONFIG.progressBar) {
-      temporizador.push(<Temporizador ref="contador" key={SAMPLES.pregunta} secondsRemaining={10} onAnswerQuiz={this.onAnswerQuiz.bind(this)}/>);
+      temporizador.push(<Temporizador ref="contador" key={SAMPLES.pregunta} secondsRemaining={GLOBAL_CONFIG.temporizador} onAnswerQuiz={this.onAnswerQuiz.bind(this)}/>);
     }
     switch (this.state.tipo) {
       case 0:

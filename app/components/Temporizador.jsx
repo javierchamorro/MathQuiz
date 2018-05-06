@@ -9,14 +9,18 @@ export default class Temporizador extends React.Component {
     super(props);
     this.state = {
       secondsRemaining: 0,
-      seconds: 0
+      secondsRemainingPB:0,
+      seconds: 0,
     };
     this.tick = this.tick.bind(this);
   };
 
   tick() {
     this.setState({
-      secondsRemaining: this.state.secondsRemaining - 0.1
+      secondsRemaining: this.state.secondsRemaining - 0.05
+    });
+    this.setState({
+      secondsRemainingPB: this.state.secondsRemainingPB - 0.05
     });
     if (this.state.secondsRemaining + 0.5 <= 0) {
       clearInterval(this.interval);
@@ -27,23 +31,26 @@ export default class Temporizador extends React.Component {
   componentDidMount() {
     this.setState({secondsRemaining: this.props.secondsRemaining});
     this.setState({seconds: this.props.secondsRemaining});
+    this.setState({secondsRemainingPB: this.props.secondsRemaining});
 
-    this.interval = setInterval(this.tick, 100);
+    this.interval = setInterval(this.tick, 50);
   }
 
   componentWillUnmount() {
     clearInterval(this.interval);
+    this.setState({secondsRemaining: this.state.seconds});
   };
 
   tiempoAgotado() {
     this.props.onAnswerQuiz();
+    this.setState({secondsRemaining: this.state.seconds});
   };
 
   render() {
-    var segundos = Math.ceil(this.state.secondsRemaining);
+    var segundos = Math.ceil(this.state.secondsRemainingPB);
 
     return (<div className="progressBar">
-      <ProgressBar bsStyle="info" now={(this.state.secondsRemaining / this.state.seconds) * 100} label={`${segundos}s`}/>
+      <ProgressBar bsStyle="info" now={(this.state.secondsRemainingPB / this.state.seconds) * 100} label={`${segundos}s`}/>
     </div>);
   }
 }

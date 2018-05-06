@@ -11,8 +11,10 @@ export let GLOBAL_CONFIG = {
       completion_threshold:0.5,
       score_threshold:0.6,
     },
+    //activar boton de resetQuestion
+    resetQuestion:false,
     //numero de preguntas del test
-    n:3,
+    n:5,
     //en modo progresivo se el numero de preguntas necesarias para subir o bajar de nivel
     progresivo:2,
     //probabilidad de niveles
@@ -74,14 +76,16 @@ export let GLOBAL_CONFIG = {
     },
     //Preguntas con temporizador y barra de progresivo
     progressBar:true,
+    //tiempo en segundos para responder una pregunta
+    temporizador:4,
     //tipos de pregunta(multiplechoice,onechoice,input).
     tipo:{
       //multiplechoice
       tipo1:true,
       //onechoice
-      tipo2:true,
+      tipo2:false,
       //input
-      tipo3:true,
+      tipo3:false,
     },
   },
   production:{
