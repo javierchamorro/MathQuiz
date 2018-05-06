@@ -45,14 +45,17 @@ export default class Quiz extends React.Component {
       var contadorCorrectas = this.state.contadorCorrectas;
       var contadorFalladas = this.state.contadorFalladas;
       if (correct) {
+        if (this.state.difficulty === 8) {
+          return;
+        }
         contadorCorrectas++;
         contadorFalladas = 0;
       } else {
+        if (this.state.difficulty === 0) {
+          return;
+        }
         contadorFalladas++;
         contadorCorrectas = 0;
-      }
-      if (this.state.difficulty === 9) {
-        return;
       }
       this.setState({contadorCorrectas: contadorCorrectas});
       this.setState({contadorFalladas: contadorFalladas});
@@ -95,7 +98,6 @@ export default class Quiz extends React.Component {
     var pregunta;
     var difficulty = this.state.difficulty;
     console.log("difficulty: " + difficulty);
-    console.log("aleatorio: " + this.state.aleatorio);
     switch (difficulty) {
       case 0:
         if (this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel0.SumaResta) {

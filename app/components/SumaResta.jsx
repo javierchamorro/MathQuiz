@@ -132,11 +132,15 @@ export default class SumaResta extends React.Component {
     }
     // Mark quiz as answered
     this.setState({answered: true});
-    this.refs.contador.componentWillUnmount();
+    if (GLOBAL_CONFIG.progressBar) {
+      this.refs.contador.componentWillUnmount()
+    }
   }
   onResetQuestion() {
     this.setState({selected_choices_ids: [], answered: false});
-    this.refs.contador.componentDidMount();
+    if (GLOBAL_CONFIG.progressBar) {
+      this.refs.contador.componentDidMount();
+    }
   }
   onNextQuiz() {
     if (SAMPLES.pregunta === GLOBAL_CONFIG.n) {
