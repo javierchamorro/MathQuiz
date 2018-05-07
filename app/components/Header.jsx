@@ -24,7 +24,7 @@ export default class Header extends React.Component {
     }
     if (this.props.user_profile) {
       if ((typeof this.props.user_profile.name === "string")) {
-        loggedText = (this.props.I18n.getTrans("i.logged_as") + " " + this.props.user_profile.name);
+        loggedText = (" "+this.props.I18n.getTrans("i.logged_as") + " " + this.props.user_profile.name);
       }
       if (typeof this.props.user_profile.learner_preference === "object") {
         if (typeof this.props.user_profile.learner_preference.difficulty === "number") {
@@ -35,7 +35,7 @@ export default class Header extends React.Component {
 
     let loggedEl = null;
     if (typeof loggedText === "string") {
-      loggedEl = <p><Glyphicon glyph="user" />{"  "+loggedText}</p>;
+      loggedEl = <p><Glyphicon glyph="user" />{" "+loggedText}</p>;
     }
     let trackingEls = trackingTexts.map(function(text, index) {
       return <span key={index}>{text}</span>;

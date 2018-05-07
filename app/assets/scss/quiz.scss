@@ -36,7 +36,7 @@ div.questionC2T {
   display: inline-block;
   width: auto;
   margin-top: 4px;
-  color: green;
+  color: mediumturquoise;
   font-weight: bold;
 }
 
@@ -44,7 +44,7 @@ div.question div.question_choice div.questionC2F {
   display: inline-block;
   width: auto;
   margin-top: 4px;
-  color: red;
+  color: lightcoral;
   font-weight: bold;
 }
 
@@ -76,11 +76,11 @@ div.question div.question_choice input[type="number"] {
 }
 
 .input_answerT {
-  border: 2px solid lightgreen;
+  border: 2px solid mediumturquoise;
 }
 
 .input_answerF {
-  border: 2px solid tomato;
+  border: 2px solid lightcoral;
 }
 
 div.question div.question_choice p {
@@ -90,11 +90,11 @@ div.question div.question_choice p {
 }
 
 div.question div.question_choice_correct {
-  background: lightgreen;
+  background: mediumturquoise;
 }
 
 div.question div.question_choice_incorrect {
-  background: tomato;
+  background: lightcoral;
 }
 
 div.question div.question_choice_correct,
@@ -107,34 +107,42 @@ div.question div.questionButtonsWrapper {
   padding: 10px;
 }
 
-button.answerQuestion,
-button.resetQuestion,
-button.resetQuiz {
-  padding: 5px;
-  margin-left: 10px;
+button.answerQuestion {
+  padding: 16px;
+  margin-right: 16px;
   color: white;
   background: #45b0e5;
   border: 2px solid #45b0e5;
-  font-size: 15px;
+  font-size: 18px;
+  cursor: pointer;
+  margin-top: 9px;
+}
+
+button.resetQuestion,
+button.resetQuiz {
+  padding: 16px;
+  margin-right: 16px;
+  color: #45b0e5;
+  background: #e8e9ea;
+  border: 2px solid #45b0e5;
+  font-size: 18px;
   cursor: pointer;
   margin-top: 9px;
 }
 
 button.nextQuestion {
-  padding: 5px;
-  margin-right: 10px;
+  padding: 16px;
+  margin-left: 16px;
   float: right;
   color: white;
   background: #45b0e5;
   border: 2px solid #45b0e5;
-  font-size: 15px;
+  font-size: 18px;
   cursor: pointer;
   margin-top: 9px;
 }
 
 button[disabled] {
-  color: #45b0e5;
-  background: #e8e9ea;
-  border: 2px solid #45b0e5;
+  opacity: 0.3;
   cursor: default;
 }

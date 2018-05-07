@@ -50,7 +50,7 @@ export default class Tipo1 extends React.Component {
           <input type="checkbox" checked={this.props.checked} onChange={() => this.props.handleChange(this.props.choice)} disabled={showCorrection}/>
         </div>
         <div className={quizClassName}>
-          <p>{this.props.choice.value}</p>
+          <div>{this.props.choice.value}</div>
         </div>
       </div>);
     }

@@ -77,7 +77,7 @@ export let GLOBAL_CONFIG = {
     //Preguntas con temporizador y barra de progresivo
     progressBar:true,
     //tiempo en segundos para responder una pregunta
-    temporizador:5,
+    temporizador:15,
     //tipos de pregunta(multiplechoice,onechoice,input).
     tipo:{
       //multiplechoice

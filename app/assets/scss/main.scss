@@ -37,27 +37,28 @@ div.header_wrapper {
 }
 
 .usuario p {
-  margin: 35px 6px 35px 35px;
+  margin: 35px 15px 35px 35px;
 }
 
 .header2 {
-  height: 50px;
-  margin-top: 24px;
+  height: 64px;
+  margin-top: 32px;
   margin-right: 16%;
   margin-left: 16%;
   width: 68%;
   background-color: #ffffff;
   float: left;
+  font-size: 18px;
 }
 
 .tracking {
   // margin-top: 16px;
-  // margin-bottom: 16px;
+  // margin-bottom: 16px
 }
 
 .elemento0 {
   width: 33%;
-  height: 50px;
+  height: 64px;
   float: left;
   border-right: 1px solid #dce1e3;
 }
@@ -70,25 +71,25 @@ div.header_wrapper {
 
 .elemento2 {
   width: 33%;
-  height: 50px;
+  height: 64px;
   float: right;
   border-left: 1px solid #dce1e3;
 }
 
 .puntuacion0 {
-  margin-top: 16px;
+  margin-top: 18px;
   margin-bottom: 16px;
   width: 100%;
 }
 
 .puntuacion1 {
-  margin-top: 16px;
+  margin-top: 18px;
   margin-bottom: 16px;
   width: 100%;
 }
 
 .puntuacion2 {
-  margin-top: 16px;
+  margin-top: 18px;
   margin-bottom: 16px;
   width: 100%;
 }
@@ -133,7 +134,7 @@ div.header_wrapper {
 
 .quiz {
   height: 520px;
-  margin-top: 24px;
+  margin-top: 16px;
   margin-right: 16%;
   margin-left: 16%;
   width: 68%;
@@ -143,9 +144,10 @@ div.header_wrapper {
 }
 
 .quizHeader {
+  font-weight: 600;
   margin-top: 0;
   height: 64px;
-  font-size: 24px;
+  font-size: 22px;
   color: #36b3ed;
   background-color: #ffffff;
   float: left;
@@ -160,6 +162,7 @@ div.header_wrapper {
 }
 
 .pregunta {
+  font-size: 22px;
   margin-top: 0;
   height: 400px;
   background-color: #ffffff;
@@ -168,13 +171,16 @@ div.header_wrapper {
 }
 
 .textopregunta {
+  font-weight: 600;
   margin-top: 30px;
   margin-left: 70px;
   font-size: 24px;
 }
 
 .respuestas {
-  margin-top: 10px;
+  font-weight: 300;
+  font-size: 22px;
+  margin-top: 24px;
   margin-left: 70px;
   margin-right: 100px;
 }

@@ -50,7 +50,7 @@ export default class Temporizador extends React.Component {
     var segundos = Math.ceil(this.state.secondsRemainingPB);
 
     return (<div className="progressBar">
-      <ProgressBar bsStyle="info" now={(this.state.secondsRemainingPB / this.state.seconds) * 100} label={`${segundos}s`}/>
+      <ProgressBar bsStyle="info" now={(this.state.secondsRemainingPB / this.state.seconds) * 100}/>
     </div>);
   }
 }

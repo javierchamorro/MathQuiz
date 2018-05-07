@@ -23,7 +23,7 @@ export default class Tipo2 extends React.Component {
         <input type="radio" checked={this.props.checked} onChange={() => this.props.handleChange(this.props.choice)} disabled={showCorrection}/>
       </div>
       <div className={quizClassName}>
-        <p>{this.props.choice.value}</p>
+        <div>{this.props.choice.value}</div>
       </div>
     </div>);
   }
