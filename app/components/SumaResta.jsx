@@ -23,7 +23,7 @@ export default class SumaResta extends React.Component {
     };
   }
   componentDidMount() {
-    this.props.quiz.answered = false;
+    SAMPLES.preguntas1.answered = false;
     this.elegirTipo();
   }
 
@@ -33,28 +33,27 @@ export default class SumaResta extends React.Component {
       progress_measure: 1 / GLOBAL_CONFIG.n,
       score: 1 / GLOBAL_CONFIG.n
     });
-    var decision;
-    do {
-      this.props.dispatch(addObjectives([objective]));
-      var tipo = Math.floor(Math.random() * 3);
-      this.setState({tipo: tipo})
-      switch (tipo) {
-        case 0:
-          decision = 1;
-          this.crearPregunta1();
-          break;
-        case 1:
-          decision = 2;
-          this.crearPregunta2();
-          break;
-        case 2:
-          decision = 3;
-          this.crearPregunta3();
-          break;
-        default:
-          console.log("error");
-      }
-    } while ((decision === 1 && !GLOBAL_CONFIG.tipo.tipo1) || (decision === 2 && !GLOBAL_CONFIG.tipo.tipo2) || (decision === 3 && !GLOBAL_CONFIG.tipo.tipo3))
+    var tipo = 0;
+    if (GLOBAL_CONFIG.tipo.tipo1 || GLOBAL_CONFIG.tipo.tipo2 || GLOBAL_CONFIG.tipo.tipo3) {
+      do {
+        tipo = Math.floor(Math.random() * 3);
+      } while ((tipo === 0 && !GLOBAL_CONFIG.tipo.tipo1) || (tipo === 1 && !GLOBAL_CONFIG.tipo.tipo2) || (tipo === 2 && !GLOBAL_CONFIG.tipo.tipo3))
+    }
+    this.props.dispatch(addObjectives([objective]));
+    this.setState({tipo: tipo})
+    switch (tipo) {
+      case 0:
+        this.crearPregunta1();
+        break;
+      case 1:
+        this.crearPregunta2();
+        break;
+      case 2:
+        this.crearPregunta3();
+        break;
+      default:
+        console.log("error");
+    }
   }
 
   handleMultiChoiceChange(choice) {
@@ -79,13 +78,13 @@ export default class SumaResta extends React.Component {
     switch (this.state.tipo) {
       case 0:
         // Calculate score
-        let nChoices = this.props.quiz.tipo1.choices.length;
+        let nChoices = SAMPLES.preguntas1.tipo1.choices.length;
         let correctAnswers = 0;
         let incorrectAnswers = 0;
         let blankAnswers = 0;
 
         for (let i = 0; i < nChoices; i++) {
-          let choice = this.props.quiz.tipo1.choices[i];
+          let choice = SAMPLES.preguntas1.tipo1.choices[i];
           if (this.state.selected_choices_ids.indexOf(choice.id) !== -1) {
             // Answered choice
             if (choice.answer === true) {
@@ -97,20 +96,20 @@ export default class SumaResta extends React.Component {
             blankAnswers += 1;
           }
         }
-        scorePercentage = Math.max(0, (correctAnswers - incorrectAnswers) / this.props.quiz.tipo1.choices.filter(function(c) {
+        scorePercentage = Math.max(0, (correctAnswers - incorrectAnswers) / SAMPLES.preguntas1.tipo1.choices.filter(function(c) {
           return c.answer === true;
         }).length);
 
         break;
       case 1:
-        if (this.state.option === "" || this.props.quiz.tipo2.choices[this.state.option].answer === false) {
+        if (this.state.option === "" || SAMPLES.preguntas1.tipo2.choices[this.state.option].answer === false) {
           scorePercentage = 0;
         } else {
           scorePercentage = 1;
         }
         break;
       case 2:
-        if (this.props.quiz.tipo3.answer === this.state.input_answer) {
+        if (SAMPLES.preguntas1.tipo3.answer === this.state.input_answer) {
           scorePercentage = 1;
         } else {
           scorePercentage = 0;
@@ -149,7 +148,7 @@ export default class SumaResta extends React.Component {
     SAMPLES.pregunta++;
     this.setState({selected_choices_ids: [], answered: false});
     this.setState({option: ""});
-    this.props.quiz.answered = true;
+    SAMPLES.preguntas1.answered = true;
     this.props.onReset(this.state.correct);
     this.elegirTipo();
     this.refs.contador.componentWillUnmount();
@@ -157,7 +156,7 @@ export default class SumaResta extends React.Component {
   onResetQuiz() {
     this.setState({selected_choices_ids: [], answered: false});
     this.setState({option: ""});
-    this.props.quiz.answered = true;
+    SAMPLES.preguntas1.answered = true;
     this.props.onReset(this.state.correct);
     this.elegirTipo();
     this.props.onResetQuiz();
@@ -167,92 +166,92 @@ export default class SumaResta extends React.Component {
   crearPregunta1() {
     if (this.props.difficulty > 5) {
       var verdaderas = 0;
-      for (let i = 0; i < this.props.quiz.tipo1.choices.length; i++) {
+      for (let i = 0; i < SAMPLES.preguntas1.tipo1.choices.length; i++) {
         var vf = Math.floor((Math.random() * 2) + 1);
         if (vf === 1) {
-          this.props.quiz.tipo1.choices[i].answer = false;
+          SAMPLES.preguntas1.tipo1.choices[i].answer = false;
           this.generarNumerosYOperadores();
           this.resultadoF();
         } else {
-          this.props.quiz.tipo1.choices[i].answer = true;
+          SAMPLES.preguntas1.tipo1.choices[i].answer = true;
           this.generarNumerosYOperadores();
           this.resultadoV();
           verdaderas++;
         }
-        this.props.quiz.tipo1.choices[i].value = this.props.datos.primerNum + " " + this.props.datos.operador1 + " " + this.props.datos.impsegundNum + " " + this.props.datos.operador2 + " " + this.props.datos.imptercerNum + " = " + this.props.datos.resultado;
+        SAMPLES.preguntas1.tipo1.choices[i].value = SAMPLES.SumaResta.primerNum + " " + SAMPLES.SumaResta.operador1 + " " + SAMPLES.SumaResta.impsegundNum + " " + SAMPLES.SumaResta.operador2 + " " + SAMPLES.SumaResta.imptercerNum + " = " + SAMPLES.SumaResta.resultado;
       }
       if (verdaderas === 0) {
-        var i = Math.floor(Math.random() * this.props.quiz.tipo1.choices.length);
-        this.props.quiz.tipo1.choices[i].answer = true;
+        var i = Math.floor(Math.random() * SAMPLES.preguntas1.tipo1.choices.length);
+        SAMPLES.preguntas1.tipo1.choices[i].answer = true;
         this.generarNumerosYOperadores();
         this.resultadoV();
-        this.props.quiz.tipo1.choices[i].value = this.props.datos.primerNum + " " + this.props.datos.operador1 + " " + this.props.datos.impsegundNum + " " + this.props.datos.operador2 + " " + this.props.datos.imptercerNum + " = " + this.props.datos.resultado;
+        SAMPLES.preguntas1.tipo1.choices[i].value = SAMPLES.SumaResta.primerNum + " " + SAMPLES.SumaResta.operador1 + " " + SAMPLES.SumaResta.impsegundNum + " " + SAMPLES.SumaResta.operador2 + " " + SAMPLES.SumaResta.imptercerNum + " = " + SAMPLES.SumaResta.resultado;
       }
     } else {
       var verdaderas = 0;
-      for (let i = 0; i < this.props.quiz.tipo1.choices.length; i++) {
+      for (let i = 0; i < SAMPLES.preguntas1.tipo1.choices.length; i++) {
         var vf = Math.floor((Math.random() * 2) + 1);
         if (vf === 1) {
-          this.props.quiz.tipo1.choices[i].answer = false;
+          SAMPLES.preguntas1.tipo1.choices[i].answer = false;
           this.generarNumerosYOperadores();
           this.resultadoF();
         } else {
-          this.props.quiz.tipo1.choices[i].answer = true;
+          SAMPLES.preguntas1.tipo1.choices[i].answer = true;
           this.generarNumerosYOperadores();
           this.resultadoV();
           verdaderas++;
         }
-        this.props.quiz.tipo1.choices[i].value = this.props.datos.primerNum + " " + this.props.datos.operador1 + " " + this.props.datos.impsegundNum + " = " + this.props.datos.resultado;
+        SAMPLES.preguntas1.tipo1.choices[i].value = SAMPLES.SumaResta.primerNum + " " + SAMPLES.SumaResta.operador1 + " " + SAMPLES.SumaResta.impsegundNum + " = " + SAMPLES.SumaResta.resultado;
       }
       if (verdaderas === 0) {
-        var i = Math.floor(Math.random() * this.props.quiz.tipo1.choices.length);
-        this.props.quiz.tipo1.choices[i].answer = true;
+        var i = Math.floor(Math.random() * SAMPLES.preguntas1.tipo1.choices.length);
+        SAMPLES.preguntas1.tipo1.choices[i].answer = true;
         this.generarNumerosYOperadores();
         this.resultadoV();
-        this.props.quiz.tipo1.choices[i].value = this.props.datos.primerNum + " " + this.props.datos.operador1 + " " + this.props.datos.impsegundNum + " = " + this.props.datos.resultado;
+        SAMPLES.preguntas1.tipo1.choices[i].value = SAMPLES.SumaResta.primerNum + " " + SAMPLES.SumaResta.operador1 + " " + SAMPLES.SumaResta.impsegundNum + " = " + SAMPLES.SumaResta.resultado;
       }
     }
   }
   crearPregunta2() {
     if (this.props.difficulty > 5) {
       this.generarNumerosYOperadores();
-      for (let i = 0; i < this.props.quiz.tipo2.choices.length; i++) {
-        this.props.quiz.tipo2.choices[i].answer = false;
+      for (let i = 0; i < SAMPLES.preguntas1.tipo2.choices.length; i++) {
+        SAMPLES.preguntas1.tipo2.choices[i].answer = false;
         this.resultadoF();
-        this.props.quiz.tipo2.choices[i].value = this.props.datos.resultado;
+        SAMPLES.preguntas1.tipo2.choices[i].value = SAMPLES.SumaResta.resultado;
       }
-      var i = Math.floor(Math.random() * this.props.quiz.tipo2.choices.length);
-      this.props.quiz.tipo2.choices[i].answer = true;
+      var i = Math.floor(Math.random() * SAMPLES.preguntas1.tipo2.choices.length);
+      SAMPLES.preguntas1.tipo2.choices[i].answer = true;
       this.resultadoV();
-      this.props.quiz.tipo2.choices[i].value = this.props.datos.resultado;
-      this.props.quiz.tipo2.value = "¿Cuanto es " + this.props.datos.primerNum + " " + this.props.datos.operador1 + " " + this.props.datos.impsegundNum + " " + this.props.datos.operador2 + " " + this.props.datos.imptercerNum + "?";
+      SAMPLES.preguntas1.tipo2.choices[i].value = SAMPLES.SumaResta.resultado;
+      SAMPLES.preguntas1.tipo2.value = "¿Cuanto es " + SAMPLES.SumaResta.primerNum + " " + SAMPLES.SumaResta.operador1 + " " + SAMPLES.SumaResta.impsegundNum + " " + SAMPLES.SumaResta.operador2 + " " + SAMPLES.SumaResta.imptercerNum + "?";
 
     } else {
       this.generarNumerosYOperadores();
       var verdaderas = 0;
-      for (let i = 0; i < this.props.quiz.tipo2.choices.length; i++) {
-        this.props.quiz.tipo2.choices[i].answer = false;
+      for (let i = 0; i < SAMPLES.preguntas1.tipo2.choices.length; i++) {
+        SAMPLES.preguntas1.tipo2.choices[i].answer = false;
         this.resultadoF();
-        this.props.quiz.tipo2.choices[i].value = + this.props.datos.resultado;
+        SAMPLES.preguntas1.tipo2.choices[i].value = + SAMPLES.SumaResta.resultado;
       }
-      var i = Math.floor(Math.random() * this.props.quiz.tipo2.choices.length);
-      this.props.quiz.tipo2.choices[i].answer = true;
+      var i = Math.floor(Math.random() * SAMPLES.preguntas1.tipo2.choices.length);
+      SAMPLES.preguntas1.tipo2.choices[i].answer = true;
       this.resultadoV();
-      this.props.quiz.tipo2.choices[i].value = + this.props.datos.resultado;
-      this.props.quiz.tipo2.value = "¿Cuanto es " + this.props.datos.primerNum + " " + this.props.datos.operador1 + " " + this.props.datos.impsegundNum + "?";
+      SAMPLES.preguntas1.tipo2.choices[i].value = + SAMPLES.SumaResta.resultado;
+      SAMPLES.preguntas1.tipo2.value = "¿Cuanto es " + SAMPLES.SumaResta.primerNum + " " + SAMPLES.SumaResta.operador1 + " " + SAMPLES.SumaResta.impsegundNum + "?";
     }
   }
   crearPregunta3() {
     if (this.props.difficulty > 5) {
       this.generarNumerosYOperadores();
       this.resultadoV();
-      this.props.quiz.tipo3.answer = this.props.datos.resultado;
-      this.props.quiz.tipo3.value = "¿Cuanto es " + this.props.datos.primerNum + " " + this.props.datos.operador1 + " " + this.props.datos.impsegundNum + " " + this.props.datos.operador2 + " " + this.props.datos.imptercerNum + "?";
+      SAMPLES.preguntas1.tipo3.answer = SAMPLES.SumaResta.resultado;
+      SAMPLES.preguntas1.tipo3.value = "¿Cuanto es " + SAMPLES.SumaResta.primerNum + " " + SAMPLES.SumaResta.operador1 + " " + SAMPLES.SumaResta.impsegundNum + " " + SAMPLES.SumaResta.operador2 + " " + SAMPLES.SumaResta.imptercerNum + "?";
     } else {
       this.generarNumerosYOperadores();
       this.resultadoV();
-      this.props.quiz.tipo3.answer = this.props.datos.resultado;
-      this.props.quiz.tipo3.value = "¿Cuanto es " + this.props.datos.primerNum + " " + this.props.datos.operador1 + " " + this.props.datos.impsegundNum + "?";
+      SAMPLES.preguntas1.tipo3.answer = SAMPLES.SumaResta.resultado;
+      SAMPLES.preguntas1.tipo3.value = "¿Cuanto es " + SAMPLES.SumaResta.primerNum + " " + SAMPLES.SumaResta.operador1 + " " + SAMPLES.SumaResta.impsegundNum + "?";
 
     }
   }
@@ -261,36 +260,36 @@ export default class SumaResta extends React.Component {
     if (this.props.difficulty < 3) {
       var operador = Math.floor((Math.random() * 2) + 1);
       if (operador === 1) {
-        this.props.datos.operador1 = "+";
-        this.props.datos.primerNum = Math.floor((Math.random() * 100) + 1);
-        this.props.datos.segundNum = Math.floor((Math.random() * 100) + 1);
-        this.props.datos.impsegundNum = this.props.datos.segundNum;
+        SAMPLES.SumaResta.operador1 = "+";
+        SAMPLES.SumaResta.primerNum = Math.floor((Math.random() * 100) + 1);
+        SAMPLES.SumaResta.segundNum = Math.floor((Math.random() * 100) + 1);
+        SAMPLES.SumaResta.impsegundNum = SAMPLES.SumaResta.segundNum;
       } else {
-        this.props.datos.operador1 = "-";
-        this.props.datos.primerNum = Math.floor((Math.random() * 100) + 1);
-        this.props.datos.segundNum = Math.floor((Math.random() * this.props.datos.primerNum) + 1);
-        this.props.datos.impsegundNum = this.props.datos.segundNum;
+        SAMPLES.SumaResta.operador1 = "-";
+        SAMPLES.SumaResta.primerNum = Math.floor((Math.random() * 100) + 1);
+        SAMPLES.SumaResta.segundNum = Math.floor((Math.random() * SAMPLES.SumaResta.primerNum) + 1);
+        SAMPLES.SumaResta.impsegundNum = SAMPLES.SumaResta.segundNum;
       }
     } else if (this.props.difficulty < 6) {
       var operador = Math.floor((Math.random() * 2) + 1);
       var simbolo1 = Math.floor((Math.random() * 2) + 1);
       var simbolo2 = Math.floor((Math.random() * 2) + 1);
       if (simbolo1 === 1) {
-        this.props.datos.primerNum = Math.floor((Math.random() * 100) + 1);
+        SAMPLES.SumaResta.primerNum = Math.floor((Math.random() * 100) + 1);
       } else {
-        this.props.datos.primerNum = -Math.floor((Math.random() * 100) + 1);
+        SAMPLES.SumaResta.primerNum = -Math.floor((Math.random() * 100) + 1);
       }
       if (simbolo2 === 1) {
-        this.props.datos.segundNum = Math.floor((Math.random() * 100) + 1);
-        this.props.datos.impsegundNum = this.props.datos.segundNum;
+        SAMPLES.SumaResta.segundNum = Math.floor((Math.random() * 100) + 1);
+        SAMPLES.SumaResta.impsegundNum = SAMPLES.SumaResta.segundNum;
       } else {
-        this.props.datos.segundNum = -Math.floor((Math.random() * 100) + 1);
-        this.props.datos.impsegundNum = "(" + this.props.datos.segundNum + ")";
+        SAMPLES.SumaResta.segundNum = -Math.floor((Math.random() * 100) + 1);
+        SAMPLES.SumaResta.impsegundNum = "(" + SAMPLES.SumaResta.segundNum + ")";
       }
       if (operador === 1) {
-        this.props.datos.operador1 = "+";
+        SAMPLES.SumaResta.operador1 = "+";
       } else {
-        this.props.datos.operador1 = "-";
+        SAMPLES.SumaResta.operador1 = "-";
       }
     } else {
       var operador1 = Math.floor((Math.random() * 2) + 1);
@@ -299,54 +298,54 @@ export default class SumaResta extends React.Component {
       var simbolo2 = Math.floor((Math.random() * 2) + 1);
       var simbolo3 = Math.floor((Math.random() * 2) + 1);
       if (simbolo1 === 1) {
-        this.props.datos.primerNum = Math.floor((Math.random() * 100) + 1);
+        SAMPLES.SumaResta.primerNum = Math.floor((Math.random() * 100) + 1);
       } else {
-        this.props.datos.primerNum = -Math.floor((Math.random() * 100) + 1);
+        SAMPLES.SumaResta.primerNum = -Math.floor((Math.random() * 100) + 1);
       }
       if (simbolo2 === 1) {
-        this.props.datos.segundNum = Math.floor((Math.random() * 100) + 1);
-        this.props.datos.impsegundNum = this.props.datos.segundNum;
+        SAMPLES.SumaResta.segundNum = Math.floor((Math.random() * 100) + 1);
+        SAMPLES.SumaResta.impsegundNum = SAMPLES.SumaResta.segundNum;
       } else {
-        this.props.datos.segundNum = -Math.floor((Math.random() * 100) + 1);
-        this.props.datos.impsegundNum = "(" + this.props.datos.segundNum + ")";
+        SAMPLES.SumaResta.segundNum = -Math.floor((Math.random() * 100) + 1);
+        SAMPLES.SumaResta.impsegundNum = "(" + SAMPLES.SumaResta.segundNum + ")";
       }
       if (simbolo3 === 1) {
-        this.props.datos.tercerNum = Math.floor((Math.random() * 100) + 1);
-        this.props.datos.imptercerNum = this.props.datos.tercerNum;
+        SAMPLES.SumaResta.tercerNum = Math.floor((Math.random() * 100) + 1);
+        SAMPLES.SumaResta.imptercerNum = SAMPLES.SumaResta.tercerNum;
       } else {
-        this.props.datos.tercerNum = -Math.floor((Math.random() * 100) + 1);
-        this.props.datos.imptercerNum = "(" + this.props.datos.tercerNum + ")";
+        SAMPLES.SumaResta.tercerNum = -Math.floor((Math.random() * 100) + 1);
+        SAMPLES.SumaResta.imptercerNum = "(" + SAMPLES.SumaResta.tercerNum + ")";
       }
       if (operador1 === 1) {
-        this.props.datos.operador1 = "+";
+        SAMPLES.SumaResta.operador1 = "+";
       } else {
-        this.props.datos.operador1 = "-";
+        SAMPLES.SumaResta.operador1 = "-";
       }
       if (operador2 === 1) {
-        this.props.datos.operador2 = "+";
+        SAMPLES.SumaResta.operador2 = "+";
       } else {
-        this.props.datos.operador2 = "-";
+        SAMPLES.SumaResta.operador2 = "-";
       }
     }
   }
   resultadoV() {
     if (this.props.difficulty > 5) {
       var r;
-      if (this.props.datos.operador1 === "+") {
-        r = this.props.datos.primerNum + this.props.datos.segundNum;
+      if (SAMPLES.SumaResta.operador1 === "+") {
+        r = SAMPLES.SumaResta.primerNum + SAMPLES.SumaResta.segundNum;
       } else {
-        r = this.props.datos.primerNum - this.props.datos.segundNum;
+        r = SAMPLES.SumaResta.primerNum - SAMPLES.SumaResta.segundNum;
       }
-      if (this.props.datos.operador2 === "+") {
-        this.props.datos.resultado = r + this.props.datos.tercerNum;
+      if (SAMPLES.SumaResta.operador2 === "+") {
+        SAMPLES.SumaResta.resultado = r + SAMPLES.SumaResta.tercerNum;
       } else {
-        this.props.datos.resultado = r - this.props.datos.tercerNum;
+        SAMPLES.SumaResta.resultado = r - SAMPLES.SumaResta.tercerNum;
       }
     } else {
-      if (this.props.datos.operador1 === "+") {
-        this.props.datos.resultado = this.props.datos.primerNum + this.props.datos.segundNum;
+      if (SAMPLES.SumaResta.operador1 === "+") {
+        SAMPLES.SumaResta.resultado = SAMPLES.SumaResta.primerNum + SAMPLES.SumaResta.segundNum;
       } else {
-        this.props.datos.resultado = this.props.datos.primerNum - this.props.datos.segundNum;
+        SAMPLES.SumaResta.resultado = SAMPLES.SumaResta.primerNum - SAMPLES.SumaResta.segundNum;
       }
     }
   }
@@ -354,43 +353,64 @@ export default class SumaResta extends React.Component {
     var resultadoV;
     var resultadoF;
     if (this.props.difficulty < 3) {
-      if (this.props.datos.operador1 === "+") {
-        resultadoV = this.props.datos.primerNum + this.props.datos.segundNum;
+      if (SAMPLES.SumaResta.operador1 === "+") {
+        resultadoV = SAMPLES.SumaResta.primerNum + SAMPLES.SumaResta.segundNum;
       } else {
-        resultadoV = this.props.datos.primerNum - this.props.datos.segundNum;
+        resultadoV = SAMPLES.SumaResta.primerNum - SAMPLES.SumaResta.segundNum;
       }
-      resultadoF = Math.floor(resultadoV - 10 + (Math.random() * 10) + 1)
+      resultadoF = Math.floor(resultadoV - 5 + (Math.random() * 10) + 1)
+      var j =0;
       while (resultadoF === resultadoV || resultadoF < 0) {
-        resultadoF = Math.floor(resultadoV - 10 + (Math.random() * 10) + 1)
+        resultadoF = Math.floor(resultadoV - 5 + (Math.random() * 10) + 1);
+        j++;
+        if(j > 3000){
+         alert("SumaResta1: Esta línea no debería ejecutarse nunca.")
+         resultadoF = resultadoV + 1;
+         break;
+       }
       }
     } else if (this.props.difficulty < 6) {
-      if (this.props.datos.operador1 === "+") {
-        resultadoV = this.props.datos.primerNum + this.props.datos.segundNum;
+      if (SAMPLES.SumaResta.operador1 === "+") {
+        resultadoV = SAMPLES.SumaResta.primerNum + SAMPLES.SumaResta.segundNum;
       } else {
-        resultadoV = this.props.datos.primerNum - this.props.datos.segundNum;
+        resultadoV = SAMPLES.SumaResta.primerNum - SAMPLES.SumaResta.segundNum;
       }
-      resultadoF = Math.floor(resultadoV - 10 + (Math.random() * 10) + 1)
+      resultadoF = Math.floor(resultadoV - 5 + (Math.random() * 10) + 1);
+      var j=0;
       while (resultadoF === resultadoV) {
-        resultadoF = Math.floor(resultadoV - 10 + (Math.random() * 10) + 1)
+        resultadoF = Math.floor(resultadoV - 5 + (Math.random() * 10) + 1);
+        j++;
+        if(j > 3000){
+         alert("SumaResta2: Esta línea no debería ejecutarse nunca.")
+         resultadoF = resultadoV + 1;
+         break;
+       }
       }
     } else {
       var r;
-      if (this.props.datos.operador1 === "+") {
-        r = this.props.datos.primerNum + this.props.datos.segundNum;
+      if (SAMPLES.SumaResta.operador1 === "+") {
+        r = SAMPLES.SumaResta.primerNum + SAMPLES.SumaResta.segundNum;
       } else {
-        r = this.props.datos.primerNum - this.props.datos.segundNum;
+        r = SAMPLES.SumaResta.primerNum - SAMPLES.SumaResta.segundNum;
       }
-      if (this.props.datos.operador2 === "+") {
-        resultadoV = r + this.props.datos.tercerNum;
+      if (SAMPLES.SumaResta.operador2 === "+") {
+        resultadoV = r + SAMPLES.SumaResta.tercerNum;
       } else {
-        resultadoV = r - this.props.datos.tercerNum;
+        resultadoV = r - SAMPLES.SumaResta.tercerNum;
       }
-      resultadoF = Math.floor(resultadoV - 10 + (Math.random() * 10) + 1)
+      resultadoF = Math.floor(resultadoV - 5 + (Math.random() * 10) + 1)
+      var j=0;
       while (resultadoF === resultadoV) {
-        resultadoF = Math.floor(resultadoV - 10 + (Math.random() * 10) + 1)
+        resultadoF = Math.floor(resultadoV - 5 + (Math.random() * 10) + 1);
+        j++;
+        if(j > 3000){
+         alert("SumaResta3: Esta línea no debería ejecutarse nunca.")
+         resultadoF = resultadoV + 1;
+         break;
+       }
       }
     }
-    this.props.datos.resultado = resultadoF;
+    SAMPLES.SumaResta.resultado = resultadoF;
   }
 
   render() {
@@ -400,17 +420,17 @@ export default class SumaResta extends React.Component {
     let isLastQuestion = (SAMPLES.pregunta === GLOBAL_CONFIG.n);
     let temporizador = [];
     if (GLOBAL_CONFIG.progressBar) {
-      temporizador.push(<Temporizador ref="contador" key={SAMPLES.pregunta} secondsRemaining={GLOBAL_CONFIG.temporizador} onAnswerQuiz={this.onAnswerQuiz.bind(this)}/>);
+      temporizador.push(<Temporizador ref="contador" key={SAMPLES.pregunta} seconds={GLOBAL_CONFIG.temporizador} onAnswerQuiz={this.onAnswerQuiz.bind(this)}/>);
     }
     switch (this.state.tipo) {
       case 0:
         let choices1 = [];
-        for (let i = 0; i < this.props.quiz.tipo1.choices.length; i++) {
-          choices1.push(<Tipo1 key={"MyQuiz_" + "quiz_choice_" + i} choice={this.props.quiz.tipo1.choices[i]} checked={this.state.selected_choices_ids.indexOf(this.props.quiz.tipo1.choices[i].id) !== -1} handleChange={this.handleMultiChoiceChange.bind(this)} quizAnswered={this.state.answered} difficulty={this.props.difficulty}/>);
+        for (let i = 0; i < SAMPLES.preguntas1.tipo1.choices.length; i++) {
+          choices1.push(<Tipo1 key={"MyQuiz_" + "quiz_choice_" + i} choice={SAMPLES.preguntas1.tipo1.choices[i]} checked={this.state.selected_choices_ids.indexOf(SAMPLES.preguntas1.tipo1.choices[i].id) !== -1} handleChange={this.handleMultiChoiceChange.bind(this)} quizAnswered={this.state.answered} difficulty={this.props.difficulty}/>);
         }
         return (<div className="question">
           <div className="pregunta">
-            <div className="textopregunta">{this.props.quiz.tipo1.value}</div>
+            <div className="textopregunta">{SAMPLES.preguntas1.tipo1.value}</div>
             <div className="respuestas">
               {choices1}
             </div>
@@ -421,12 +441,12 @@ export default class SumaResta extends React.Component {
         break;
       case 1:
         let choices2 = [];
-        for (let i = 0; i < this.props.quiz.tipo2.choices.length; i++) {
-          choices2.push(<Tipo2 key={"MyQuiz_" + "quiz_choice_" + i} choice={this.props.quiz.tipo2.choices[i]} checked={i === this.state.option} handleChange={this.handleOneChoiceChange.bind(this)} quizAnswered={this.state.answered} difficulty={this.props.difficulty}/>);
+        for (let i = 0; i < SAMPLES.preguntas1.tipo2.choices.length; i++) {
+          choices2.push(<Tipo2 key={"MyQuiz_" + "quiz_choice_" + i} choice={SAMPLES.preguntas1.tipo2.choices[i]} checked={i === this.state.option} handleChange={this.handleOneChoiceChange.bind(this)} quizAnswered={this.state.answered} difficulty={this.props.difficulty}/>);
         }
         return (<div className="question">
           <div className="pregunta">
-            <div className="textopregunta">{this.props.quiz.tipo2.value}</div>
+            <div className="textopregunta">{SAMPLES.preguntas1.tipo2.value}</div>
             <div className="respuestas">
               {choices2}
             </div>
@@ -438,7 +458,7 @@ export default class SumaResta extends React.Component {
       case 2:
         let input;
         if (this.state.answered) {
-          if (this.state.input_answer === this.props.quiz.tipo3.answer) {
+          if (this.state.input_answer === SAMPLES.preguntas1.tipo3.answer) {
             input = "input_answerT";
           } else {
             input = "input_answerF";
@@ -446,7 +466,7 @@ export default class SumaResta extends React.Component {
         }
         return (<div className="question">
           <div className="pregunta">
-            <div className="textopregunta">{this.props.quiz.tipo3.value}</div>
+            <div className="textopregunta">{SAMPLES.preguntas1.tipo3.value}</div>
             <div className="respuestas">
               <div className="question_choice">
                 <input className={input} type="number" name="respuesta" onChange={this.handleInputChange.bind(this)}></input>

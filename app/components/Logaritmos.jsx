@@ -23,7 +23,7 @@ export default class MultiplicacionDivision extends React.Component {
     };
   }
   componentDidMount() {
-    this.props.quiz.answered = false;
+    SAMPLES.preguntas2.answered = false;
     this.elegirTipo();
   }
 
@@ -33,28 +33,27 @@ export default class MultiplicacionDivision extends React.Component {
       progress_measure: 1 / GLOBAL_CONFIG.n,
       score: 1 / GLOBAL_CONFIG.n
     });
-    var decision;
-    do {
-      this.props.dispatch(addObjectives([objective]));
-      var tipo = Math.floor(Math.random() * 3);
-      this.setState({tipo: tipo})
-      switch (tipo) {
-        case 0:
-          decision = 1;
-          this.crearPregunta1();
-          break;
-        case 1:
-          decision = 2;
-          this.crearPregunta2();
-          break;
-        case 2:
-          decision = 3;
-          this.crearPregunta3();
-          break;
-        default:
-          console.log("error");
-      }
-    } while ((decision === 1 && !GLOBAL_CONFIG.tipo.tipo1) || (decision === 2 && !GLOBAL_CONFIG.tipo.tipo2) || (decision === 3 && !GLOBAL_CONFIG.tipo.tipo3))
+    var tipo = 0;
+    if (GLOBAL_CONFIG.tipo.tipo1 || GLOBAL_CONFIG.tipo.tipo2 || GLOBAL_CONFIG.tipo.tipo3) {
+      do {
+        tipo = Math.floor(Math.random() * 3);
+      } while ((tipo === 0 && !GLOBAL_CONFIG.tipo.tipo1) || (tipo === 1 && !GLOBAL_CONFIG.tipo.tipo2) || (tipo === 2 && !GLOBAL_CONFIG.tipo.tipo3))
+    }
+    this.props.dispatch(addObjectives([objective]));
+    this.setState({tipo: tipo})
+    switch (tipo) {
+      case 0:
+        this.crearPregunta1();
+        break;
+      case 1:
+        this.crearPregunta2();
+        break;
+      case 2:
+        this.crearPregunta3();
+        break;
+      default:
+        console.log("error");
+    }
   }
 
   handleMultiChoiceChange(choice) {
@@ -79,13 +78,13 @@ export default class MultiplicacionDivision extends React.Component {
     switch (this.state.tipo) {
       case 0:
         // Calculate score
-        let nChoices = this.props.quiz.tipo1.choices.length;
+        let nChoices = SAMPLES.preguntas2.tipo1.choices.length;
         let correctAnswers = 0;
         let incorrectAnswers = 0;
         let blankAnswers = 0;
 
         for (let i = 0; i < nChoices; i++) {
-          let choice = this.props.quiz.tipo1.choices[i];
+          let choice = SAMPLES.preguntas2.tipo1.choices[i];
           if (this.state.selected_choices_ids.indexOf(choice.id) !== -1) {
             // Answered choice
             if (choice.answer === true) {
@@ -97,20 +96,20 @@ export default class MultiplicacionDivision extends React.Component {
             blankAnswers += 1;
           }
         }
-        scorePercentage = Math.max(0, (correctAnswers - incorrectAnswers) / this.props.quiz.tipo1.choices.filter(function(c) {
+        scorePercentage = Math.max(0, (correctAnswers - incorrectAnswers) / SAMPLES.preguntas2.tipo1.choices.filter(function(c) {
           return c.answer === true;
         }).length);
 
         break;
       case 1:
-        if (this.state.option === "" || this.props.quiz.tipo2.choices[this.state.option].answer === false) {
+        if (this.state.option === "" || SAMPLES.preguntas2.tipo2.choices[this.state.option].answer === false) {
           scorePercentage = 0;
         } else {
           scorePercentage = 1;
         }
         break;
       case 2:
-        if (this.props.quiz.tipo3.answer === this.state.input_answer) {
+        if (SAMPLES.preguntas2.tipo3.answer === this.state.input_answer) {
           scorePercentage = 1;
         } else {
           scorePercentage = 0;
@@ -150,7 +149,7 @@ export default class MultiplicacionDivision extends React.Component {
     SAMPLES.pregunta++;
     this.setState({selected_choices_ids: [], answered: false});
     this.setState({option: ""});
-    this.props.quiz.answered = true;
+    SAMPLES.preguntas2.answered = true;
     this.props.onReset(this.state.correct);
     this.elegirTipo();
   }
@@ -158,7 +157,7 @@ export default class MultiplicacionDivision extends React.Component {
   onResetQuiz() {
     this.setState({selected_choices_ids: [], answered: false});
     this.setState({option: ""});
-    this.props.quiz.answered = true;
+    SAMPLES.preguntas2.answered = true;
     this.props.onReset(this.state.correct);
     this.elegirTipo();
     this.props.onResetQuiz();
@@ -166,85 +165,92 @@ export default class MultiplicacionDivision extends React.Component {
 
   crearPregunta1() {
     var verdaderas = 0;
-    for (let i = 0; i < this.props.quiz.tipo1.choices.length; i++) {
+    for (let i = 0; i < SAMPLES.preguntas2.tipo1.choices.length; i++) {
       var vf = Math.floor((Math.random() * 2) + 1);
       if (vf === 1) {
-        this.props.quiz.tipo1.choices[i].answer = false;
+        SAMPLES.preguntas2.tipo1.choices[i].answer = false;
         this.generarNumerosYOperadores();
         this.resultadoF();
       } else {
-        this.props.quiz.tipo1.choices[i].answer = true;
+        SAMPLES.preguntas2.tipo1.choices[i].answer = true;
         this.generarNumerosYOperadores();
         this.resultadoV();
         verdaderas++;
       }
-      this.props.quiz.tipo1.choices[i].value.primero = this.props.datos.base;
-      this.props.quiz.tipo1.choices[i].value.segundo = this.props.datos.numero;
-      this.props.quiz.tipo1.choices[i].value.tercero = this.props.datos.resultado;
+      SAMPLES.preguntas2.tipo1.choices[i].value.primero = SAMPLES.Logaritmos.base;
+      SAMPLES.preguntas2.tipo1.choices[i].value.segundo = SAMPLES.Logaritmos.numero;
+      SAMPLES.preguntas2.tipo1.choices[i].value.tercero = SAMPLES.Logaritmos.resultado;
     }
     if (verdaderas === 0) {
-      var i = Math.floor(Math.random() * this.props.quiz.tipo1.choices.length);
-      this.props.quiz.tipo1.choices[i].answer = true;
+      var i = Math.floor(Math.random() * SAMPLES.preguntas2.tipo1.choices.length);
+      SAMPLES.preguntas2.tipo1.choices[i].answer = true;
       this.generarNumerosYOperadores();
       this.resultadoV();
-      this.props.quiz.tipo1.choices[i].value.primero = this.props.datos.base;
-      this.props.quiz.tipo1.choices[i].value.segundo = this.props.datos.numero;
-      this.props.quiz.tipo1.choices[i].value.tercero = this.props.datos.resultado;
+      SAMPLES.preguntas2.tipo1.choices[i].value.primero = SAMPLES.Logaritmos.base;
+      SAMPLES.preguntas2.tipo1.choices[i].value.segundo = SAMPLES.Logaritmos.numero;
+      SAMPLES.preguntas2.tipo1.choices[i].value.tercero = SAMPLES.Logaritmos.resultado;
     }
   }
   crearPregunta2() {
     this.generarNumerosYOperadores();
-    for (let i = 0; i < this.props.quiz.tipo2.choices.length; i++) {
-      this.props.quiz.tipo2.choices[i].answer = false;
+    for (let i = 0; i < SAMPLES.preguntas2.tipo2.choices.length; i++) {
+      SAMPLES.preguntas2.tipo2.choices[i].answer = false;
       this.resultadoF();
-      this.props.quiz.tipo2.choices[i].value = + this.props.datos.resultado;
+      SAMPLES.preguntas2.tipo2.choices[i].value = + SAMPLES.Logaritmos.resultado;
     }
-    var i = Math.floor(Math.random() * this.props.quiz.tipo2.choices.length);
-    this.props.quiz.tipo2.choices[i].answer = true;
+    var i = Math.floor(Math.random() * SAMPLES.preguntas2.tipo2.choices.length);
+    SAMPLES.preguntas2.tipo2.choices[i].answer = true;
     this.resultadoV();
-    this.props.quiz.tipo2.choices[i].value = + this.props.datos.resultado;
-    this.props.quiz.tipo2.value.primero = this.props.datos.base;
-    this.props.quiz.tipo2.value.segundo = this.props.datos.numero;
+    SAMPLES.preguntas2.tipo2.choices[i].value = + SAMPLES.Logaritmos.resultado;
+    SAMPLES.preguntas2.tipo2.value.primero = SAMPLES.Logaritmos.base;
+    SAMPLES.preguntas2.tipo2.value.segundo = SAMPLES.Logaritmos.numero;
   }
   crearPregunta3() {
     this.generarNumerosYOperadores();
     this.resultadoV();
-    this.props.quiz.tipo3.value.primero = this.props.datos.base;
-    this.props.quiz.tipo3.value.segundo = this.props.datos.numero;
-    this.props.quiz.tipo3.answer = this.props.datos.resultado;
+    SAMPLES.preguntas2.tipo3.value.primero = SAMPLES.Logaritmos.base;
+    SAMPLES.preguntas2.tipo3.value.segundo = SAMPLES.Logaritmos.numero;
+    SAMPLES.preguntas2.tipo3.answer = SAMPLES.Logaritmos.resultado;
   }
 
   generarNumerosYOperadores() {
     if (this.props.difficulty < 4) {
-      this.props.datos.base = 2;
-      this.props.datos.resultado = Math.floor((Math.random() * 13) + 1);
-      this.props.datos.numero = Math.pow(this.props.datos.base, this.props.datos.resultado);
+      SAMPLES.Logaritmos.base = 2;
+      SAMPLES.Logaritmos.resultado = Math.floor((Math.random() * 13) + 1);
+      SAMPLES.Logaritmos.numero = Math.pow(SAMPLES.Logaritmos.base, SAMPLES.Logaritmos.resultado);
     } else {
-      this.props.datos.base = 10;
-      this.props.datos.resultado = Math.floor((Math.random() * 11) + 1);
-      this.props.datos.numero = Math.pow(this.props.datos.base, this.props.datos.resultado);
+      SAMPLES.Logaritmos.base = 10;
+      SAMPLES.Logaritmos.resultado = Math.floor((Math.random() * 11) + 1);
+      SAMPLES.Logaritmos.numero = Math.pow(SAMPLES.Logaritmos.base, SAMPLES.Logaritmos.resultado);
     }
   }
   resultadoV() {
-    if (this.props.datos.base === 2) {
-      this.props.datos.resultado = Math.log2(this.props.datos.numero);
+    if (SAMPLES.Logaritmos.base === 2) {
+      SAMPLES.Logaritmos.resultado = Math.log2(SAMPLES.Logaritmos.numero);
     } else {
-      this.props.datos.resultado = Math.log10(this.props.datos.numero);
+      SAMPLES.Logaritmos.resultado = Math.log10(SAMPLES.Logaritmos.numero);
     }
   }
   resultadoF() {
     var resultadoV;
     var resultadoF;
-    if (this.props.datos.base === 2) {
-      resultadoV = Math.log2(this.props.datos.numero);
+    if (SAMPLES.Logaritmos.base === 2) {
+      resultadoV = Math.log2(SAMPLES.Logaritmos.numero);
     } else {
-      resultadoV = Math.log10(this.props.datos.numero);
+      resultadoV = Math.log10(SAMPLES.Logaritmos.numero);
     }
-    resultadoF = Math.floor(resultadoV - 10 + (Math.random() * 10) + 1);
+    resultadoF = Math.floor(resultadoV - 5 + (Math.random() * 10) + 1);
+    var j=0;
     while (resultadoF === resultadoV || resultadoF < 0) {
-      resultadoF = Math.floor(resultadoV - 10 + (Math.random() * 10) + 1);
+      resultadoF = Math.floor(resultadoV - 5 + (Math.random() * 10) + 1);
+      j++;
+      if(j > 3000){
+       alert("Logaritmos1: Esta línea no debería ejecutarse nunca.")
+       resultadoF = resultadoV + 1;
+       break;
+     }
     }
-    this.props.datos.resultado = resultadoF;
+    SAMPLES.Logaritmos.resultado = resultadoF;
   }
 
   render() {
@@ -254,17 +260,17 @@ export default class MultiplicacionDivision extends React.Component {
     let isLastQuestion = (SAMPLES.pregunta === GLOBAL_CONFIG.n);
     let temporizador = [];
     if (GLOBAL_CONFIG.progressBar) {
-      temporizador.push(<Temporizador ref="contador" key={SAMPLES.pregunta} secondsRemaining={GLOBAL_CONFIG.temporizador} onAnswerQuiz={this.onAnswerQuiz.bind(this)}/>);
+      temporizador.push(<Temporizador ref="contador" key={SAMPLES.pregunta} seconds={GLOBAL_CONFIG.temporizador} onAnswerQuiz={this.onAnswerQuiz.bind(this)}/>);
     }
     switch (this.state.tipo) {
       case 0:
         let choices1 = [];
-        for (let i = 0; i < this.props.quiz.tipo1.choices.length; i++) {
-          choices1.push(<Tipo1 key={"MyQuiz_" + "quiz_choice_" + i} choice={this.props.quiz.tipo1.choices[i]} checked={this.state.selected_choices_ids.indexOf(this.props.quiz.tipo1.choices[i].id) !== -1} handleChange={this.handleMultiChoiceChange.bind(this)} quizAnswered={this.state.answered} tipo={3}/>);
+        for (let i = 0; i < SAMPLES.preguntas2.tipo1.choices.length; i++) {
+          choices1.push(<Tipo1 key={"MyQuiz_" + "quiz_choice_" + i} choice={SAMPLES.preguntas2.tipo1.choices[i]} checked={this.state.selected_choices_ids.indexOf(SAMPLES.preguntas2.tipo1.choices[i].id) !== -1} handleChange={this.handleMultiChoiceChange.bind(this)} quizAnswered={this.state.answered} tipo={3}/>);
         }
         return (<div className="question">
           <div className="pregunta">
-            <div className="textopregunta">{this.props.quiz.tipo1.value}</div>
+            <div className="textopregunta">{SAMPLES.preguntas2.tipo1.value}</div>
             <div className="respuestas">
               {choices1}
             </div>
@@ -276,12 +282,12 @@ export default class MultiplicacionDivision extends React.Component {
         break;
       case 1:
         let choices2 = [];
-        for (let i = 0; i < this.props.quiz.tipo2.choices.length; i++) {
-          choices2.push(<Tipo2 key={"MyQuiz_" + "quiz_choice_" + i} choice={this.props.quiz.tipo2.choices[i]} checked={i === this.state.option} handleChange={this.handleOneChoiceChange.bind(this)} quizAnswered={this.state.answered} difficulty={this.props.difficulty}/>);
+        for (let i = 0; i < SAMPLES.preguntas2.tipo2.choices.length; i++) {
+          choices2.push(<Tipo2 key={"MyQuiz_" + "quiz_choice_" + i} choice={SAMPLES.preguntas2.tipo2.choices[i]} checked={i === this.state.option} handleChange={this.handleOneChoiceChange.bind(this)} quizAnswered={this.state.answered} difficulty={this.props.difficulty}/>);
         }
         return (<div className="question">
           <div className="pregunta">
-            <div className="textopregunta">¿Cuanto es Log<sub>{this.props.quiz.tipo2.value.primero}</sub>({this.props.quiz.tipo2.value.segundo})?</div>
+            <div className="textopregunta">¿Cuanto es Log<sub>{SAMPLES.preguntas2.tipo2.value.primero}</sub>({SAMPLES.preguntas2.tipo2.value.segundo})?</div>
             <div className="respuestas">
               {choices2}
             </div>
@@ -293,7 +299,7 @@ export default class MultiplicacionDivision extends React.Component {
       case 2:
         let input;
         if (this.state.answered) {
-          if (this.state.input_answer === this.props.quiz.tipo3.answer) {
+          if (this.state.input_answer === SAMPLES.preguntas2.tipo3.answer) {
             input += " input_answerT";
           } else {
             input += " input_answerF";
@@ -301,7 +307,7 @@ export default class MultiplicacionDivision extends React.Component {
         }
         return (<div className="question">
           <div className="pregunta">
-            <div className="textopregunta">¿Cuanto es Log<sub>{this.props.quiz.tipo3.value.primero}</sub>({this.props.quiz.tipo3.value.segundo})?</div>
+            <div className="textopregunta">¿Cuanto es Log<sub>{SAMPLES.preguntas2.tipo3.value.primero}</sub>({SAMPLES.preguntas2.tipo3.value.segundo})?</div>
             <div className="respuestas">
               <div className="question_choice">
                 <input className={input} type="number" name="respuesta" onChange={this.handleInputChange.bind(this)}></input>

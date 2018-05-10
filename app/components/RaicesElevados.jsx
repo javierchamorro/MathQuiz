@@ -23,7 +23,7 @@ export default class RaicesElevados extends React.Component {
     };
   }
   componentDidMount() {
-    this.props.quiz.answered = false;
+    SAMPLES.preguntas2.answered = false;
     this.elegirTipo();
   }
 
@@ -33,28 +33,27 @@ export default class RaicesElevados extends React.Component {
       progress_measure: 1 / GLOBAL_CONFIG.n,
       score: 1 / GLOBAL_CONFIG.n
     });
-    var decision;
-    do {
-      this.props.dispatch(addObjectives([objective]));
-      var tipo = Math.floor(Math.random() * 3);
-      this.setState({tipo: tipo})
-      switch (tipo) {
-        case 0:
-          decision = 1;
-          this.crearPregunta1();
-          break;
-        case 1:
-          decision = 2;
-          this.crearPregunta2();
-          break;
-        case 2:
-          decision = 3;
-          this.crearPregunta3();
-          break;
-        default:
-          console.log("error");
-      }
-    } while ((decision === 1 && !GLOBAL_CONFIG.tipo.tipo1) || (decision === 2 && !GLOBAL_CONFIG.tipo.tipo2) || (decision === 3 && !GLOBAL_CONFIG.tipo.tipo3))
+    var tipo = 0;
+    if (GLOBAL_CONFIG.tipo.tipo1 || GLOBAL_CONFIG.tipo.tipo2 || GLOBAL_CONFIG.tipo.tipo3) {
+      do {
+        tipo = Math.floor(Math.random() * 3);
+      } while ((tipo === 0 && !GLOBAL_CONFIG.tipo.tipo1) || (tipo === 1 && !GLOBAL_CONFIG.tipo.tipo2) || (tipo === 2 && !GLOBAL_CONFIG.tipo.tipo3))
+    }
+    this.props.dispatch(addObjectives([objective]));
+    this.setState({tipo: tipo})
+    switch (tipo) {
+      case 0:
+        this.crearPregunta1();
+        break;
+      case 1:
+        this.crearPregunta2();
+        break;
+      case 2:
+        this.crearPregunta3();
+        break;
+      default:
+        console.log("error");
+    }
   }
 
   handleMultiChoiceChange(choice) {
@@ -79,13 +78,13 @@ export default class RaicesElevados extends React.Component {
     switch (this.state.tipo) {
       case 0:
         // Calculate score
-        let nChoices = this.props.quiz.tipo1.choices.length;
+        let nChoices = SAMPLES.preguntas2.tipo1.choices.length;
         let correctAnswers = 0;
         let incorrectAnswers = 0;
         let blankAnswers = 0;
 
         for (let i = 0; i < nChoices; i++) {
-          let choice = this.props.quiz.tipo1.choices[i];
+          let choice = SAMPLES.preguntas2.tipo1.choices[i];
           if (this.state.selected_choices_ids.indexOf(choice.id) !== -1) {
             // Answered choice
             if (choice.answer === true) {
@@ -97,20 +96,20 @@ export default class RaicesElevados extends React.Component {
             blankAnswers += 1;
           }
         }
-        scorePercentage = Math.max(0, (correctAnswers - incorrectAnswers) / this.props.quiz.tipo1.choices.filter(function(c) {
+        scorePercentage = Math.max(0, (correctAnswers - incorrectAnswers) / SAMPLES.preguntas2.tipo1.choices.filter(function(c) {
           return c.answer === true;
         }).length);
 
         break;
       case 1:
-        if (this.state.option === "" || this.props.quiz.tipo2.choices[this.state.option].answer === false) {
+        if (this.state.option === "" || SAMPLES.preguntas2.tipo2.choices[this.state.option].answer === false) {
           scorePercentage = 0;
         } else {
           scorePercentage = 1;
         }
         break;
       case 2:
-        if (this.props.quiz.tipo3.answer === this.state.input_answer) {
+        if (SAMPLES.preguntas2.tipo3.answer === this.state.input_answer) {
           scorePercentage = 1;
         } else {
           scorePercentage = 0;
@@ -151,14 +150,14 @@ export default class RaicesElevados extends React.Component {
     SAMPLES.pregunta++;
     this.setState({selected_choices_ids: [], answered: false});
     this.setState({option: ""});
-    this.props.quiz.answered = true;
+    SAMPLES.preguntas2.answered = true;
     this.props.onReset(this.state.correct);
     this.elegirTipo();
   }
   onResetQuiz() {
     this.setState({selected_choices_ids: [], answered: false});
     this.setState({option: ""});
-    this.props.quiz.answered = true;
+    SAMPLES.preguntas2.answered = true;
     this.props.onReset(this.state.correct);
     this.elegirTipo();
     this.props.onResetQuiz();
@@ -167,57 +166,57 @@ export default class RaicesElevados extends React.Component {
   crearPregunta1() {
     if (this.props.difficulty < 4) {
       var verdaderas = 0;
-      for (let i = 0; i < this.props.quiz.tipo1.choices.length; i++) {
+      for (let i = 0; i < SAMPLES.preguntas2.tipo1.choices.length; i++) {
         var vf = Math.floor((Math.random() * 2) + 1);
         if (vf === 1) {
-          this.props.quiz.tipo1.choices[i].answer = false;
+          SAMPLES.preguntas2.tipo1.choices[i].answer = false;
           this.generarNumerosYOperadores();
           this.resultadoF();
         } else {
-          this.props.quiz.tipo1.choices[i].answer = true;
+          SAMPLES.preguntas2.tipo1.choices[i].answer = true;
           this.generarNumerosYOperadores();
           this.resultadoV();
           verdaderas++;
         }
-        this.props.quiz.tipo1.choices[i].value.primero = this.props.datos.primerNum;
-        this.props.quiz.tipo1.choices[i].value.segundo = this.props.datos.segundNum;
-        this.props.quiz.tipo1.choices[i].value.tercero = this.props.datos.resultado;
+        SAMPLES.preguntas2.tipo1.choices[i].value.primero = SAMPLES.RaicesElevados.primerNum;
+        SAMPLES.preguntas2.tipo1.choices[i].value.segundo = SAMPLES.RaicesElevados.segundNum;
+        SAMPLES.preguntas2.tipo1.choices[i].value.tercero = SAMPLES.RaicesElevados.resultado;
       }
       if (verdaderas === 0) {
-        var i = Math.floor(Math.random() * this.props.quiz.tipo1.choices.length);
-        this.props.quiz.tipo1.choices[i].answer = true;
+        var i = Math.floor(Math.random() * SAMPLES.preguntas2.tipo1.choices.length);
+        SAMPLES.preguntas2.tipo1.choices[i].answer = true;
         this.generarNumerosYOperadores();
         this.resultadoV();
-        this.props.quiz.tipo1.choices[i].value.primero = this.props.datos.primerNum;
-        this.props.quiz.tipo1.choices[i].value.segundo = this.props.datos.segundNum;
-        this.props.quiz.tipo1.choices[i].value.tercero = this.props.datos.resultado;
+        SAMPLES.preguntas2.tipo1.choices[i].value.primero = SAMPLES.RaicesElevados.primerNum;
+        SAMPLES.preguntas2.tipo1.choices[i].value.segundo = SAMPLES.RaicesElevados.segundNum;
+        SAMPLES.preguntas2.tipo1.choices[i].value.tercero = SAMPLES.RaicesElevados.resultado;
       }
     } else {
       var verdaderas = 0;
-      for (let i = 0; i < this.props.quiz.tipo1.choices.length; i++) {
+      for (let i = 0; i < SAMPLES.preguntas2.tipo1.choices.length; i++) {
         var vf = Math.floor((Math.random() * 2) + 1);
         if (vf === 1) {
-          this.props.quiz.tipo1.choices[i].answer = false;
+          SAMPLES.preguntas2.tipo1.choices[i].answer = false;
           this.generarNumerosYOperadores();
           this.resultadoF();
         } else {
-          this.props.quiz.tipo1.choices[i].answer = true;
+          SAMPLES.preguntas2.tipo1.choices[i].answer = true;
           this.generarNumerosYOperadores();
           this.resultadoV();
           verdaderas++;
         }
-        this.props.quiz.tipo1.choices[i].value.primero = this.props.datos.segundNum;
-        this.props.quiz.tipo1.choices[i].value.segundo = this.props.datos.resultado;
-        this.props.quiz.tipo1.choices[i].value.tercero = this.props.datos.primerNumF;
+        SAMPLES.preguntas2.tipo1.choices[i].value.primero = SAMPLES.RaicesElevados.segundNum;
+        SAMPLES.preguntas2.tipo1.choices[i].value.segundo = SAMPLES.RaicesElevados.resultado;
+        SAMPLES.preguntas2.tipo1.choices[i].value.tercero = SAMPLES.RaicesElevados.primerNumF;
       }
       if (verdaderas === 0) {
-        var i = Math.floor(Math.random() * this.props.quiz.tipo1.choices.length);
-        this.props.quiz.tipo1.choices[i].answer = true;
+        var i = Math.floor(Math.random() * SAMPLES.preguntas2.tipo1.choices.length);
+        SAMPLES.preguntas2.tipo1.choices[i].answer = true;
         this.generarNumerosYOperadores();
         this.resultadoV();
-        this.props.quiz.tipo1.choices[i].value.primero = this.props.datos.segundNum;
-        this.props.quiz.tipo1.choices[i].value.segundo = this.props.datos.resultado;
-        this.props.quiz.tipo1.choices[i].value.tercero = this.props.datos.primerNumF;
+        SAMPLES.preguntas2.tipo1.choices[i].value.primero = SAMPLES.RaicesElevados.segundNum;
+        SAMPLES.preguntas2.tipo1.choices[i].value.segundo = SAMPLES.RaicesElevados.resultado;
+        SAMPLES.preguntas2.tipo1.choices[i].value.tercero = SAMPLES.RaicesElevados.primerNumF;
       }
     }
 
@@ -225,91 +224,111 @@ export default class RaicesElevados extends React.Component {
   crearPregunta2() {
     if (this.props.difficulty < 4) {
       this.generarNumerosYOperadores();
-      for (let i = 0; i < this.props.quiz.tipo2.choices.length; i++) {
-        this.props.quiz.tipo2.choices[i].answer = false;
+      for (let i = 0; i < SAMPLES.preguntas2.tipo2.choices.length; i++) {
+        SAMPLES.preguntas2.tipo2.choices[i].answer = false;
         this.resultadoF();
-        this.props.quiz.tipo2.choices[i].value = + this.props.datos.resultado;
+        SAMPLES.preguntas2.tipo2.choices[i].value = + SAMPLES.RaicesElevados.resultado;
       }
-      var i = Math.floor(Math.random() * this.props.quiz.tipo2.choices.length);
-      this.props.quiz.tipo2.choices[i].answer = true;
+      var i = Math.floor(Math.random() * SAMPLES.preguntas2.tipo2.choices.length);
+      SAMPLES.preguntas2.tipo2.choices[i].answer = true;
       this.resultadoV();
-      this.props.quiz.tipo2.choices[i].value = + this.props.datos.resultado;
-      this.props.quiz.tipo2.value.primero = this.props.datos.primerNum;
-      this.props.quiz.tipo2.value.segundo = this.props.datos.segundNum;
+      SAMPLES.preguntas2.tipo2.choices[i].value = + SAMPLES.RaicesElevados.resultado;
+      SAMPLES.preguntas2.tipo2.value.primero = SAMPLES.RaicesElevados.primerNum;
+      SAMPLES.preguntas2.tipo2.value.segundo = SAMPLES.RaicesElevados.segundNum;
     } else {
       this.generarNumerosYOperadores();
-      for (let i = 0; i < this.props.quiz.tipo2.choices.length; i++) {
-        this.props.quiz.tipo2.choices[i].answer = false;
+      for (let i = 0; i < SAMPLES.preguntas2.tipo2.choices.length; i++) {
+        SAMPLES.preguntas2.tipo2.choices[i].answer = false;
         this.resultadoF();
-        this.props.quiz.tipo2.choices[i].value = + this.props.datos.primerNumF;
+        SAMPLES.preguntas2.tipo2.choices[i].value = + SAMPLES.RaicesElevados.primerNumF;
       }
-      var i = Math.floor(Math.random() * this.props.quiz.tipo2.choices.length);
-      this.props.quiz.tipo2.choices[i].answer = true;
+      var i = Math.floor(Math.random() * SAMPLES.preguntas2.tipo2.choices.length);
+      SAMPLES.preguntas2.tipo2.choices[i].answer = true;
       this.resultadoV();
-      this.props.quiz.tipo2.choices[i].value = + this.props.datos.primerNumF;
-      this.props.quiz.tipo2.value.primero = this.props.datos.segundNum;
-      this.props.quiz.tipo2.value.segundo = this.props.datos.resultado;
+      SAMPLES.preguntas2.tipo2.choices[i].value = + SAMPLES.RaicesElevados.primerNumF;
+      SAMPLES.preguntas2.tipo2.value.primero = SAMPLES.RaicesElevados.segundNum;
+      SAMPLES.preguntas2.tipo2.value.segundo = SAMPLES.RaicesElevados.resultado;
     }
   }
   crearPregunta3() {
     this.generarNumerosYOperadores();
     this.resultadoV();
     if (this.props.difficulty < 4) {
-      this.props.quiz.tipo3.value.primero = this.props.datos.primerNum;
-      this.props.quiz.tipo3.value.segundo = this.props.datos.segundNum;
-      this.props.quiz.tipo3.answer = this.props.datos.resultado;
+      SAMPLES.preguntas2.tipo3.value.primero = SAMPLES.RaicesElevados.primerNum;
+      SAMPLES.preguntas2.tipo3.value.segundo = SAMPLES.RaicesElevados.segundNum;
+      SAMPLES.preguntas2.tipo3.answer = SAMPLES.RaicesElevados.resultado;
     } else {
-      this.props.quiz.tipo3.value.primero = this.props.datos.segundNum;
-      this.props.quiz.tipo3.value.segundo = this.props.datos.resultado;
-      this.props.quiz.tipo3.answer = this.props.datos.primerNumF;
+      SAMPLES.preguntas2.tipo3.value.primero = SAMPLES.RaicesElevados.segundNum;
+      SAMPLES.preguntas2.tipo3.value.segundo = SAMPLES.RaicesElevados.resultado;
+      SAMPLES.preguntas2.tipo3.answer = SAMPLES.RaicesElevados.primerNumF;
     }
   }
 
   genAux() {
-    this.props.datos.primerNum = Math.floor((Math.random() * 10) + 1);
-    if (this.props.datos.primerNum === 1) {
-      this.props.datos.segundNum = Math.floor(Math.random() * 1001);
-    } else if (this.props.datos.primerNum === 2) {
-      this.props.datos.segundNum = Math.floor(Math.random() * 13);
-    } else if (this.props.datos.primerNum === 3 || this.props.datos.primerNum === 4 || this.props.datos.primerNum === 10) {
-      this.props.datos.segundNum = Math.floor(Math.random() * 7);
-    } else if (this.props.datos.primerNum === 5 || this.props.datos.primerNum === 8) {
-      this.props.datos.segundNum = Math.floor(Math.random() * 5);
+    SAMPLES.RaicesElevados.primerNum = Math.floor((Math.random() * 10) + 1);
+    if (SAMPLES.RaicesElevados.primerNum === 1) {
+      SAMPLES.RaicesElevados.segundNum = Math.floor(Math.random() * 1001);
+    } else if (SAMPLES.RaicesElevados.primerNum === 2) {
+      SAMPLES.RaicesElevados.segundNum = Math.floor(Math.random() * 13);
+    } else if (SAMPLES.RaicesElevados.primerNum === 3 || SAMPLES.RaicesElevados.primerNum === 4 || SAMPLES.RaicesElevados.primerNum === 10) {
+      SAMPLES.RaicesElevados.segundNum = Math.floor(Math.random() * 7);
+    } else if (SAMPLES.RaicesElevados.primerNum === 5 || SAMPLES.RaicesElevados.primerNum === 8) {
+      SAMPLES.RaicesElevados.segundNum = Math.floor(Math.random() * 5);
     } else {
-      this.props.datos.segundNum = Math.floor(Math.random() * 4);
+      SAMPLES.RaicesElevados.segundNum = Math.floor(Math.random() * 4);
     }
   }
   generarNumerosYOperadores() {
     if (this.props.difficulty < 4) {
       this.genAux();
     } else {
+      var j =0;
       do {
+        j++
         this.genAux();
-      } while (this.props.datos.segundNum < 1);
+        if(j > 3000){
+         alert("RaicesElevados1: Esta línea no debería ejecutarse nunca.");
+         break;
+       }
+      } while (SAMPLES.RaicesElevados.segundNum < 1);
     }
   }
 
   resultadoV() {
-    this.props.datos.resultado = Math.pow(this.props.datos.primerNum, this.props.datos.segundNum);
-    this.props.datos.primerNumF = this.props.datos.primerNum;
+    SAMPLES.RaicesElevados.resultado = Math.pow(SAMPLES.RaicesElevados.primerNum, SAMPLES.RaicesElevados.segundNum);
+    SAMPLES.RaicesElevados.primerNumF = SAMPLES.RaicesElevados.primerNum;
   }
   resultadoF() {
     var resultadoV;
     var resultadoF;
     if (this.props.difficulty < 4) {
-      resultadoV = Math.pow(this.props.datos.primerNum, this.props.datos.segundNum);
-      resultadoF = Math.floor(resultadoV - 10 + (Math.random() * 10) + 1);
+      resultadoV = Math.pow(SAMPLES.RaicesElevados.primerNum, SAMPLES.RaicesElevados.segundNum);
+      resultadoF = Math.floor(resultadoV - 5 + (Math.random() * 10) + 1);
+      var j=0;
       while (resultadoF === resultadoV) {
-        resultadoF = Math.floor(resultadoV - 10 + (Math.random() * 10) + 1);
+        resultadoF = Math.floor(resultadoV - 5 + (Math.random() * 10) + 1);
+        j++;
+        if(j > 3000){
+         alert("RaicesElevados2: Esta línea no debería ejecutarse nunca.")
+         resultadoF = resultadoV + 1;
+         break;
+       }
       }
-      this.props.datos.resultado = resultadoF;
+      SAMPLES.RaicesElevados.resultado = resultadoF;
     } else {
-      resultadoV = Math.pow(this.props.datos.primerNum, this.props.datos.segundNum);
-      this.props.datos.primerNumF = Math.floor(this.props.datos.primerNum - 10 + (Math.random() * 10) + 1);
-      while (this.props.datos.primerNumF === this.props.datos.primerNum || this.props.datos.primerNumF < 1) {
-        this.props.datos.primerNumF = Math.floor(this.props.datos.primerNum - 10 + (Math.random() * 10) + 1);
+      resultadoV = Math.pow(SAMPLES.RaicesElevados.primerNum, SAMPLES.RaicesElevados.segundNum);
+      SAMPLES.RaicesElevados.primerNumF = Math.floor(SAMPLES.RaicesElevados.primerNum - 5 + (Math.random() * 10) + 1);
+      var j=0;
+      while (SAMPLES.RaicesElevados.primerNumF === SAMPLES.RaicesElevados.primerNum || SAMPLES.RaicesElevados.primerNumF < 1) {
+        SAMPLES.RaicesElevados.primerNumF = Math.floor(SAMPLES.RaicesElevados.primerNum - 5 + (Math.random() * 10) + 1);
+        j++;
+        if(j > 3000){
+         alert("RaicesElevados3: Esta línea no debería ejecutarse nunca.")
+         resultadoF = resultadoV + 1;
+         break;
+       }
       }
-      this.props.datos.resultado = resultadoV;
+      SAMPLES.RaicesElevados.resultado = resultadoV;
     }
   }
 
@@ -320,7 +339,7 @@ export default class RaicesElevados extends React.Component {
     let isLastQuestion = (SAMPLES.pregunta === GLOBAL_CONFIG.n);
     let temporizador = [];
     if (GLOBAL_CONFIG.progressBar) {
-      temporizador.push(<Temporizador ref="contador" key={SAMPLES.pregunta} secondsRemaining={GLOBAL_CONFIG.temporizador} onAnswerQuiz={this.onAnswerQuiz.bind(this)}/>);
+      temporizador.push(<Temporizador ref="contador" key={SAMPLES.pregunta} seconds={GLOBAL_CONFIG.temporizador} onAnswerQuiz={this.onAnswerQuiz.bind(this)}/>);
     }
     var tipo;
     if (this.props.difficulty < 4) {
@@ -331,12 +350,12 @@ export default class RaicesElevados extends React.Component {
     switch (this.state.tipo) {
       case 0:
         let choices1 = [];
-        for (let i = 0; i < this.props.quiz.tipo1.choices.length; i++) {
-          choices1.push(<Tipo1 key={"MyQuiz_" + "quiz_choice_" + i} choice={this.props.quiz.tipo1.choices[i]} checked={this.state.selected_choices_ids.indexOf(this.props.quiz.tipo1.choices[i].id) !== -1} handleChange={this.handleMultiChoiceChange.bind(this)} quizAnswered={this.state.answered} tipo={tipo}/>);
+        for (let i = 0; i < SAMPLES.preguntas2.tipo1.choices.length; i++) {
+          choices1.push(<Tipo1 key={"MyQuiz_" + "quiz_choice_" + i} choice={SAMPLES.preguntas2.tipo1.choices[i]} checked={this.state.selected_choices_ids.indexOf(SAMPLES.preguntas2.tipo1.choices[i].id) !== -1} handleChange={this.handleMultiChoiceChange.bind(this)} quizAnswered={this.state.answered} tipo={tipo}/>);
         }
         return (<div className="question">
           <div className="pregunta">
-            <div className="textopregunta">{this.props.quiz.tipo1.value}</div>
+            <div className="textopregunta">{SAMPLES.preguntas2.tipo1.value}</div>
             <div className="respuestas">
               {choices1}
             </div>
@@ -347,13 +366,13 @@ export default class RaicesElevados extends React.Component {
         break;
       case 1:
         let choices2 = [];
-        for (let i = 0; i < this.props.quiz.tipo2.choices.length; i++) {
-          choices2.push(<Tipo2 key={"MyQuiz_" + "quiz_choice_" + i} choice={this.props.quiz.tipo2.choices[i]} checked={i === this.state.option} handleChange={this.handleOneChoiceChange.bind(this)} quizAnswered={this.state.answered} tipo={tipo}/>);
+        for (let i = 0; i < SAMPLES.preguntas2.tipo2.choices.length; i++) {
+          choices2.push(<Tipo2 key={"MyQuiz_" + "quiz_choice_" + i} choice={SAMPLES.preguntas2.tipo2.choices[i]} checked={i === this.state.option} handleChange={this.handleOneChoiceChange.bind(this)} quizAnswered={this.state.answered} tipo={tipo}/>);
         }
         if (this.props.difficulty === 5) {
           return (<div className="question">
             <div className="pregunta">
-              <div className="textopregunta">¿Cuanto es {this.props.quiz.tipo2.value.primero}<sup>{this.props.quiz.tipo2.value.segundo}</sup>?</div>
+              <div className="textopregunta">¿Cuanto es {SAMPLES.preguntas2.tipo2.value.primero}<sup>{SAMPLES.preguntas2.tipo2.value.segundo}</sup>?</div>
               <div className="respuestas">
                 {choices2}
               </div>
@@ -365,7 +384,7 @@ export default class RaicesElevados extends React.Component {
           return (<div className="question">
             <div className="pregunta">
               <div className="textopregunta">¿Cuanto es
-                <sup>{this.props.quiz.tipo2.value.primero}</sup>√{this.props.quiz.tipo2.value.segundo}
+                <sup>{SAMPLES.preguntas2.tipo2.value.primero}</sup>√{SAMPLES.preguntas2.tipo2.value.segundo}
                 ?</div>
               <div className="respuestas">
                 {choices2}
@@ -379,7 +398,7 @@ export default class RaicesElevados extends React.Component {
       case 2:
         let input;
         if (this.state.answered) {
-          if (this.state.input_answer === this.props.quiz.tipo3.answer) {
+          if (this.state.input_answer === SAMPLES.preguntas2.tipo3.answer) {
             input += " input_answerT";
           } else {
             input += " input_answerF";
@@ -388,7 +407,7 @@ export default class RaicesElevados extends React.Component {
         if (this.props.difficulty < 4) {
           return (<div className="question">
             <div className="pregunta">
-              <div className="textopregunta">¿Cuanto es {this.props.quiz.tipo3.value.primero}<sup>{this.props.quiz.tipo3.value.segundo}</sup>?</div>
+              <div className="textopregunta">¿Cuanto es {SAMPLES.preguntas2.tipo3.value.primero}<sup>{SAMPLES.preguntas2.tipo3.value.segundo}</sup>?</div>
               <div className="respuestas">
                 <div className="question_choice">
                   <input className={input} type="number" name="respuesta" onChange={this.handleInputChange.bind(this)}></input>
@@ -402,7 +421,7 @@ export default class RaicesElevados extends React.Component {
           return (<div className="question">
             <div className="pregunta">
               <div className="textopregunta">¿Cuanto es
-                <sup>{this.props.quiz.tipo3.value.primero}</sup>√{this.props.quiz.tipo3.value.segundo}
+                <sup>{SAMPLES.preguntas2.tipo3.value.primero}</sup>√{SAMPLES.preguntas2.tipo3.value.segundo}
                 ?</div>
               <div className="respuestas">
                 <div className="question_choice">

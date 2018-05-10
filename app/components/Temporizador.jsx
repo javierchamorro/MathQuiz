@@ -4,53 +4,59 @@ import './../assets/scss/bootstrap.min.scss';
 import {ProgressBar} from 'react-bootstrap';
 import Barra from 'react-progressbar';
 
+
+const timerTime = 200;
+let timer;
+
 export default class Temporizador extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      secondsRemaining: 0,
-      secondsRemainingPB:0,
-      seconds: 0,
+      seconds: this.props.seconds,
+      secondsRemaining: this.props.seconds,
+      value: 100
     };
     this.tick = this.tick.bind(this);
   };
 
-  tick() {
+  tick(){
+    let newSecondsRemaining = (this.state.secondsRemaining - timerTime/1000);
     this.setState({
-      secondsRemaining: this.state.secondsRemaining - 0.05
-    });
-    this.setState({
-      secondsRemainingPB: this.state.secondsRemainingPB - 0.05
+      secondsRemaining: newSecondsRemaining,
+      value: ((newSecondsRemaining) / this.state.seconds) * 100
     });
     if (this.state.secondsRemaining + 0.5 <= 0) {
-      clearInterval(this.interval);
+      clearInterval(timer);
       this.tiempoAgotado();
     }
   };
 
-  componentDidMount() {
-    this.setState({secondsRemaining: this.props.secondsRemaining});
-    this.setState({seconds: this.props.secondsRemaining});
-    this.setState({secondsRemainingPB: this.props.secondsRemaining});
-
-    this.interval = setInterval(this.tick, 50);
+  componentDidMount(){
+    console.log("componentDidMount");
+    this.setState({value: 100, secondsRemaining: this.state.seconds});
+    if(this.state.value !== 100){
+      setTimeout(function(){
+        timer = setInterval(this.tick, timerTime);
+      }.bind(this),500);
+    } else {
+      timer = setInterval(this.tick, timerTime);
+    }
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval);
-    this.setState({secondsRemaining: this.state.seconds});
+    console.log("componentWillUnMount");
+    clearInterval(timer);
+
   };
 
-  tiempoAgotado() {
+  tiempoAgotado(){
+
     this.props.onAnswerQuiz();
-    this.setState({secondsRemaining: this.state.seconds});
   };
 
   render() {
-    var segundos = Math.ceil(this.state.secondsRemainingPB);
-
     return (<div className="progressBar">
-      <ProgressBar bsStyle="info" now={(this.state.secondsRemainingPB / this.state.seconds) * 100}/>
+      <ProgressBar bsStyle="info" now={this.state.value}/>
     </div>);
   }
 }
