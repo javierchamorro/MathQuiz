@@ -16,7 +16,7 @@ export default class Header2 extends React.Component {
     if(typeof this.props.tracking.score === "number"){
       trackingTexts.push(<div className="puntuacion1"><div className="texto1">{this.props.I18n.getTrans("i.score") + ": "}</div><div className="azul1">{(this.props.tracking.score * 100).toFixed(1) + "%"}</div></div>);
     } else {
-      trackingTexts.push(<div className="puntuacion1"><div className="texto1">{this.props.I18n.getTrans("i.score") + ": "}</div><div className="azul1">null</div></div>);
+      trackingTexts.push(<div className="puntuacion1"><div className="texto1">{this.props.I18n.getTrans("i.score") + ": "}</div><div className="azul1">0</div></div>);
     }
     if(this.props.user_profile){
       if((typeof this.props.user_profile.name === "string")){

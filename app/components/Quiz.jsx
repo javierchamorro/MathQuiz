@@ -90,11 +90,11 @@ export default class Quiz extends React.Component {
 
   render() {
 
-    if (this.props.user_profile) {
-      if (typeof this.props.user_profile.learner_preference === "undefined" || typeof this.props.user_profile.learner_preference.difficulty === "undefined") {
-        return (<h1>Esperando a que cargue el nivel</h1>)
-      }
-    }
+    // if (this.props.user_profile) {
+    //   if (typeof this.props.user_profile.learner_preference === "undefined" || typeof this.props.user_profile.learner_preference.difficulty === "undefined") {
+    //     return (<h1>Esperando a que cargue el nivel</h1>)
+    //   }
+    // }
     var pregunta;
     var difficulty = this.state.difficulty;
     console.log("difficulty: " + difficulty);
