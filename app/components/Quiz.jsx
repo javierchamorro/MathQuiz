@@ -61,11 +61,13 @@ export default class Quiz extends React.Component {
       this.setState({contadorFalladas: contadorFalladas});
       if (contadorCorrectas === GLOBAL_CONFIG.progresivo) {
         var difficulty = this.state.difficulty + 1;
+        SAMPLES.difficulty = difficulty;
         this.setState({difficulty: difficulty});
         this.setState({contadorCorrectas: 0});
       }
       if (contadorFalladas === GLOBAL_CONFIG.progresivo) {
         var difficulty = this.state.difficulty - 1;
+        SAMPLES.difficulty = difficulty;
         this.setState({difficulty: difficulty});
         this.setState({contadorFalladas: 0});
       }
@@ -97,6 +99,7 @@ export default class Quiz extends React.Component {
     // }
     var pregunta;
     var difficulty = this.state.difficulty;
+    SAMPLES.difficulty = this.state.difficulty;
     console.log("difficulty: " + difficulty);
     switch (difficulty) {
       case 0:

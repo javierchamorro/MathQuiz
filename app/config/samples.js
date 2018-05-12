@@ -230,3 +230,4 @@ export const Logaritmos = {
 }
 
 export var pregunta=1;
+export var difficulty=0;
