@@ -136,7 +136,7 @@ export default class MultiplicacionDivision extends React.Component {
   }
 
   onResetQuestion() {
-    this.setState({selected_choices_ids: [], answered: false});
+    this.setState({selected_choices_ids: [], answered: false, option: "", input_answer: ""});
     if (GLOBAL_CONFIG.progressBar) {
       this.refs.contador.componentDidMount();
     }
@@ -147,7 +147,7 @@ export default class MultiplicacionDivision extends React.Component {
       this.props.dispatch(finishApp(true));
     }
     SAMPLES.pregunta++;
-    this.setState({selected_choices_ids: [], answered: false});
+    this.setState({selected_choices_ids: [], answered: false, option: "", input_answer: ""});
     this.setState({option: ""});
     SAMPLES.preguntas2.answered = true;
     this.props.onReset(this.state.correct);
@@ -155,7 +155,7 @@ export default class MultiplicacionDivision extends React.Component {
   }
 
   onResetQuiz() {
-    this.setState({selected_choices_ids: [], answered: false});
+    this.setState({selected_choices_ids: [], answered: false, option: "", input_answer: ""});
     this.setState({option: ""});
     SAMPLES.preguntas2.answered = true;
     this.props.onReset(this.state.correct);
@@ -240,15 +240,15 @@ export default class MultiplicacionDivision extends React.Component {
       resultadoV = Math.log10(SAMPLES.Logaritmos.numero);
     }
     resultadoF = Math.floor(resultadoV - 5 + (Math.random() * 10) + 1);
-    var j=0;
+    var j = 0;
     while (resultadoF === resultadoV || resultadoF < 0) {
       resultadoF = Math.floor(resultadoV - 5 + (Math.random() * 10) + 1);
       j++;
-      if(j > 3000){
-       alert("Logaritmos1: Esta línea no debería ejecutarse nunca.")
-       resultadoF = resultadoV + 1;
-       break;
-     }
+      if (j > 3000) {
+        alert("Logaritmos1: Esta línea no debería ejecutarse nunca.")
+        resultadoF = resultadoV + 1;
+        break;
+      }
     }
     SAMPLES.Logaritmos.resultado = resultadoF;
   }
@@ -287,7 +287,7 @@ export default class MultiplicacionDivision extends React.Component {
         }
         return (<div className="question">
           <div className="pregunta">
-            <div className="textopregunta">¿Cuanto es Log<sub>{SAMPLES.preguntas2.tipo2.value.primero}</sub>({SAMPLES.preguntas2.tipo2.value.segundo})?</div>
+            <div className="textopregunta">¿Cuánto es Log<sub>{SAMPLES.preguntas2.tipo2.value.primero}</sub>({SAMPLES.preguntas2.tipo2.value.segundo})?</div>
             <div className="respuestas">
               {choices2}
             </div>
@@ -297,20 +297,22 @@ export default class MultiplicacionDivision extends React.Component {
         </div>);
         break;
       case 2:
-        let input;
+        var input = "";
         if (this.state.answered) {
-          if (this.state.input_answer === SAMPLES.preguntas2.tipo3.answer) {
-            input += " input_answerT";
+          if (this.state.input_answer === SAMPLES.preguntas1.tipo3.answer) {
+            input = (<input className="input_answerT" type="number" name="respuesta" disabled="true" onChange={this.handleInputChange.bind(this)} value={this.state.input_answer}></input>);
           } else {
-            input += " input_answerF";
+            input = (<input className="input_answerF" type="number" name="respuesta" disabled="true" onChange={this.handleInputChange.bind(this)} value={this.state.input_answer}></input>);
           }
+        } else {
+          input = (<input type="number" name="respuesta" onChange={this.handleInputChange.bind(this)} value={this.state.input_answer}></input>);
         }
         return (<div className="question">
           <div className="pregunta">
-            <div className="textopregunta">¿Cuanto es Log<sub>{SAMPLES.preguntas2.tipo3.value.primero}</sub>({SAMPLES.preguntas2.tipo3.value.segundo})?</div>
+            <div className="textopregunta">¿Cuánto es Log<sub>{SAMPLES.preguntas2.tipo3.value.primero}</sub>({SAMPLES.preguntas2.tipo3.value.segundo})?</div>
             <div className="respuestas">
               <div className="question_choice">
-                <input className={input} type="number" name="respuesta" onChange={this.handleInputChange.bind(this)}></input>
+                {input}
               </div>
             </div>
             {temporizador}

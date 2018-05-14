@@ -136,7 +136,7 @@ export default class SumaResta extends React.Component {
     }
   }
   onResetQuestion() {
-    this.setState({selected_choices_ids: [], answered: false});
+    this.setState({selected_choices_ids: [], answered: false, option: "", input_answer: ""});
     if (GLOBAL_CONFIG.progressBar) {
       this.refs.contador.componentDidMount();
     }
@@ -146,7 +146,7 @@ export default class SumaResta extends React.Component {
       this.props.dispatch(finishApp(true));
     }
     SAMPLES.pregunta++;
-    this.setState({selected_choices_ids: [], answered: false});
+    this.setState({selected_choices_ids: [], answered: false, option: "", input_answer: ""});
     this.setState({option: ""});
     SAMPLES.preguntas1.answered = true;
     this.props.onReset(this.state.correct);
@@ -154,7 +154,7 @@ export default class SumaResta extends React.Component {
     this.refs.contador.componentWillUnmount();
   }
   onResetQuiz() {
-    this.setState({selected_choices_ids: [], answered: false});
+    this.setState({selected_choices_ids: [], answered: false, option: "", input_answer: ""});
     this.setState({option: ""});
     SAMPLES.preguntas1.answered = true;
     this.props.onReset(this.state.correct);
@@ -224,7 +224,7 @@ export default class SumaResta extends React.Component {
       SAMPLES.preguntas1.tipo2.choices[i].answer = true;
       this.resultadoV();
       SAMPLES.preguntas1.tipo2.choices[i].value = SAMPLES.SumaResta.resultado;
-      SAMPLES.preguntas1.tipo2.value = "¿Cuanto es " + SAMPLES.SumaResta.primerNum + " " + SAMPLES.SumaResta.operador1 + " " + SAMPLES.SumaResta.impsegundNum + " " + SAMPLES.SumaResta.operador2 + " " + SAMPLES.SumaResta.imptercerNum + "?";
+      SAMPLES.preguntas1.tipo2.value = "¿Cuánto es " + SAMPLES.SumaResta.primerNum + " " + SAMPLES.SumaResta.operador1 + " " + SAMPLES.SumaResta.impsegundNum + " " + SAMPLES.SumaResta.operador2 + " " + SAMPLES.SumaResta.imptercerNum + "?";
 
     } else {
       this.generarNumerosYOperadores();
@@ -238,7 +238,7 @@ export default class SumaResta extends React.Component {
       SAMPLES.preguntas1.tipo2.choices[i].answer = true;
       this.resultadoV();
       SAMPLES.preguntas1.tipo2.choices[i].value = + SAMPLES.SumaResta.resultado;
-      SAMPLES.preguntas1.tipo2.value = "¿Cuanto es " + SAMPLES.SumaResta.primerNum + " " + SAMPLES.SumaResta.operador1 + " " + SAMPLES.SumaResta.impsegundNum + "?";
+      SAMPLES.preguntas1.tipo2.value = "¿Cuánto es " + SAMPLES.SumaResta.primerNum + " " + SAMPLES.SumaResta.operador1 + " " + SAMPLES.SumaResta.impsegundNum + "?";
     }
   }
   crearPregunta3() {
@@ -246,12 +246,12 @@ export default class SumaResta extends React.Component {
       this.generarNumerosYOperadores();
       this.resultadoV();
       SAMPLES.preguntas1.tipo3.answer = SAMPLES.SumaResta.resultado;
-      SAMPLES.preguntas1.tipo3.value = "¿Cuanto es " + SAMPLES.SumaResta.primerNum + " " + SAMPLES.SumaResta.operador1 + " " + SAMPLES.SumaResta.impsegundNum + " " + SAMPLES.SumaResta.operador2 + " " + SAMPLES.SumaResta.imptercerNum + "?";
+      SAMPLES.preguntas1.tipo3.value = "¿Cuánto es " + SAMPLES.SumaResta.primerNum + " " + SAMPLES.SumaResta.operador1 + " " + SAMPLES.SumaResta.impsegundNum + " " + SAMPLES.SumaResta.operador2 + " " + SAMPLES.SumaResta.imptercerNum + "?";
     } else {
       this.generarNumerosYOperadores();
       this.resultadoV();
       SAMPLES.preguntas1.tipo3.answer = SAMPLES.SumaResta.resultado;
-      SAMPLES.preguntas1.tipo3.value = "¿Cuanto es " + SAMPLES.SumaResta.primerNum + " " + SAMPLES.SumaResta.operador1 + " " + SAMPLES.SumaResta.impsegundNum + "?";
+      SAMPLES.preguntas1.tipo3.value = "¿Cuánto es " + SAMPLES.SumaResta.primerNum + " " + SAMPLES.SumaResta.operador1 + " " + SAMPLES.SumaResta.impsegundNum + "?";
 
     }
   }
@@ -359,15 +359,15 @@ export default class SumaResta extends React.Component {
         resultadoV = SAMPLES.SumaResta.primerNum - SAMPLES.SumaResta.segundNum;
       }
       resultadoF = Math.floor(resultadoV - 5 + (Math.random() * 10) + 1)
-      var j =0;
+      var j = 0;
       while (resultadoF === resultadoV || resultadoF < 0) {
         resultadoF = Math.floor(resultadoV - 5 + (Math.random() * 10) + 1);
         j++;
-        if(j > 3000){
-         alert("SumaResta1: Esta línea no debería ejecutarse nunca.")
-         resultadoF = resultadoV + 1;
-         break;
-       }
+        if (j > 3000) {
+          alert("SumaResta1: Esta línea no debería ejecutarse nunca.")
+          resultadoF = resultadoV + 1;
+          break;
+        }
       }
     } else if (this.props.difficulty < 6) {
       if (SAMPLES.SumaResta.operador1 === "+") {
@@ -376,15 +376,15 @@ export default class SumaResta extends React.Component {
         resultadoV = SAMPLES.SumaResta.primerNum - SAMPLES.SumaResta.segundNum;
       }
       resultadoF = Math.floor(resultadoV - 5 + (Math.random() * 10) + 1);
-      var j=0;
+      var j = 0;
       while (resultadoF === resultadoV) {
         resultadoF = Math.floor(resultadoV - 5 + (Math.random() * 10) + 1);
         j++;
-        if(j > 3000){
-         alert("SumaResta2: Esta línea no debería ejecutarse nunca.")
-         resultadoF = resultadoV + 1;
-         break;
-       }
+        if (j > 3000) {
+          alert("SumaResta2: Esta línea no debería ejecutarse nunca.")
+          resultadoF = resultadoV + 1;
+          break;
+        }
       }
     } else {
       var r;
@@ -399,15 +399,15 @@ export default class SumaResta extends React.Component {
         resultadoV = r - SAMPLES.SumaResta.tercerNum;
       }
       resultadoF = Math.floor(resultadoV - 5 + (Math.random() * 10) + 1)
-      var j=0;
+      var j = 0;
       while (resultadoF === resultadoV) {
         resultadoF = Math.floor(resultadoV - 5 + (Math.random() * 10) + 1);
         j++;
-        if(j > 3000){
-         alert("SumaResta3: Esta línea no debería ejecutarse nunca.")
-         resultadoF = resultadoV + 1;
-         break;
-       }
+        if (j > 3000) {
+          alert("SumaResta3: Esta línea no debería ejecutarse nunca.")
+          resultadoF = resultadoV + 1;
+          break;
+        }
       }
     }
     SAMPLES.SumaResta.resultado = resultadoF;
@@ -456,20 +456,22 @@ export default class SumaResta extends React.Component {
         </div>);
         break;
       case 2:
-        let input;
+        var input = "";
         if (this.state.answered) {
           if (this.state.input_answer === SAMPLES.preguntas1.tipo3.answer) {
-            input = "input_answerT";
+            input = (<input className="input_answerT" type="number" name="respuesta" disabled="true" onChange={this.handleInputChange.bind(this)} value={this.state.input_answer}></input>);
           } else {
-            input = "input_answerF";
+            input = (<input className="input_answerF" type="number" name="respuesta" disabled="true" onChange={this.handleInputChange.bind(this)} value={this.state.input_answer}></input>);
           }
+        } else {
+          input = (<input type="number" name="respuesta" onChange={this.handleInputChange.bind(this)} value={this.state.input_answer}></input>);
         }
         return (<div className="question">
           <div className="pregunta">
             <div className="textopregunta">{SAMPLES.preguntas1.tipo3.value}</div>
             <div className="respuestas">
               <div className="question_choice">
-                <input className={input} type="number" name="respuesta" onChange={this.handleInputChange.bind(this)}></input>
+                {input}
               </div>
             </div>
             {temporizador}

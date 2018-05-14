@@ -137,7 +137,7 @@ export default class MultiplicacionDivision extends React.Component {
   }
 
   onResetQuestion() {
-    this.setState({selected_choices_ids: [], answered: false});
+    this.setState({selected_choices_ids: [], answered: false, option: "", input_answer: ""});
     if (GLOBAL_CONFIG.progressBar) {
       this.refs.contador.componentDidMount();
     }
@@ -148,14 +148,14 @@ export default class MultiplicacionDivision extends React.Component {
       this.props.dispatch(finishApp(true));
     }
     SAMPLES.pregunta++;
-    this.setState({selected_choices_ids: [], answered: false});
+    this.setState({selected_choices_ids: [], answered: false, option: "", input_answer: ""});
     this.setState({option: ""});
     SAMPLES.preguntas1.answered = true;
     this.props.onReset(this.state.correct);
     this.elegirTipo();
   }
   onResetQuiz() {
-    this.setState({selected_choices_ids: [], answered: false});
+    this.setState({selected_choices_ids: [], answered: false, option: "", input_answer: ""});
     this.setState({option: ""});
     SAMPLES.preguntas1.answered = true;
     this.props.onReset(this.state.correct);
@@ -198,13 +198,13 @@ export default class MultiplicacionDivision extends React.Component {
     SAMPLES.preguntas1.tipo2.choices[i].answer = true;
     this.resultadoV();
     SAMPLES.preguntas1.tipo2.choices[i].value = + SAMPLES.MultiplicacionDivision.resultado;
-    SAMPLES.preguntas1.tipo2.value = "¿Cuanto es " + SAMPLES.MultiplicacionDivision.primerNum + " " + SAMPLES.MultiplicacionDivision.operador + " " + SAMPLES.MultiplicacionDivision.impsegundNum + "?";
+    SAMPLES.preguntas1.tipo2.value = "¿Cuánto es " + SAMPLES.MultiplicacionDivision.primerNum + " " + SAMPLES.MultiplicacionDivision.operador + " " + SAMPLES.MultiplicacionDivision.impsegundNum + "?";
   }
   crearPregunta3() {
     this.generarNumerosYOperadores();
     this.resultadoV();
     SAMPLES.preguntas1.tipo3.answer = SAMPLES.MultiplicacionDivision.resultado;
-    SAMPLES.preguntas1.tipo3.value = "¿Cuanto es " + SAMPLES.MultiplicacionDivision.primerNum + " " + SAMPLES.MultiplicacionDivision.operador + " " + SAMPLES.MultiplicacionDivision.impsegundNum + "?";
+    SAMPLES.preguntas1.tipo3.value = "¿Cuánto es " + SAMPLES.MultiplicacionDivision.primerNum + " " + SAMPLES.MultiplicacionDivision.operador + " " + SAMPLES.MultiplicacionDivision.impsegundNum + "?";
   }
 
   generarNumerosYOperadores() {
@@ -272,15 +272,15 @@ export default class MultiplicacionDivision extends React.Component {
       resultadoV = SAMPLES.MultiplicacionDivision.primerNum / SAMPLES.MultiplicacionDivision.segundNum;
     }
     resultadoF = Math.floor(resultadoV - 5 + (Math.random() * 10) + 1);
-    var j=0;
+    var j = 0;
     while (resultadoF === resultadoV) {
       resultadoF = Math.floor(resultadoV - 5 + (Math.random() * 10) + 1);
       j++;
-      if(j > 3000){
-       alert("MultiplicacionDivision1: Esta línea no debería ejecutarse nunca.")
-       resultadoF = resultadoV + 1;
-       break;
-     }
+      if (j > 3000) {
+        alert("MultiplicacionDivision1: Esta línea no debería ejecutarse nunca.")
+        resultadoF = resultadoV + 1;
+        break;
+      }
     }
 
     SAMPLES.MultiplicacionDivision.resultado = resultadoF;
@@ -330,20 +330,22 @@ export default class MultiplicacionDivision extends React.Component {
         </div>);
         break;
       case 2:
-      let input;
-      if (this.state.answered) {
-        if (this.state.input_answer === SAMPLES.preguntas1.tipo3.answer) {
-          input += " input_answerT";
+        var input = "";
+        if (this.state.answered) {
+          if (this.state.input_answer === SAMPLES.preguntas1.tipo3.answer) {
+            input = (<input className="input_answerT" type="number" name="respuesta" disabled="true" onChange={this.handleInputChange.bind(this)} value={this.state.input_answer}></input>);
+          } else {
+            input = (<input className="input_answerF" type="number" name="respuesta" disabled="true" onChange={this.handleInputChange.bind(this)} value={this.state.input_answer}></input>);
+          }
         } else {
-          input += " input_answerF";
+          input = (<input type="number" name="respuesta" onChange={this.handleInputChange.bind(this)} value={this.state.input_answer}></input>);
         }
-      }
         return (<div className="question">
           <div className="pregunta">
             <div className="textopregunta">{SAMPLES.preguntas1.tipo3.value}</div>
             <div className="respuestas">
               <div className="question_choice">
-                <input className={input} type="number" name="respuesta" onChange={this.handleInputChange.bind(this)}></input>
+                {input}
               </div>
             </div>
             {temporizador}
