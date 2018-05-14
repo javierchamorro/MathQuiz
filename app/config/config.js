@@ -68,10 +68,10 @@ export let GLOBAL_CONFIG = {
         Logaritmos:0.3,
       },
       nivel8:{
-        SumaResta:0.2,
-        MultiplicacionDivision:0.2,
-        RaicesElevados:0.3,
-        Logaritmos:0.3,
+        SumaResta:0,
+        MultiplicacionDivision:0,
+        RaicesElevados:0,
+        Logaritmos:1,
       },
     },
     //Preguntas con temporizador y barra de progresivo
@@ -81,11 +81,11 @@ export let GLOBAL_CONFIG = {
     //tipos de pregunta(multiplechoice,onechoice,input).
     tipo:{
       //multiplechoice
-      tipo1:true,
+      tipo1:false,
       //onechoice
       tipo2:true,
       //input
-      tipo3:true,
+      tipo3:false,
     },
   },
   production:{

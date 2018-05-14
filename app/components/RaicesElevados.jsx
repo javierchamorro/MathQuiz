@@ -249,195 +249,218 @@ export default class RaicesElevados extends React.Component {
       SAMPLES.preguntas2.tipo2.value.primero = SAMPLES.RaicesElevados.segundNum;
       SAMPLES.preguntas2.tipo2.value.segundo = SAMPLES.RaicesElevados.resultado;
     }
-  }
-  crearPregunta3() {
-    this.generarNumerosYOperadores();
-    this.resultadoV();
-    if (this.props.difficulty < 4) {
-      SAMPLES.preguntas2.tipo3.value.primero = SAMPLES.RaicesElevados.primerNum;
-      SAMPLES.preguntas2.tipo3.value.segundo = SAMPLES.RaicesElevados.segundNum;
-      SAMPLES.preguntas2.tipo3.answer = SAMPLES.RaicesElevados.resultado;
-    } else {
-      SAMPLES.preguntas2.tipo3.value.primero = SAMPLES.RaicesElevados.segundNum;
-      SAMPLES.preguntas2.tipo3.value.segundo = SAMPLES.RaicesElevados.resultado;
-      SAMPLES.preguntas2.tipo3.answer = SAMPLES.RaicesElevados.primerNumF;
-    }
-  }
-
-  genAux() {
-    SAMPLES.RaicesElevados.primerNum = Math.floor((Math.random() * 10) + 1);
-    if (SAMPLES.RaicesElevados.primerNum === 1) {
-      SAMPLES.RaicesElevados.segundNum = Math.floor(Math.random() * 1001);
-    } else if (SAMPLES.RaicesElevados.primerNum === 2) {
-      SAMPLES.RaicesElevados.segundNum = Math.floor(Math.random() * 13);
-    } else if (SAMPLES.RaicesElevados.primerNum === 3 || SAMPLES.RaicesElevados.primerNum === 4 || SAMPLES.RaicesElevados.primerNum === 10) {
-      SAMPLES.RaicesElevados.segundNum = Math.floor(Math.random() * 7);
-    } else if (SAMPLES.RaicesElevados.primerNum === 5 || SAMPLES.RaicesElevados.primerNum === 8) {
-      SAMPLES.RaicesElevados.segundNum = Math.floor(Math.random() * 5);
-    } else {
-      SAMPLES.RaicesElevados.segundNum = Math.floor(Math.random() * 4);
-    }
-  }
-  generarNumerosYOperadores() {
-    if (this.props.difficulty < 4) {
-      this.genAux();
-    } else {
-      var j = 0;
-      do {
-        j++
-        this.genAux();
-        if (j > 3000) {
-          alert("RaicesElevados1: Esta línea no debería ejecutarse nunca.");
-          break;
-        }
-      } while (SAMPLES.RaicesElevados.segundNum < 1);
-    }
-  }
-
-  resultadoV() {
-    SAMPLES.RaicesElevados.resultado = Math.pow(SAMPLES.RaicesElevados.primerNum, SAMPLES.RaicesElevados.segundNum);
-    SAMPLES.RaicesElevados.primerNumF = SAMPLES.RaicesElevados.primerNum;
-  }
-  resultadoF() {
-    var resultadoV;
-    var resultadoF;
-    if (this.props.difficulty < 4) {
-      resultadoV = Math.pow(SAMPLES.RaicesElevados.primerNum, SAMPLES.RaicesElevados.segundNum);
-      resultadoF = Math.floor(resultadoV - 5 + (Math.random() * 10) + 1);
-      var j = 0;
-      while (resultadoF === resultadoV) {
-        resultadoF = Math.floor(resultadoV - 5 + (Math.random() * 10) + 1);
-        j++;
-        if (j > 3000) {
-          alert("RaicesElevados2: Esta línea no debería ejecutarse nunca.")
-          resultadoF = resultadoV + 1;
-          break;
-        }
-      }
-      SAMPLES.RaicesElevados.resultado = resultadoF;
-    } else {
-      resultadoV = Math.pow(SAMPLES.RaicesElevados.primerNum, SAMPLES.RaicesElevados.segundNum);
-      SAMPLES.RaicesElevados.primerNumF = Math.floor(SAMPLES.RaicesElevados.primerNum - 5 + (Math.random() * 10) + 1);
-      var j = 0;
-      while (SAMPLES.RaicesElevados.primerNumF === SAMPLES.RaicesElevados.primerNum || SAMPLES.RaicesElevados.primerNumF < 1) {
-        SAMPLES.RaicesElevados.primerNumF = Math.floor(SAMPLES.RaicesElevados.primerNum - 5 + (Math.random() * 10) + 1);
-        j++;
-        if (j > 3000) {
-          alert("RaicesElevados3: Esta línea no debería ejecutarse nunca.")
-          resultadoF = resultadoV + 1;
-          break;
-        }
-      }
-      SAMPLES.RaicesElevados.resultado = resultadoV;
-    }
-  }
-
-  render() {
-    if (this.state.tipo === "") {
-      return (<h1>Esperando a que cargue el nivel</h1>);
-    }
-    let isLastQuestion = (SAMPLES.pregunta === GLOBAL_CONFIG.n);
-    let temporizador = [];
-    if (GLOBAL_CONFIG.progressBar) {
-      temporizador.push(<Temporizador ref="contador" key={SAMPLES.pregunta} seconds={GLOBAL_CONFIG.temporizador} onAnswerQuiz={this.onAnswerQuiz.bind(this)}/>);
-    }
-    var tipo;
-    if (this.props.difficulty < 4) {
-      tipo = 1;
-    } else {
-      tipo = 2;
-    }
-    switch (this.state.tipo) {
-      case 0:
-        let choices1 = [];
-        for (let i = 0; i < SAMPLES.preguntas2.tipo1.choices.length; i++) {
-          choices1.push(<Tipo1 key={"MyQuiz_" + "quiz_choice_" + i} choice={SAMPLES.preguntas2.tipo1.choices[i]} checked={this.state.selected_choices_ids.indexOf(SAMPLES.preguntas2.tipo1.choices[i].id) !== -1} handleChange={this.handleMultiChoiceChange.bind(this)} quizAnswered={this.state.answered} tipo={tipo}/>);
-        }
-        return (<div className="question">
-          <div className="pregunta">
-            <div className="textopregunta">{SAMPLES.preguntas2.tipo1.value}</div>
-            <div className="respuestas">
-              {choices1}
-            </div>
-            {temporizador}
-          </div>
-          <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuiz.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} onNextQuestion={this.onNextQuiz.bind(this)} answered={this.state.answered} quizCompleted={this.props.tracking.finished} allow_finish={isLastQuestion}/>
-        </div>);
-        break;
-      case 1:
-        let choices2 = [];
-        for (let i = 0; i < SAMPLES.preguntas2.tipo2.choices.length; i++) {
-          choices2.push(<Tipo2 key={"MyQuiz_" + "quiz_choice_" + i} choice={SAMPLES.preguntas2.tipo2.choices[i]} checked={i === this.state.option} handleChange={this.handleOneChoiceChange.bind(this)} quizAnswered={this.state.answered} tipo={tipo}/>);
-        }
-        if (this.props.difficulty === 5) {
-          return (<div className="question">
-            <div className="pregunta">
-              <div className="textopregunta">¿Cuánto es {SAMPLES.preguntas2.tipo2.value.primero}<sup>{SAMPLES.preguntas2.tipo2.value.segundo}</sup>?</div>
-              <div className="respuestas">
-                {choices2}
-              </div>
-              {temporizador}
-            </div>
-            <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuiz.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} onNextQuestion={this.onNextQuiz.bind(this)} answered={this.state.answered} quizCompleted={this.props.tracking.finished} allow_finish={isLastQuestion}/>
-          </div>);
-        } else {
-          return (<div className="question">
-            <div className="pregunta">
-              <div className="textopregunta">¿Cuánto es
-                <sup>{SAMPLES.preguntas2.tipo2.value.primero}</sup>√{SAMPLES.preguntas2.tipo2.value.segundo}
-                ?</div>
-              <div className="respuestas">
-                {choices2}
-              </div>
-              {temporizador}
-            </div>
-            <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuiz.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} onNextQuestion={this.onNextQuiz.bind(this)} answered={this.state.answered} quizCompleted={this.props.tracking.finished} allow_finish={isLastQuestion}/>
-          </div>);
-        }
-        break;
-      case 2:
-        var input = "";
-        if (this.state.answered) {
-          if (this.state.input_answer === SAMPLES.preguntas1.tipo3.answer) {
-            input = (<input className="input_answerT" type="number" name="respuesta" disabled="true" onChange={this.handleInputChange.bind(this)} value={this.state.input_answer}></input>);
-          } else {
-            input = (<input className="input_answerF" type="number" name="respuesta" disabled="true" onChange={this.handleInputChange.bind(this)} value={this.state.input_answer}></input>);
+    for (let i = 0; i < SAMPLES.preguntas2.tipo2.choices.length; i++) {
+      for (let j = 0; j < SAMPLES.preguntas2.tipo2.choices.length; j++) {
+        if (i !== j) {
+          var h = 0;
+          while (SAMPLES.preguntas2.tipo2.choices[i].value === SAMPLES.preguntas2.tipo2.choices[j].value) {
+            this.resultadoF();
+            if (this.props.difficulty < 4) {
+              SAMPLES.preguntas2.tipo2.choices[i].value = + SAMPLES.RaicesElevados.resultado;
+            }else{
+              SAMPLES.preguntas2.tipo2.choices[i].value = + SAMPLES.RaicesElevados.primerNumF;
+            }
+              h++;
+              if (h > 3000) {
+                alert("RaicesElevados1: Esta línea no debería ejecutarse nunca.");
+                break;
+              }
+              i = 0;
+              j = 0;
+              break;
+            }
           }
-        } else {
-          input = (<input type="number" name="respuesta" onChange={this.handleInputChange.bind(this)} value={this.state.input_answer}></input>);
         }
-        if (this.props.difficulty < 4) {
+      }
+    }
+    crearPregunta3() {
+      this.generarNumerosYOperadores();
+      this.resultadoV();
+      if (this.props.difficulty < 4) {
+        SAMPLES.preguntas2.tipo3.value.primero = SAMPLES.RaicesElevados.primerNum;
+        SAMPLES.preguntas2.tipo3.value.segundo = SAMPLES.RaicesElevados.segundNum;
+        SAMPLES.preguntas2.tipo3.answer = SAMPLES.RaicesElevados.resultado;
+      } else {
+        SAMPLES.preguntas2.tipo3.value.primero = SAMPLES.RaicesElevados.segundNum;
+        SAMPLES.preguntas2.tipo3.value.segundo = SAMPLES.RaicesElevados.resultado;
+        SAMPLES.preguntas2.tipo3.answer = SAMPLES.RaicesElevados.primerNumF;
+      }
+    }
+
+    genAux() {
+      SAMPLES.RaicesElevados.primerNum = Math.floor((Math.random() * 10) + 1);
+      if (SAMPLES.RaicesElevados.primerNum === 1) {
+        SAMPLES.RaicesElevados.segundNum = Math.floor(Math.random() * 1001);
+      } else if (SAMPLES.RaicesElevados.primerNum === 2) {
+        SAMPLES.RaicesElevados.segundNum = Math.floor(Math.random() * 13);
+      } else if (SAMPLES.RaicesElevados.primerNum === 3 || SAMPLES.RaicesElevados.primerNum === 4 || SAMPLES.RaicesElevados.primerNum === 10) {
+        SAMPLES.RaicesElevados.segundNum = Math.floor(Math.random() * 7);
+      } else if (SAMPLES.RaicesElevados.primerNum === 5 || SAMPLES.RaicesElevados.primerNum === 8) {
+        SAMPLES.RaicesElevados.segundNum = Math.floor(Math.random() * 5);
+      } else {
+        SAMPLES.RaicesElevados.segundNum = Math.floor(Math.random() * 4);
+      }
+    }
+    generarNumerosYOperadores() {
+      if (this.props.difficulty < 4) {
+        this.genAux();
+      } else {
+        var j = 0;
+        do {
+          j++
+          this.genAux();
+          if (j > 3000) {
+            alert("RaicesElevados1: Esta línea no debería ejecutarse nunca.");
+            break;
+          }
+        } while (SAMPLES.RaicesElevados.segundNum < 1);
+      }
+    }
+
+    resultadoV() {
+      SAMPLES.RaicesElevados.resultado = Math.pow(SAMPLES.RaicesElevados.primerNum, SAMPLES.RaicesElevados.segundNum);
+      SAMPLES.RaicesElevados.primerNumF = SAMPLES.RaicesElevados.primerNum;
+    }
+    resultadoF() {
+      var resultadoV;
+      var resultadoF;
+      if (this.props.difficulty < 4) {
+        resultadoV = Math.pow(SAMPLES.RaicesElevados.primerNum, SAMPLES.RaicesElevados.segundNum);
+        resultadoF = Math.floor(resultadoV - 5 + (Math.random() * 10) + 1);
+        var j = 0;
+        while (resultadoF === resultadoV) {
+          resultadoF = Math.floor(resultadoV - 5 + (Math.random() * 10) + 1);
+          j++;
+          if (j > 3000) {
+            alert("RaicesElevados2: Esta línea no debería ejecutarse nunca.")
+            resultadoF = resultadoV + 1;
+            break;
+          }
+        }
+        SAMPLES.RaicesElevados.resultado = resultadoF;
+      } else {
+        resultadoV = Math.pow(SAMPLES.RaicesElevados.primerNum, SAMPLES.RaicesElevados.segundNum);
+        SAMPLES.RaicesElevados.primerNumF = Math.floor(SAMPLES.RaicesElevados.primerNum - 5 + (Math.random() * 10) + 1);
+        var j = 0;
+        while (SAMPLES.RaicesElevados.primerNumF === SAMPLES.RaicesElevados.primerNum || SAMPLES.RaicesElevados.primerNumF < 1) {
+          SAMPLES.RaicesElevados.primerNumF = Math.floor(SAMPLES.RaicesElevados.primerNum - 5 + (Math.random() * 10) + 1);
+          j++;
+          if (j > 3000) {
+            alert("RaicesElevados3: Esta línea no debería ejecutarse nunca.")
+            resultadoF = resultadoV + 1;
+            break;
+          }
+        }
+        SAMPLES.RaicesElevados.resultado = resultadoV;
+      }
+    }
+
+    render() {
+      if (this.state.tipo === "") {
+        return (<h1>Esperando a que cargue el nivel</h1>);
+      }
+      let isLastQuestion = (SAMPLES.pregunta === GLOBAL_CONFIG.n);
+      let temporizador = [];
+      if (GLOBAL_CONFIG.progressBar) {
+        temporizador.push(<Temporizador ref="contador" key={SAMPLES.pregunta} seconds={GLOBAL_CONFIG.temporizador} onAnswerQuiz={this.onAnswerQuiz.bind(this)}/>);
+      }
+      var tipo;
+      if (this.props.difficulty < 4) {
+        tipo = 1;
+      } else {
+        tipo = 2;
+      }
+      switch (this.state.tipo) {
+        case 0:
+          let choices1 = [];
+          for (let i = 0; i < SAMPLES.preguntas2.tipo1.choices.length; i++) {
+            choices1.push(<Tipo1 key={"MyQuiz_" + "quiz_choice_" + i} choice={SAMPLES.preguntas2.tipo1.choices[i]} checked={this.state.selected_choices_ids.indexOf(SAMPLES.preguntas2.tipo1.choices[i].id) !== -1} handleChange={this.handleMultiChoiceChange.bind(this)} quizAnswered={this.state.answered} tipo={tipo}/>);
+          }
           return (<div className="question">
             <div className="pregunta">
-              <div className="textopregunta">¿Cuánto es {SAMPLES.preguntas2.tipo3.value.primero}<sup>{SAMPLES.preguntas2.tipo3.value.segundo}</sup>?</div>
+              <div className="textopregunta">{SAMPLES.preguntas2.tipo1.value}</div>
               <div className="respuestas">
-                <div className="question_choice">
-                  {input}
-                </div>
+                {choices1}
               </div>
               {temporizador}
             </div>
             <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuiz.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} onNextQuestion={this.onNextQuiz.bind(this)} answered={this.state.answered} quizCompleted={this.props.tracking.finished} allow_finish={isLastQuestion}/>
           </div>);
-        } else {
-          return (<div className="question">
-            <div className="pregunta">
-              <div className="textopregunta">¿Cuánto es
-                <sup>{SAMPLES.preguntas2.tipo3.value.primero}</sup>√{SAMPLES.preguntas2.tipo3.value.segundo}
-                ?</div>
-              <div className="respuestas">
-                <div className="question_choice">
-                  {input}
+          break;
+        case 1:
+          let choices2 = [];
+          for (let i = 0; i < SAMPLES.preguntas2.tipo2.choices.length; i++) {
+            choices2.push(<Tipo2 key={"MyQuiz_" + "quiz_choice_" + i} choice={SAMPLES.preguntas2.tipo2.choices[i]} checked={i === this.state.option} handleChange={this.handleOneChoiceChange.bind(this)} quizAnswered={this.state.answered} tipo={tipo}/>);
+          }
+          if (this.props.difficulty < 4) {
+            return (<div className="question">
+              <div className="pregunta">
+                <div className="textopregunta">¿Cuánto es {SAMPLES.preguntas2.tipo2.value.primero}<sup>{SAMPLES.preguntas2.tipo2.value.segundo}</sup>?</div>
+                <div className="respuestas">
+                  {choices2}
                 </div>
+                {temporizador}
               </div>
-              {temporizador}
-            </div>
-            <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuiz.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} onNextQuestion={this.onNextQuiz.bind(this)} answered={this.state.answered} quizCompleted={this.props.tracking.finished} allow_finish={isLastQuestion}/>
-          </div>);
-        }
-        break;
-      default:
-        console.log("error");
+              <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuiz.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} onNextQuestion={this.onNextQuiz.bind(this)} answered={this.state.answered} quizCompleted={this.props.tracking.finished} allow_finish={isLastQuestion}/>
+            </div>);
+          } else {
+            return (<div className="question">
+              <div className="pregunta">
+                <div className="textopregunta">¿Cuánto es
+                  <sup>{SAMPLES.preguntas2.tipo2.value.primero}</sup>√{SAMPLES.preguntas2.tipo2.value.segundo}
+                  ?</div>
+                <div className="respuestas">
+                  {choices2}
+                </div>
+                {temporizador}
+              </div>
+              <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuiz.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} onNextQuestion={this.onNextQuiz.bind(this)} answered={this.state.answered} quizCompleted={this.props.tracking.finished} allow_finish={isLastQuestion}/>
+            </div>);
+          }
+          break;
+        case 2:
+          var input = "";
+          if (this.state.answered) {
+            if (this.state.input_answer === SAMPLES.preguntas2.tipo3.answer) {
+              input = (<input className="input_answerT" type="number" name="respuesta" disabled="true" onChange={this.handleInputChange.bind(this)} value={this.state.input_answer}></input>);
+            } else {
+              input = (<input className="input_answerF" type="number" name="respuesta" disabled="true" onChange={this.handleInputChange.bind(this)} value={this.state.input_answer}></input>);
+            }
+          } else {
+            input = (<input type="number" name="respuesta" onChange={this.handleInputChange.bind(this)} value={this.state.input_answer}></input>);
+          }
+          if (this.props.difficulty < 4) {
+            return (<div className="question">
+              <div className="pregunta">
+                <div className="textopregunta">¿Cuánto es {SAMPLES.preguntas2.tipo3.value.primero}<sup>{SAMPLES.preguntas2.tipo3.value.segundo}</sup>?</div>
+                <div className="respuestas">
+                  <div className="question_choice">
+                    {input}
+                  </div>
+                </div>
+                {temporizador}
+              </div>
+              <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuiz.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} onNextQuestion={this.onNextQuiz.bind(this)} answered={this.state.answered} quizCompleted={this.props.tracking.finished} allow_finish={isLastQuestion}/>
+            </div>);
+          } else {
+            return (<div className="question">
+              <div className="pregunta">
+                <div className="textopregunta">¿Cuánto es
+                  <sup>{SAMPLES.preguntas2.tipo3.value.primero}</sup>√{SAMPLES.preguntas2.tipo3.value.segundo}
+                  ?</div>
+                <div className="respuestas">
+                  <div className="question_choice">
+                    {input}
+                  </div>
+                </div>
+                {temporizador}
+              </div>
+              <QuestionButtons I18n={this.props.I18n} onAnswerQuestion={this.onAnswerQuiz.bind(this)} onResetQuestion={this.onResetQuestion.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} onNextQuestion={this.onNextQuiz.bind(this)} answered={this.state.answered} quizCompleted={this.props.tracking.finished} allow_finish={isLastQuestion}/>
+            </div>);
+          }
+          break;
+        default:
+          console.log("error");
+      }
     }
   }
-}

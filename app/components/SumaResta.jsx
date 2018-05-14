@@ -240,6 +240,25 @@ export default class SumaResta extends React.Component {
       SAMPLES.preguntas1.tipo2.choices[i].value = + SAMPLES.SumaResta.resultado;
       SAMPLES.preguntas1.tipo2.value = "¿Cuánto es " + SAMPLES.SumaResta.primerNum + " " + SAMPLES.SumaResta.operador1 + " " + SAMPLES.SumaResta.impsegundNum + "?";
     }
+    for (let i = 0; i < SAMPLES.preguntas1.tipo2.choices.length; i++) {
+      for (let j = 0; j < SAMPLES.preguntas1.tipo2.choices.length; j++) {
+        if (i !== j) {
+          var h = 0;
+          while (SAMPLES.preguntas1.tipo2.choices[i].value === SAMPLES.preguntas1.tipo2.choices[j].value) {
+            this.resultadoF();
+            SAMPLES.preguntas1.tipo2.choices[i].value = + SAMPLES.SumaResta.resultado;
+            h++;
+            if (h > 3000) {
+              alert("SumaResta1: Esta línea no debería ejecutarse nunca.");
+              break;
+            }
+            i = 0;
+            j = 0;
+            break;
+          }
+        }
+      }
+    }
   }
   crearPregunta3() {
     if (this.props.difficulty > 5) {

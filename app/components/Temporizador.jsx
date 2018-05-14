@@ -32,7 +32,6 @@ export default class Temporizador extends React.Component {
   };
 
   componentDidMount(){
-    console.log("componentDidMount");
     this.setState({value: 100, secondsRemaining: this.state.seconds});
     if(this.state.value !== 100){
       setTimeout(function(){
@@ -44,7 +43,6 @@ export default class Temporizador extends React.Component {
   }
 
   componentWillUnmount() {
-    console.log("componentWillUnMount");
     clearInterval(timer);
 
   };

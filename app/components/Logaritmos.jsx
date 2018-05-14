@@ -204,6 +204,25 @@ export default class MultiplicacionDivision extends React.Component {
     SAMPLES.preguntas2.tipo2.choices[i].value = + SAMPLES.Logaritmos.resultado;
     SAMPLES.preguntas2.tipo2.value.primero = SAMPLES.Logaritmos.base;
     SAMPLES.preguntas2.tipo2.value.segundo = SAMPLES.Logaritmos.numero;
+    var h = 0;
+    for (let i = 0; i < SAMPLES.preguntas2.tipo2.choices.length; i++) {
+      for (let j = 0; j < SAMPLES.preguntas2.tipo2.choices.length; j++) {
+        if (i !== j) {
+          while (SAMPLES.preguntas2.tipo2.choices[i].value === SAMPLES.preguntas2.tipo2.choices[j].value) {
+            this.resultadoF();
+            SAMPLES.preguntas2.tipo2.choices[i].value = + SAMPLES.Logaritmos.resultado;
+            h++;
+            if (h > 5000) {
+              alert("RaicesElevados1: Esta línea no debería ejecutarse nunca.");
+              break;
+            }
+            i = 0;
+            j = 0;
+            break;
+          }
+        }
+      }
+    }
   }
   crearPregunta3() {
     this.generarNumerosYOperadores();

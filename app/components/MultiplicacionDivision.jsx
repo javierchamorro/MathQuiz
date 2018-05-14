@@ -199,6 +199,25 @@ export default class MultiplicacionDivision extends React.Component {
     this.resultadoV();
     SAMPLES.preguntas1.tipo2.choices[i].value = + SAMPLES.MultiplicacionDivision.resultado;
     SAMPLES.preguntas1.tipo2.value = "¿Cuánto es " + SAMPLES.MultiplicacionDivision.primerNum + " " + SAMPLES.MultiplicacionDivision.operador + " " + SAMPLES.MultiplicacionDivision.impsegundNum + "?";
+    for (let i = 0; i < SAMPLES.preguntas1.tipo2.choices.length; i++) {
+      for (let j = 0; j < SAMPLES.preguntas1.tipo2.choices.length; j++) {
+        if (i !== j) {
+          var h = 0;
+          while (SAMPLES.preguntas1.tipo2.choices[i].value === SAMPLES.preguntas1.tipo2.choices[j].value) {
+            this.resultadoF();
+            SAMPLES.preguntas1.tipo2.choices[i].value = + SAMPLES.MultiplicacionDivision.resultado;
+            h++;
+            if (h > 3000) {
+              alert("MultiplicacionDivision1: Esta línea no debería ejecutarse nunca.");
+              break;
+            }
+            i = 0;
+            j = 0;
+            break;
+          }
+        }
+      }
+    }
   }
   crearPregunta3() {
     this.generarNumerosYOperadores();

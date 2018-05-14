@@ -100,7 +100,6 @@ export default class Quiz extends React.Component {
     var pregunta;
     var difficulty = this.state.difficulty;
     SAMPLES.difficulty = this.state.difficulty;
-    console.log("difficulty: " + difficulty);
     switch (difficulty) {
       case 0:
         if (this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel0.SumaResta) {
