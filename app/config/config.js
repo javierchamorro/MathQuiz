@@ -83,9 +83,9 @@ export let GLOBAL_CONFIG = {
       //multiplechoice
       tipo1:false,
       //onechoice
-      tipo2:true,
+      tipo2:false,
       //input
-      tipo3:false,
+      tipo3:true,
     },
   },
   production:{

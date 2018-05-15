@@ -229,7 +229,7 @@ export default class MultiplicacionDivision extends React.Component {
     this.resultadoV();
     SAMPLES.preguntas2.tipo3.value.primero = SAMPLES.Logaritmos.base;
     SAMPLES.preguntas2.tipo3.value.segundo = SAMPLES.Logaritmos.numero;
-    SAMPLES.preguntas2.tipo3.answer = SAMPLES.Logaritmos.resultado;
+    SAMPLES.preguntas2.tipo3.answer = + SAMPLES.Logaritmos.resultado;
   }
 
   generarNumerosYOperadores() {
@@ -318,7 +318,7 @@ export default class MultiplicacionDivision extends React.Component {
       case 2:
         var input = "";
         if (this.state.answered) {
-          if (this.state.input_answer === SAMPLES.preguntas1.tipo3.answer) {
+          if (this.state.input_answer === SAMPLES.preguntas2.tipo3.answer) {
             input = (<input className="input_answerT" type="number" name="respuesta" disabled="true" onChange={this.handleInputChange.bind(this)} value={this.state.input_answer}></input>);
           } else {
             input = (<input className="input_answerF" type="number" name="respuesta" disabled="true" onChange={this.handleInputChange.bind(this)} value={this.state.input_answer}></input>);
