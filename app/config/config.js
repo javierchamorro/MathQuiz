@@ -12,9 +12,11 @@ export let GLOBAL_CONFIG = {
       score_threshold:0.6,
     },
     //activar boton de resetQuestion
-    resetQuestion:true,
+    resetQuestion:false,
+    //activar boton de resetQuiz
+    resetQuiz:false,
     //numero de preguntas del test
-    n:5,
+    n:1,
     //en modo progresivo se el numero de preguntas necesarias para subir o bajar de nivel
     progresivo:1,
     //probabilidad de niveles
@@ -100,9 +102,11 @@ export let GLOBAL_CONFIG = {
       score_threshold:0.6,
     },
     //activar boton de resetQuestion
-    resetQuestion:true,
+    resetQuestion:false,
+    //activar boton de resetQuiz
+    resetQuiz:false,
     //numero de preguntas del test
-    n:5,
+    n:1,
     //en modo progresivo se el numero de preguntas necesarias para subir o bajar de nivel
     progresivo:1,
     //probabilidad de niveles
