@@ -14,18 +14,18 @@ import FinishScreen from './FinishScreen.jsx';
 import Quiz from './Quiz.jsx';
 
 export class App extends React.Component {
-  constructor(props) {
+  constructor(props){
     super(props);
     I18n.init();
   }
-  render() {
+  render(){
     let appHeader = (<Header user_profile={this.props.user_profile} tracking={this.props.tracking} config={GLOBAL_CONFIG} I18n={I18n}/>);
     let appHeader2 = "";
     let appContent = "";
 
-    if ((this.props.tracking.finished !== true) || (GLOBAL_CONFIG.finish_screen === false)) {
+    if((this.props.tracking.finished !== true) || (GLOBAL_CONFIG.finish_screen === false)){
       appHeader2 = (<Header2 user_profile={this.props.user_profile} tracking={this.props.tracking} config={GLOBAL_CONFIG} I18n={I18n}/>);
-      if (this.props.wait_for_user_profile !== true) {
+      if(this.props.wait_for_user_profile !== true){
         appContent = (<Quiz dispatch={this.props.dispatch} user_profile={this.props.user_profile} tracking={this.props.tracking} quiz={SAMPLES.quiz_example} config={GLOBAL_CONFIG} I18n={I18n}/>);
       }
     } else {
@@ -41,7 +41,7 @@ export class App extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state){
   return state;
 }
 

@@ -14,9 +14,9 @@ export default class QuestionButtons extends React.Component {
     if((this.props.allow_finish) && (disable_next === false) && GLOBAL_CONFIG.resetQuiz){
       resetQuiz = (<button className="resetQuiz" onClick={this.props.onResetQuiz}>{this.props.I18n.getTrans("i.reset_quiz")}</button>);
     }
-    let resetQuestion="";
+    let resetQuestion = "";
     if(GLOBAL_CONFIG.resetQuestion){
-      resetQuestion=(<button className="resetQuestion" onClick={this.props.onResetQuestion} disabled={disable_resetQuestion}>{this.props.I18n.getTrans("i.reset_question")}</button>);
+      resetQuestion = (<button className="resetQuestion" onClick={this.props.onResetQuestion} disabled={disable_resetQuestion}>{this.props.I18n.getTrans("i.reset_question")}</button>);
     }
     return (
       <div className="botones">
