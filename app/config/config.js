@@ -108,7 +108,7 @@ export let GLOBAL_CONFIG = {
     // numero de preguntas del test
     n:1,
     // en modo progresivo se el numero de preguntas necesarias para subir o bajar de nivel
-    progresivo:1,
+    progresivo:2,
     // probabilidad de niveles
     prob_dif:{
       nivel0:{
