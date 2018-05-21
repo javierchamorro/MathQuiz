@@ -221,3 +221,11 @@ div.header_wrapper {
 //   color: gray;
 //
 // }
+
+@media (max-height:800px){
+  html{
+    .header_wrapper, .header2{
+      display: none;
+    }
+  }
+}
