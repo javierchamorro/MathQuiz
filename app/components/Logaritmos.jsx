@@ -213,7 +213,7 @@ export default class MultiplicacionDivision extends React.Component {
             SAMPLES.preguntas2.tipo2.choices[i].value = + SAMPLES.Logaritmos.resultado;
             h++;
             if(h > 5000){
-              alert("RaicesElevados1: Esta línea no debería ejecutarse nunca.");
+              alert("Logaritmos1: Esta línea no debería ejecutarse nunca.");
               break;
             }
             i = 0;

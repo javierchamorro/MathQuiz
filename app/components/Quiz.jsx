@@ -6,7 +6,7 @@ import {addObjectives, objectiveAccomplished, objectiveAccomplishedThunk, resetO
 
 import SumaResta from './SumaResta.jsx';
 import MultiplicacionDivision from './MultiplicacionDivision.jsx';
-import RaicesElevados from './RaicesElevados.jsx';
+import RaicesPotencias from './RaicesPotencias.jsx';
 import Logaritmos from './Logaritmos.jsx';
 import QuizHeader from './QuizHeader.jsx';
 
@@ -104,7 +104,7 @@ export default class Quiz extends React.Component {
         pregunta = 1;
       } else if(this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel0.SumaResta + GLOBAL_CONFIG.prob_dif.nivel0.MultiplicacionDivision){
         pregunta = 2;
-      } else if(this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel0.SumaResta + GLOBAL_CONFIG.prob_dif.nivel0.MultiplicacionDivision + GLOBAL_CONFIG.prob_dif.nivel0.RaicesElevados){
+      } else if(this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel0.SumaResta + GLOBAL_CONFIG.prob_dif.nivel0.MultiplicacionDivision + GLOBAL_CONFIG.prob_dif.nivel0.RaicesPotencias){
         pregunta = 3;
       } else {
         pregunta = 4;
@@ -115,7 +115,7 @@ export default class Quiz extends React.Component {
         pregunta = 1;
       } else if(this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel1.SumaResta + GLOBAL_CONFIG.prob_dif.nivel1.MultiplicacionDivision){
         pregunta = 2;
-      } else if(this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel1.SumaResta + GLOBAL_CONFIG.prob_dif.nivel1.MultiplicacionDivision + GLOBAL_CONFIG.prob_dif.nivel1.RaicesElevados){
+      } else if(this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel1.SumaResta + GLOBAL_CONFIG.prob_dif.nivel1.MultiplicacionDivision + GLOBAL_CONFIG.prob_dif.nivel1.RaicesPotencias){
         pregunta = 3;
       } else {
         pregunta = 4;
@@ -126,7 +126,7 @@ export default class Quiz extends React.Component {
         pregunta = 1;
       } else if(this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel2.SumaResta + GLOBAL_CONFIG.prob_dif.nivel2.MultiplicacionDivision){
         pregunta = 2;
-      } else if(this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel2.SumaResta + GLOBAL_CONFIG.prob_dif.nivel2.MultiplicacionDivision + GLOBAL_CONFIG.prob_dif.nivel2.RaicesElevados){
+      } else if(this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel2.SumaResta + GLOBAL_CONFIG.prob_dif.nivel2.MultiplicacionDivision + GLOBAL_CONFIG.prob_dif.nivel2.RaicesPotencias){
         pregunta = 3;
       } else {
         pregunta = 4;
@@ -137,7 +137,7 @@ export default class Quiz extends React.Component {
         pregunta = 1;
       } else if(this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel3.SumaResta + GLOBAL_CONFIG.prob_dif.nivel3.MultiplicacionDivision){
         pregunta = 2;
-      } else if(this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel3.SumaResta + GLOBAL_CONFIG.prob_dif.nivel3.MultiplicacionDivision + GLOBAL_CONFIG.prob_dif.nivel3.RaicesElevados){
+      } else if(this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel3.SumaResta + GLOBAL_CONFIG.prob_dif.nivel3.MultiplicacionDivision + GLOBAL_CONFIG.prob_dif.nivel3.RaicesPotencias){
         pregunta = 3;
       } else {
         pregunta = 4;
@@ -148,7 +148,7 @@ export default class Quiz extends React.Component {
         pregunta = 1;
       } else if(this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel4.SumaResta + GLOBAL_CONFIG.prob_dif.nivel4.MultiplicacionDivision){
         pregunta = 2;
-      } else if(this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel4.SumaResta + GLOBAL_CONFIG.prob_dif.nivel4.MultiplicacionDivision + GLOBAL_CONFIG.prob_dif.nivel4.RaicesElevados){
+      } else if(this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel4.SumaResta + GLOBAL_CONFIG.prob_dif.nivel4.MultiplicacionDivision + GLOBAL_CONFIG.prob_dif.nivel4.RaicesPotencias){
         pregunta = 3;
       } else {
         pregunta = 4;
@@ -159,7 +159,7 @@ export default class Quiz extends React.Component {
         pregunta = 1;
       } else if(this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel5.SumaResta + GLOBAL_CONFIG.prob_dif.nivel5.MultiplicacionDivision){
         pregunta = 2;
-      } else if(this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel5.SumaResta + GLOBAL_CONFIG.prob_dif.nivel5.MultiplicacionDivision + GLOBAL_CONFIG.prob_dif.nivel5.RaicesElevados){
+      } else if(this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel5.SumaResta + GLOBAL_CONFIG.prob_dif.nivel5.MultiplicacionDivision + GLOBAL_CONFIG.prob_dif.nivel5.RaicesPotencias){
         pregunta = 3;
       } else {
         pregunta = 4;
@@ -170,7 +170,7 @@ export default class Quiz extends React.Component {
         pregunta = 1;
       } else if(this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel6.SumaResta + GLOBAL_CONFIG.prob_dif.nivel6.MultiplicacionDivision){
         pregunta = 2;
-      } else if(this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel6.SumaResta + GLOBAL_CONFIG.prob_dif.nivel6.MultiplicacionDivision + GLOBAL_CONFIG.prob_dif.nivel6.RaicesElevados){
+      } else if(this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel6.SumaResta + GLOBAL_CONFIG.prob_dif.nivel6.MultiplicacionDivision + GLOBAL_CONFIG.prob_dif.nivel6.RaicesPotencias){
         pregunta = 3;
       } else {
         pregunta = 4;
@@ -181,7 +181,7 @@ export default class Quiz extends React.Component {
         pregunta = 1;
       } else if(this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel7.SumaResta + GLOBAL_CONFIG.prob_dif.nivel7.MultiplicacionDivision){
         pregunta = 2;
-      } else if(this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel7.SumaResta + GLOBAL_CONFIG.prob_dif.nivel7.MultiplicacionDivision + GLOBAL_CONFIG.prob_dif.nivel7.RaicesElevados){
+      } else if(this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel7.SumaResta + GLOBAL_CONFIG.prob_dif.nivel7.MultiplicacionDivision + GLOBAL_CONFIG.prob_dif.nivel7.RaicesPotencias){
         pregunta = 3;
       } else {
         pregunta = 4;
@@ -192,7 +192,7 @@ export default class Quiz extends React.Component {
         pregunta = 1;
       } else if(this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel8.SumaResta + GLOBAL_CONFIG.prob_dif.nivel8.MultiplicacionDivision){
         pregunta = 2;
-      } else if(this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel8.SumaResta + GLOBAL_CONFIG.prob_dif.nivel8.MultiplicacionDivision + GLOBAL_CONFIG.prob_dif.nivel8.RaicesElevados){
+      } else if(this.state.aleatorio < GLOBAL_CONFIG.prob_dif.nivel8.SumaResta + GLOBAL_CONFIG.prob_dif.nivel8.MultiplicacionDivision + GLOBAL_CONFIG.prob_dif.nivel8.RaicesPotencias){
         pregunta = 3;
       } else {
         pregunta = 4;
@@ -223,7 +223,7 @@ export default class Quiz extends React.Component {
           <div className="numeroPregunta">
             <QuizHeader I18n={this.props.I18n}/>
           </div>
-          <RaicesElevados className="pregunta" quiz={SAMPLES.preguntas2} difficulty={difficulty} datos={SAMPLES.RaicesElevados} dispatch={this.props.dispatch} tracking={this.props.tracking} onReset={this.onReset.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} I18n={this.props.I18n}/>
+          <RaicesPotencias className="pregunta" quiz={SAMPLES.preguntas2} difficulty={difficulty} datos={SAMPLES.RaicesPotencias} dispatch={this.props.dispatch} tracking={this.props.tracking} onReset={this.onReset.bind(this)} onResetQuiz={this.onResetQuiz.bind(this)} I18n={this.props.I18n}/>
         </div>);
       break;
     case 4:

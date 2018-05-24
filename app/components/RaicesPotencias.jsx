@@ -10,7 +10,7 @@ import Tipo2 from './Tipo2.jsx';
 import QuestionButtons from './QuestionButtons.jsx';
 import Temporizador from './Temporizador.jsx';
 
-export default class RaicesElevados extends React.Component {
+export default class RaicesPotencias extends React.Component {
   constructor(props){
     super(props);
     this.state = {
@@ -178,18 +178,18 @@ export default class RaicesElevados extends React.Component {
           this.resultadoV();
           verdaderas++;
         }
-        SAMPLES.preguntas2.tipo1.choices[i].value.primero = SAMPLES.RaicesElevados.primerNum;
-        SAMPLES.preguntas2.tipo1.choices[i].value.segundo = SAMPLES.RaicesElevados.segundNum;
-        SAMPLES.preguntas2.tipo1.choices[i].value.tercero = SAMPLES.RaicesElevados.resultado;
+        SAMPLES.preguntas2.tipo1.choices[i].value.primero = SAMPLES.RaicesPotencias.primerNum;
+        SAMPLES.preguntas2.tipo1.choices[i].value.segundo = SAMPLES.RaicesPotencias.segundNum;
+        SAMPLES.preguntas2.tipo1.choices[i].value.tercero = SAMPLES.RaicesPotencias.resultado;
       }
       if(verdaderas === 0){
         var i = Math.floor(Math.random() * SAMPLES.preguntas2.tipo1.choices.length);
         SAMPLES.preguntas2.tipo1.choices[i].answer = true;
         this.generarNumerosYOperadores();
         this.resultadoV();
-        SAMPLES.preguntas2.tipo1.choices[i].value.primero = SAMPLES.RaicesElevados.primerNum;
-        SAMPLES.preguntas2.tipo1.choices[i].value.segundo = SAMPLES.RaicesElevados.segundNum;
-        SAMPLES.preguntas2.tipo1.choices[i].value.tercero = SAMPLES.RaicesElevados.resultado;
+        SAMPLES.preguntas2.tipo1.choices[i].value.primero = SAMPLES.RaicesPotencias.primerNum;
+        SAMPLES.preguntas2.tipo1.choices[i].value.segundo = SAMPLES.RaicesPotencias.segundNum;
+        SAMPLES.preguntas2.tipo1.choices[i].value.tercero = SAMPLES.RaicesPotencias.resultado;
       }
     } else {
       var verdaderas = 0;
@@ -205,18 +205,18 @@ export default class RaicesElevados extends React.Component {
           this.resultadoV();
           verdaderas++;
         }
-        SAMPLES.preguntas2.tipo1.choices[i].value.primero = SAMPLES.RaicesElevados.segundNum;
-        SAMPLES.preguntas2.tipo1.choices[i].value.segundo = SAMPLES.RaicesElevados.resultado;
-        SAMPLES.preguntas2.tipo1.choices[i].value.tercero = SAMPLES.RaicesElevados.primerNumF;
+        SAMPLES.preguntas2.tipo1.choices[i].value.primero = SAMPLES.RaicesPotencias.segundNum;
+        SAMPLES.preguntas2.tipo1.choices[i].value.segundo = SAMPLES.RaicesPotencias.resultado;
+        SAMPLES.preguntas2.tipo1.choices[i].value.tercero = SAMPLES.RaicesPotencias.primerNumF;
       }
       if(verdaderas === 0){
         var i = Math.floor(Math.random() * SAMPLES.preguntas2.tipo1.choices.length);
         SAMPLES.preguntas2.tipo1.choices[i].answer = true;
         this.generarNumerosYOperadores();
         this.resultadoV();
-        SAMPLES.preguntas2.tipo1.choices[i].value.primero = SAMPLES.RaicesElevados.segundNum;
-        SAMPLES.preguntas2.tipo1.choices[i].value.segundo = SAMPLES.RaicesElevados.resultado;
-        SAMPLES.preguntas2.tipo1.choices[i].value.tercero = SAMPLES.RaicesElevados.primerNumF;
+        SAMPLES.preguntas2.tipo1.choices[i].value.primero = SAMPLES.RaicesPotencias.segundNum;
+        SAMPLES.preguntas2.tipo1.choices[i].value.segundo = SAMPLES.RaicesPotencias.resultado;
+        SAMPLES.preguntas2.tipo1.choices[i].value.tercero = SAMPLES.RaicesPotencias.primerNumF;
       }
     }
 
@@ -227,27 +227,27 @@ export default class RaicesElevados extends React.Component {
       for(let i = 0; i < SAMPLES.preguntas2.tipo2.choices.length; i++){
         SAMPLES.preguntas2.tipo2.choices[i].answer = false;
         this.resultadoF();
-        SAMPLES.preguntas2.tipo2.choices[i].value = + SAMPLES.RaicesElevados.resultado;
+        SAMPLES.preguntas2.tipo2.choices[i].value = + SAMPLES.RaicesPotencias.resultado;
       }
       var i = Math.floor(Math.random() * SAMPLES.preguntas2.tipo2.choices.length);
       SAMPLES.preguntas2.tipo2.choices[i].answer = true;
       this.resultadoV();
-      SAMPLES.preguntas2.tipo2.choices[i].value = + SAMPLES.RaicesElevados.resultado;
-      SAMPLES.preguntas2.tipo2.value.primero = SAMPLES.RaicesElevados.primerNum;
-      SAMPLES.preguntas2.tipo2.value.segundo = SAMPLES.RaicesElevados.segundNum;
+      SAMPLES.preguntas2.tipo2.choices[i].value = + SAMPLES.RaicesPotencias.resultado;
+      SAMPLES.preguntas2.tipo2.value.primero = SAMPLES.RaicesPotencias.primerNum;
+      SAMPLES.preguntas2.tipo2.value.segundo = SAMPLES.RaicesPotencias.segundNum;
     } else {
       this.generarNumerosYOperadores();
       for(let i = 0; i < SAMPLES.preguntas2.tipo2.choices.length; i++){
         SAMPLES.preguntas2.tipo2.choices[i].answer = false;
         this.resultadoF();
-        SAMPLES.preguntas2.tipo2.choices[i].value = + SAMPLES.RaicesElevados.primerNumF;
+        SAMPLES.preguntas2.tipo2.choices[i].value = + SAMPLES.RaicesPotencias.primerNumF;
       }
       var i = Math.floor(Math.random() * SAMPLES.preguntas2.tipo2.choices.length);
       SAMPLES.preguntas2.tipo2.choices[i].answer = true;
       this.resultadoV();
-      SAMPLES.preguntas2.tipo2.choices[i].value = + SAMPLES.RaicesElevados.primerNumF;
-      SAMPLES.preguntas2.tipo2.value.primero = SAMPLES.RaicesElevados.segundNum;
-      SAMPLES.preguntas2.tipo2.value.segundo = SAMPLES.RaicesElevados.resultado;
+      SAMPLES.preguntas2.tipo2.choices[i].value = + SAMPLES.RaicesPotencias.primerNumF;
+      SAMPLES.preguntas2.tipo2.value.primero = SAMPLES.RaicesPotencias.segundNum;
+      SAMPLES.preguntas2.tipo2.value.segundo = SAMPLES.RaicesPotencias.resultado;
     }
     for(let i = 0; i < SAMPLES.preguntas2.tipo2.choices.length; i++){
       for(let j = 0; j < SAMPLES.preguntas2.tipo2.choices.length; j++){
@@ -256,13 +256,13 @@ export default class RaicesElevados extends React.Component {
           while(SAMPLES.preguntas2.tipo2.choices[i].value === SAMPLES.preguntas2.tipo2.choices[j].value){
             this.resultadoF();
             if(this.props.difficulty < 4){
-              SAMPLES.preguntas2.tipo2.choices[i].value = + SAMPLES.RaicesElevados.resultado;
+              SAMPLES.preguntas2.tipo2.choices[i].value = + SAMPLES.RaicesPotencias.resultado;
             } else {
-              SAMPLES.preguntas2.tipo2.choices[i].value = + SAMPLES.RaicesElevados.primerNumF;
+              SAMPLES.preguntas2.tipo2.choices[i].value = + SAMPLES.RaicesPotencias.primerNumF;
             }
             h++;
             if(h > 3000){
-              alert("RaicesElevados1: Esta línea no debería ejecutarse nunca.");
+              alert("RaicesPotencias1: Esta línea no debería ejecutarse nunca.");
               break;
             }
             i = 0;
@@ -277,28 +277,28 @@ export default class RaicesElevados extends React.Component {
     this.generarNumerosYOperadores();
     this.resultadoV();
     if(this.props.difficulty < 4){
-      SAMPLES.preguntas2.tipo3.value.primero = SAMPLES.RaicesElevados.primerNum;
-      SAMPLES.preguntas2.tipo3.value.segundo = SAMPLES.RaicesElevados.segundNum;
-      SAMPLES.preguntas2.tipo3.answer = SAMPLES.RaicesElevados.resultado;
+      SAMPLES.preguntas2.tipo3.value.primero = SAMPLES.RaicesPotencias.primerNum;
+      SAMPLES.preguntas2.tipo3.value.segundo = SAMPLES.RaicesPotencias.segundNum;
+      SAMPLES.preguntas2.tipo3.answer = SAMPLES.RaicesPotencias.resultado;
     } else {
-      SAMPLES.preguntas2.tipo3.value.primero = SAMPLES.RaicesElevados.segundNum;
-      SAMPLES.preguntas2.tipo3.value.segundo = SAMPLES.RaicesElevados.resultado;
-      SAMPLES.preguntas2.tipo3.answer = SAMPLES.RaicesElevados.primerNumF;
+      SAMPLES.preguntas2.tipo3.value.primero = SAMPLES.RaicesPotencias.segundNum;
+      SAMPLES.preguntas2.tipo3.value.segundo = SAMPLES.RaicesPotencias.resultado;
+      SAMPLES.preguntas2.tipo3.answer = SAMPLES.RaicesPotencias.primerNumF;
     }
   }
 
   genAux(){
-    SAMPLES.RaicesElevados.primerNum = Math.floor((Math.random() * 10) + 1);
-    if(SAMPLES.RaicesElevados.primerNum === 1){
-      SAMPLES.RaicesElevados.segundNum = Math.floor(Math.random() * 1001);
-    } else if(SAMPLES.RaicesElevados.primerNum === 2){
-      SAMPLES.RaicesElevados.segundNum = Math.floor(Math.random() * 13);
-    } else if(SAMPLES.RaicesElevados.primerNum === 3 || SAMPLES.RaicesElevados.primerNum === 4 || SAMPLES.RaicesElevados.primerNum === 10){
-      SAMPLES.RaicesElevados.segundNum = Math.floor(Math.random() * 7);
-    } else if(SAMPLES.RaicesElevados.primerNum === 5 || SAMPLES.RaicesElevados.primerNum === 8){
-      SAMPLES.RaicesElevados.segundNum = Math.floor(Math.random() * 5);
+    SAMPLES.RaicesPotencias.primerNum = Math.floor((Math.random() * 10) + 1);
+    if(SAMPLES.RaicesPotencias.primerNum === 1){
+      SAMPLES.RaicesPotencias.segundNum = Math.floor(Math.random() * 1001);
+    } else if(SAMPLES.RaicesPotencias.primerNum === 2){
+      SAMPLES.RaicesPotencias.segundNum = Math.floor(Math.random() * 13);
+    } else if(SAMPLES.RaicesPotencias.primerNum === 3 || SAMPLES.RaicesPotencias.primerNum === 4 || SAMPLES.RaicesPotencias.primerNum === 10){
+      SAMPLES.RaicesPotencias.segundNum = Math.floor(Math.random() * 7);
+    } else if(SAMPLES.RaicesPotencias.primerNum === 5 || SAMPLES.RaicesPotencias.primerNum === 8){
+      SAMPLES.RaicesPotencias.segundNum = Math.floor(Math.random() * 5);
     } else {
-      SAMPLES.RaicesElevados.segundNum = Math.floor(Math.random() * 4);
+      SAMPLES.RaicesPotencias.segundNum = Math.floor(Math.random() * 4);
     }
   }
   generarNumerosYOperadores(){
@@ -310,48 +310,48 @@ export default class RaicesElevados extends React.Component {
         j++;
         this.genAux();
         if(j > 3000){
-          alert("RaicesElevados1: Esta línea no debería ejecutarse nunca.");
+          alert("RaicesPotencias1: Esta línea no debería ejecutarse nunca.");
           break;
         }
-      } while(SAMPLES.RaicesElevados.segundNum < 1);
+      } while(SAMPLES.RaicesPotencias.segundNum < 1);
     }
   }
 
   resultadoV(){
-    SAMPLES.RaicesElevados.resultado = Math.pow(SAMPLES.RaicesElevados.primerNum, SAMPLES.RaicesElevados.segundNum);
-    SAMPLES.RaicesElevados.primerNumF = SAMPLES.RaicesElevados.primerNum;
+    SAMPLES.RaicesPotencias.resultado = Math.pow(SAMPLES.RaicesPotencias.primerNum, SAMPLES.RaicesPotencias.segundNum);
+    SAMPLES.RaicesPotencias.primerNumF = SAMPLES.RaicesPotencias.primerNum;
   }
   resultadoF(){
     let resultadoV;
     let resultadoF;
     if(this.props.difficulty < 4){
-      resultadoV = Math.pow(SAMPLES.RaicesElevados.primerNum, SAMPLES.RaicesElevados.segundNum);
+      resultadoV = Math.pow(SAMPLES.RaicesPotencias.primerNum, SAMPLES.RaicesPotencias.segundNum);
       resultadoF = Math.floor(resultadoV - 5 + (Math.random() * 10) + 1);
       var j = 0;
       while(resultadoF === resultadoV){
         resultadoF = Math.floor(resultadoV - 5 + (Math.random() * 10) + 1);
         j++;
         if(j > 3000){
-          alert("RaicesElevados2: Esta línea no debería ejecutarse nunca.");
+          alert("RaicesPotencias2: Esta línea no debería ejecutarse nunca.");
           resultadoF = resultadoV + 1;
           break;
         }
       }
-      SAMPLES.RaicesElevados.resultado = resultadoF;
+      SAMPLES.RaicesPotencias.resultado = resultadoF;
     } else {
-      resultadoV = Math.pow(SAMPLES.RaicesElevados.primerNum, SAMPLES.RaicesElevados.segundNum);
-      SAMPLES.RaicesElevados.primerNumF = Math.floor(SAMPLES.RaicesElevados.primerNum - 5 + (Math.random() * 10) + 1);
+      resultadoV = Math.pow(SAMPLES.RaicesPotencias.primerNum, SAMPLES.RaicesPotencias.segundNum);
+      SAMPLES.RaicesPotencias.primerNumF = Math.floor(SAMPLES.RaicesPotencias.primerNum - 5 + (Math.random() * 10) + 1);
       var j = 0;
-      while(SAMPLES.RaicesElevados.primerNumF === SAMPLES.RaicesElevados.primerNum || SAMPLES.RaicesElevados.primerNumF < 1){
-        SAMPLES.RaicesElevados.primerNumF = Math.floor(SAMPLES.RaicesElevados.primerNum - 5 + (Math.random() * 10) + 1);
+      while(SAMPLES.RaicesPotencias.primerNumF === SAMPLES.RaicesPotencias.primerNum || SAMPLES.RaicesPotencias.primerNumF < 1){
+        SAMPLES.RaicesPotencias.primerNumF = Math.floor(SAMPLES.RaicesPotencias.primerNum - 5 + (Math.random() * 10) + 1);
         j++;
         if(j > 3000){
-          alert("RaicesElevados3: Esta línea no debería ejecutarse nunca.");
+          alert("RaicesPotencias3: Esta línea no debería ejecutarse nunca.");
           resultadoF = resultadoV + 1;
           break;
         }
       }
-      SAMPLES.RaicesElevados.resultado = resultadoV;
+      SAMPLES.RaicesPotencias.resultado = resultadoV;
     }
   }
 

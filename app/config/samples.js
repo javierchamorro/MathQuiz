@@ -214,7 +214,7 @@ export const MultiplicacionDivision = {
   "operador":0,
 };
 
-export const RaicesElevados = {
+export const RaicesPotencias = {
   "primerNum":0,
   "primerNumF":0,
   "segundNum":0,
