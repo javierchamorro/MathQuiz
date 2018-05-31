@@ -221,6 +221,7 @@ export const RaicesPotencias = {
   "segundNumF":0,
   "resultado":0,
   "operador":"√",
+  "random":0
 };
 
 export const Logaritmos = {
